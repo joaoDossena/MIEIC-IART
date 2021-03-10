@@ -11,6 +11,6 @@ João Sousa - UP201806
 
 ### 2. related work with references to works found in a bibliographic search (articles, web pages and/or source code)
 
-### 3. formulation of the problem as a search problem (state representation, initial state, objective test, operators (names, preconditions, effects and costs), heuristics/evaluation function) or optimization problem (solution representation, neighborhood/mutation and crossover functions, rigid constraints, evaluation functions)
+### 3. formulation of the problem as a search problem (state representation, initial state, objective test, operators (names, preconditions, effects and costs), heuristics/evaluation function)
 
 ### 4. implementation work already carried out (programming language, development environment, data structures, file structure, among others).
