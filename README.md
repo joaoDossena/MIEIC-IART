@@ -17,11 +17,11 @@ MATCH TILES - SLIDING PUZZLE GAME FEATURES:
 -  Undo moves support.
 -  No time limit.
 
-### 2. related work with references to works found in a bibliographic search (articles, web pages and/or source code)
+### 2. Related work with references to works found in a bibliographic search (articles, web pages and/or source code)
 -  [The original game](https://play.google.com/store/apps/details?id=net.bohush.match.tiles.color.puzzle&hl=pt_PT&gl=US)
 -  []()
 
-### 3. formulation of the problem as a search problem
+### 3. Formulation of the problem as a search problem
 #### 3.1. State Representation:
 
 #### 3.2. Initial State:
@@ -32,7 +32,7 @@ MATCH TILES - SLIDING PUZZLE GAME FEATURES:
 
 #### 3.5. Heuristics/Evaluation Function:
 
-### 4. implementation work already carried out 
+### 4. Implementation work already carried out 
 #### 4.1. Programming language
 
 #### 4.2. Development environment
