@@ -2,7 +2,7 @@
 
 João Dossena - UP201800174  
 João Rosário - UP201806334  
-João Sousa - UP201806  
+João Sousa - UP201806613 
 
 ## Theme: Topic 1 - Heuristic Search Methods for One Player Solitaire Games
 Our chosen Solitaire Game is Match the Tiles. 
