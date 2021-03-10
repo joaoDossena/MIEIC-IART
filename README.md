@@ -1,7 +1,7 @@
 # MIEIC-IART
 
 João Dossena - UP201800174 
-João Rosário - UP201806  
+João Rosário - UP201806334  
 João Sousa - UP201806 
 
 ## Theme: Topic 1 - Heuristic Search Methods for One Player Solitaire Games
