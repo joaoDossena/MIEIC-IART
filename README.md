@@ -6,7 +6,9 @@ João Sousa - UP201806
 
 ## Theme: Topic 1 - Heuristic Search Methods for One Player Solitaire Games
 Our chosen Solitaire Game is Match the Tiles. 
-#### Rules
+
+### Checkpoint
+#### 1. specification of the work to be performed (definition of the game)
 Swipe (Up, Down, Left, Right) to move the tiles. You should place all colored tiles onto the designated spots with the same color. The moves are synchronized, thus you must use existing fixed tiles to create gaps between tiles and solve the puzzle.
 
 MATCH TILES - SLIDING PUZZLE GAME FEATURES:
@@ -14,9 +16,6 @@ MATCH TILES - SLIDING PUZZLE GAME FEATURES:
 • Normal (4x4), big (5x5) and bigger (6x6) board sizes.
 • Undo moves support.
 • No time limit.
-
-### Checkpoint
-#### 1. specification of the work to be performed (definition of the game)
 
 #### 2. related work with references to works found in a bibliographic search (articles, web pages and/or source code)
 
