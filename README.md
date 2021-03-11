@@ -31,7 +31,7 @@ The objective test has to verify if all of the movable pieces are in their respe
 #### 3.4. Operators (names, preconditions, effects and costs):
 (MELHORAR PRECONDITIONS?)  
 Operator |    Preconditions   |                     Effects                     | Cost
-------
+|  ---   |         ---        |                       ---                       |  ---  |
 UP       | Last move != UP    | All movable pieces move up until an obstacle    | 1
 DOWN     | Last move != DOWN  | All movable pieces move down until an obstacle  | 1
 LEFT     | Last move != LEFT  | All movable pieces move left until an obstacle  | 1
