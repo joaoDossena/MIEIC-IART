@@ -29,7 +29,7 @@ The initial state will be generated randomly so that the game is not always the 
 #### 3.3. Objective Test:
 The objective test has to verify if all of the mobile pieces are in their respective desired spots.
 #### 3.4. Operators (names, preconditions, effects and costs):
-(FAZER UMA TABELA TALVEZ?)
+(FAZER UMA TABELA TALVEZ?)  
 Operator | Preconditions | Effects | Cost
 ------
 UP       |
