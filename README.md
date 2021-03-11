@@ -23,13 +23,19 @@ MATCH TILES - SLIDING PUZZLE GAME FEATURES:
 
 ### 3. Formulation of the problem as a search problem
 #### 3.1. State Representation:
-
+The game state can be represented by a matrix with characters representing free slots, obstacles, and the colored final slots (EXEMPLIFICAR QUAIS CARACTERES REPRESENTAM CADA COISA)
 #### 3.2. Initial State:
-
+The initial state will be generated randomly so that the game is not always the same. However, for explanation purposes we will assume a specific initial state. (EXEMPLIFICAR QUAL O ESTADO PARA NOSSO RELATORIO)
 #### 3.3. Objective Test:
-
+The objective test has to verify if all of the mobile pieces are in their respective desired spots.
 #### 3.4. Operators (names, preconditions, effects and costs):
-
+(FAZER UMA TABELA TALVEZ?)
+Operator | Preconditions | Effects | Cost
+------
+UP       |
+DOWN     |
+LEFT     |
+RIGHT    |
 #### 3.5. Heuristics/Evaluation Function:
 
 ### 4. Implementation work already carried out 
