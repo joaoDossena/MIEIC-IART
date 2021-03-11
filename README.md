@@ -27,15 +27,15 @@ The game state can be represented by a matrix with characters representing free 
 #### 3.2. Initial State:
 The initial state will be generated randomly so that the game is not always the same. However, for explanation purposes we will assume a specific initial state. (EXEMPLIFICAR QUAL O ESTADO PARA NOSSO RELATORIO)
 #### 3.3. Objective Test:
-The objective test has to verify if all of the mobile pieces are in their respective desired spots.
+The objective test has to verify if all of the movable pieces are in their respective desired spots. (EXEMPLIFICAR MELHOR)
 #### 3.4. Operators (names, preconditions, effects and costs):
-(FAZER UMA TABELA TALVEZ?)  
-Operator | Preconditions | Effects | Cost
+(MELHORAR PRECONDITIONS?)  
+Operator |    Preconditions   |                     Effects                     | Cost
 ------
-UP       |
-DOWN     |
-LEFT     |
-RIGHT    |
+UP       | Last move != UP    | All movable pieces move up until an obstacle    | 1
+DOWN     | Last move != DOWN  | All movable pieces move down until an obstacle  | 1
+LEFT     | Last move != LEFT  | All movable pieces move left until an obstacle  | 1
+RIGHT    | Last move != RIGHT | All movable pieces move right until an obstacle | 1
 #### 3.5. Heuristics/Evaluation Function:
 
 ### 4. Implementation work already carried out 
