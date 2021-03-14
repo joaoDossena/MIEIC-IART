@@ -45,7 +45,7 @@ DOWN     | Last move != DOWN  | All movable pieces move down until an obstacle  
 LEFT     | Last move != LEFT  | All movable pieces move left until an obstacle  | 1
 RIGHT    | Last move != RIGHT | All movable pieces move right until an obstacle | 1
 #### 3.5. Heuristics/Evaluation Function:
-
+The first heuristic function we will implement is calculating the sum of distances between movable pieces and their destination cells.
 ### 4. Implementation work already carried out 
 #### 4.1. Programming language
 
