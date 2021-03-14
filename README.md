@@ -22,15 +22,16 @@ MATCH TILES - SLIDING PUZZLE GAME FEATURES:
 
 ### 3. Formulation of the problem as a search problem
 #### 3.1. State Representation:
-The game state can be represented by a 4x4, 5x5 or 6x6 matrix, with characters representing free slots ("o"), obstacles("X"), and the colored final slots (EXEMPLIFICAR QUAIS CARACTERES REPRESENTAM OS SLOTS E AS PEÇAS MOVABLE)
+The game state can be represented by a 4x4, 5x5 or 6x6 matrix, with characters representing free slots ("."), obstacles("/"), the movable pieces (lower case letters), and the colored final slots (the respective upper case letters)
 #### 3.2. Initial State:
-The initial state will be generated randomly so that the game is not always the same. However, for explanation purposes we will assume a specific initial state. (EXEMPLIFICAR QUAL O ESTADO PARA NOSSO RELATORIO)
-  1 | 2 | 3 | 4
+The initial state will be generated randomly so that the game is not always the same. However, for explanation purposes we will assume a specific initial state. 
+The state in the table below represents a 4x4 game that has 1 obstacle ("/" on (2,2)), 1 movable piece ("p" on (3,3)), and 1 destination spot ("P" on (1,4)). In this game, the player would have to move up and right, in any order, for the "p" to get to the same cell as "P", in order to win the game.
+  1   | 2   | 3   | 4
 | --- | --- | --- | --- |
-    | o | o | o 
-    | o | o | o 
-    | o | o | o 
-    | o | o | o 
+   .  |  .  |  .  |  P 
+   .  |  /  |  .  |  . 
+   .  |  .  |  p  |  . 
+   .  |  .  |  .  |  . 
 
 
 #### 3.3. Objective Test:
