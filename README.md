@@ -19,15 +19,22 @@ MATCH TILES - SLIDING PUZZLE GAME FEATURES:
 
 ### 2. Related work with references to works found in a bibliographic search (articles, web pages and/or source code)
 -  [The original game](https://play.google.com/store/apps/details?id=net.bohush.match.tiles.color.puzzle&hl=pt_PT&gl=US)
--  []()
 
 ### 3. Formulation of the problem as a search problem
 #### 3.1. State Representation:
-The game state can be represented by a matrix with characters representing free slots, obstacles, and the colored final slots (EXEMPLIFICAR QUAIS CARACTERES REPRESENTAM CADA COISA)
+The game state can be represented by a 4x4, 5x5 or 6x6 matrix, with characters representing free slots ("o"), obstacles("X"), and the colored final slots (EXEMPLIFICAR QUAIS CARACTERES REPRESENTAM OS SLOTS E AS PEÇAS MOVABLE)
 #### 3.2. Initial State:
 The initial state will be generated randomly so that the game is not always the same. However, for explanation purposes we will assume a specific initial state. (EXEMPLIFICAR QUAL O ESTADO PARA NOSSO RELATORIO)
+  1 | 2 | 3 | 4
+| --- | --- | --- | --- |
+    | o | o | o 
+    | o | o | o 
+    | o | o | o 
+    | o | o | o 
+
+
 #### 3.3. Objective Test:
-The objective test has to verify if all of the movable pieces are in their respective desired spots. (EXEMPLIFICAR MELHOR)
+The objective test has to verify if all of the movable pieces are in their respective desired spots. For example, if there is a blue and a pink moveable pieces, the objective test would verify whether they are, respectively, on the blue and on the pink fixed spots. (EXEMPLIFICAR MELHOR COM IMAGENS)
 #### 3.4. Operators (names, preconditions, effects and costs):
 (MELHORAR PRECONDITIONS?)  
 Operator |    Preconditions   |                     Effects                     | Cost
