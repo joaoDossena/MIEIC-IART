@@ -53,19 +53,27 @@ def execute_move(move, size, board, movable):
 
 def moveUp(board, movable):
     for piece in movable:
-        if (piece[1] - 1 >= 0 and "." == board[piece[1] - 1][piece[2]]): print("\nMoving Up\n")
+        if (piece[1] - 1 >= 0 and "." == board[piece[1] - 1][piece[2]]):
+            print("\nMoving Up\n")
+            # TODO actually move lul
 
 def moveLeft(board, movable):
     for piece in movable:
-        if (piece[2] - 1 >= 0 and "." == board[piece[1]][piece[2] - 1]): print("\nMoving Left\n")
+        if (piece[2] - 1 >= 0 and "." == board[piece[1]][piece[2] - 1]):
+            print("\nMoving Left\n")
+            # TODO actually move lul
 
 def moveRight(board, movable):
     for piece in movable:
-        if (piece[2] + 1 < len(board) and "." == board[piece[1]][piece[2] + 1]): print("\nMoving Right\n")
+        if (piece[2] + 1 < len(board) and "." == board[piece[1]][piece[2] + 1]):
+            print("\nMoving Right\n")
+            # TODO actually move lul
 
 def moveDown(board, movable):
     for piece in movable:
-        if (piece[1] + 1 < len(board) and "." == board[piece[1] + 1][piece[2]]): print("\nMoving Down\n")
+        if (piece[1] + 1 < len(board) and "." == board[piece[1] + 1][piece[2]]):
+            print("\nMoving Down\n")
+            # TODO actually move lul
     
 
 
