@@ -35,28 +35,70 @@ def print_board(size, board):
 
 def read_move():
     move = input("Execute your move: ")
-    if(move not in ["w", "a", "s", "d", "W", "A", "S", "D"]):
+    move.lower()
+    if(move not in ["w", "a", "s", "d"]):
         print("Illegal move!")
         return
-    execute_move(move)
+    return move
+
+def execute_move(move, size, board, movable):
+    
+    if (move == "w"): moveUp(board, movable)
+    elif (move == "a"): moveLeft(board, movable)
+    elif (move == "s"): moveDown(board, movable)
+    elif (move == "d"): moveRight(board, movable)
+
     return
 
-def execute_move(move):
-    return
 
-def check_end(board):
-    return
+def moveUp(board, movable):
+    for piece in movable:
+        if (piece[1] - 1 >= 0 and "." == board[piece[1] - 1][piece[2]]): print("\nMoving Up\n")
 
-def game_loop(size, board):
+def moveLeft(board, movable):
+    for piece in movable:
+        if (piece[2] - 1 >= 0 and "." == board[piece[1]][piece[2] - 1]): print("\nMoving Left\n")
+
+def moveRight(board, movable):
+    for piece in movable:
+        if (piece[2] + 1 < len(board) and "." == board[piece[1]][piece[2] + 1]): print("\nMoving Right\n")
+
+def moveDown(board, movable):
+    for piece in movable:
+        if (piece[1] + 1 < len(board) and "." == board[piece[1] + 1][piece[2]]): print("\nMoving Down\n")
+    
+
+
+
+# btw... tá a funcionar
+# Checks if every movable piece has reached its destination
+def check_end(movable, destination):
+
+    for i in range(len(movable)):
+        # accesses tuple on same pos of movable and destination arrays and compares x and y coords
+        if (movable[i][1] != destination[i][1] or movable[i][2] != destination[i][2]):
+            return False
+    return True
+
+def game_loop(size, board, movable, destination):
     while(True):
         print_board(size, board)
-        read_move()
-        if(check_end(board)):
+        move = read_move()
+        execute_move(move, size, board, movable)
+        if(check_end(movable, destination)):
             return
 
 def main(size):
     (board, movable, destination) = gen_array(size)
-    game_loop(size, board)
+    game_loop(size, board, movable, destination)
     return
 
 main(5)
+
+
+
+# x = 2
+# y = 4
+# x1 = 2
+# y1 = 4
+# print(check_end([("p", x, y)], [("P", x1, y1)]))
