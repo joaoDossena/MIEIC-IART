@@ -47,8 +47,7 @@ def game_loop(size, board):
     while(True):
         print_board(size, board)
         read_move()
-        execute_move()
-        if(check_end()):
+        if(check_end(board)):
             return
 
 def main(size):
