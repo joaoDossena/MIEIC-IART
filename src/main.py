@@ -17,8 +17,12 @@ def gen_array(size):
     while(x1 == x and y1 == y):
         (x1, y1) = gen_random_piece(size)
     array[x1][y1] = "P"
+
+    movable = [("p", x, y)]
+
+    destination = [("P", x1, y1)]
     
-    return array
+    return (array, movable, destination)
 
 
 def print_board(size, board):
@@ -51,7 +55,7 @@ def game_loop(size, board):
             return
 
 def main(size):
-    board = gen_array(size)
+    (board, movable, destination) = gen_array(size)
     game_loop(size, board)
     return
 
