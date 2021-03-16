@@ -31,6 +31,9 @@ def print_board(size, board):
 
 def read_move():
     move = input("Execute your move: ")
+    if(move not in ["w", "a", "s", "d", "W", "A", "S", "D"]):
+        print("Illegal move!")
+        return
     execute_move(move)
     return
 
