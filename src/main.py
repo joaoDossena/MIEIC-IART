@@ -51,29 +51,86 @@ def execute_move(move, size, board, movable):
     return
 
 
+# Get the most left/right/down/up position (max "slide")
+
+
+
 def moveUp(board, movable):
-    for piece in movable:
-        if (piece[1] - 1 >= 0 and "." == board[piece[1] - 1][piece[2]]):
+
+    for i in range(len(movable)):
+        cur_col = movable[i][2]
+        cur_row = movable[i][1]
+        up_row = cur_row - 1
+        # print('{} {}'.format(cur_row, cur_col))
+
+        if (up_row >= 0 and "." == board[up_row][movable[i][2]]):
             print("\nMoving Up\n")
-            # TODO actually move lul
-
-def moveLeft(board, movable):
-    for piece in movable:
-        if (piece[2] - 1 >= 0 and "." == board[piece[1]][piece[2] - 1]):
-            print("\nMoving Left\n")
-            # TODO actually move lul
-
-def moveRight(board, movable):
-    for piece in movable:
-        if (piece[2] + 1 < len(board) and "." == board[piece[1]][piece[2] + 1]):
-            print("\nMoving Right\n")
-            # TODO actually move lul
+    
+            board[cur_row][cur_col] = "."
+            board[up_row][cur_col] = "p"
+            
+            lst = list(movable[i])
+            lst[1] = up_row
+            movable[i] = tuple(lst)
+            # print(movable)
 
 def moveDown(board, movable):
-    for piece in movable:
-        if (piece[1] + 1 < len(board) and "." == board[piece[1] + 1][piece[2]]):
+
+    for i in range(len(movable)):
+        cur_col = movable[i][2]
+        cur_row = movable[i][1]
+        down_row = cur_row + 1
+
+        if (down_row < len(board) and "." == board[down_row][movable[i][2]]):
             print("\nMoving Down\n")
-            # TODO actually move lul
+            
+            board[cur_row][cur_col] = "."
+            board[down_row][cur_col] = "p"
+            
+            lst = list(movable[i])
+            lst[1] = down_row
+            movable[i] = tuple(lst)
+            
+
+
+
+def moveLeft(board, movable):
+
+    for i in range(len(movable)):
+        cur_col = movable[i][2]
+        cur_row = movable[i][1]
+        left_col = cur_col - 1
+
+        if (left_col >= 0 and "." == board[movable[i][1]][left_col]):
+            print("\nMoving Left\n")
+
+            board[cur_row][cur_col] = "."
+            board[cur_row][left_col] = "p"
+
+
+            lst = list(movable[i])
+            lst[2] = left_col
+            movable[i] = tuple(lst)
+            
+
+
+def moveRight(board, movable):
+
+    for i in range(len(movable)):
+        cur_col = movable[i][2]
+        cur_row = movable[i][1]
+        right_col = cur_col + 1
+
+        if (right_col < len(board) and "." == board[movable[i][1]][right_col]):
+            print("\nMoving Right\n")
+
+            board[cur_row][cur_col] = "."
+            board[cur_row][right_col] = "p"
+
+            lst = list(movable[i])
+            lst[2] = right_col
+            movable[i] = tuple(lst)
+
     
 
 
