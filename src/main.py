@@ -1,4 +1,8 @@
+# import other files
+import utils
+
 import random
+
 def gen_random_piece(size):
     y = random.randint(0,size-1)
     x = random.randint(0,size-1)
@@ -60,36 +64,39 @@ def moveUp(board, movable):
     for i in range(len(movable)):
         cur_col = movable[i][2]
         cur_row = movable[i][1]
-        up_row = cur_row - 1
-        # print('{} {}'.format(cur_row, cur_col))
 
-        if (up_row >= 0 and "." == board[up_row][movable[i][2]]):
-            print("\nMoving Up\n")
+        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
+        
+        if (newRow == cur_row and newCol == cur_col): return
+       
+        print("\nMoving Up\n")
     
-            board[cur_row][cur_col] = "."
-            board[up_row][cur_col] = "p"
+        board[cur_row][cur_col] = "."
+        board[newRow][newCol] = "p"
             
-            lst = list(movable[i])
-            lst[1] = up_row
-            movable[i] = tuple(lst)
-            # print(movable)
+        lst = list(movable[i])
+        lst[1] = newRow
+        movable[i] = tuple(lst)
+        # print(movable)
 
 def moveDown(board, movable):
 
     for i in range(len(movable)):
         cur_col = movable[i][2]
         cur_row = movable[i][1]
-        down_row = cur_row + 1
 
-        if (down_row < len(board) and "." == board[down_row][movable[i][2]]):
-            print("\nMoving Down\n")
+        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
+
+        if (newRow == cur_row and newCol == cur_col): return
+
+        print("\nMoving Down\n")
             
-            board[cur_row][cur_col] = "."
-            board[down_row][cur_col] = "p"
+        board[cur_row][cur_col] = "."
+        board[newRow][newCol] = "p"
             
-            lst = list(movable[i])
-            lst[1] = down_row
-            movable[i] = tuple(lst)
+        lst = list(movable[i])
+        lst[1] = newRow
+        movable[i] = tuple(lst)
             
 
 
@@ -99,18 +106,19 @@ def moveLeft(board, movable):
     for i in range(len(movable)):
         cur_col = movable[i][2]
         cur_row = movable[i][1]
-        left_col = cur_col - 1
 
-        if (left_col >= 0 and "." == board[movable[i][1]][left_col]):
-            print("\nMoving Left\n")
+        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
 
-            board[cur_row][cur_col] = "."
-            board[cur_row][left_col] = "p"
+        if (newRow == cur_row and newCol == cur_col): return
 
-
-            lst = list(movable[i])
-            lst[2] = left_col
-            movable[i] = tuple(lst)
+        print("\nMoving Left\n")
+            
+        board[cur_row][cur_col] = "."
+        board[newRow][newCol] = "p"
+            
+        lst = list(movable[i])
+        lst[2] = newCol
+        movable[i] = tuple(lst)
             
 
 
@@ -119,17 +127,19 @@ def moveRight(board, movable):
     for i in range(len(movable)):
         cur_col = movable[i][2]
         cur_row = movable[i][1]
-        right_col = cur_col + 1
 
-        if (right_col < len(board) and "." == board[movable[i][1]][right_col]):
-            print("\nMoving Right\n")
+        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
 
-            board[cur_row][cur_col] = "."
-            board[cur_row][right_col] = "p"
+        if (newRow == cur_row and newCol == cur_col): return
 
-            lst = list(movable[i])
-            lst[2] = right_col
-            movable[i] = tuple(lst)
+        print("\nMoving Right\n")
+            
+        board[cur_row][cur_col] = "."
+        board[newRow][newCol] = "p"
+            
+        lst = list(movable[i])
+        lst[2] = newCol
+        movable[i] = tuple(lst)
 
     
 

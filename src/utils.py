@@ -15,7 +15,8 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
                 newCol += colMov
         else:
             break      
-
+    
+    # print("Returning: {} {}".format(newRow, newCol))
     return [newRow, newCol]
 
 
