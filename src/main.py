@@ -1,5 +1,6 @@
 # import other files
 import utils
+import movablePiece
 
 import random
 
@@ -22,9 +23,14 @@ def gen_array(size):
         (x1, y1) = gen_random_piece(size)
     array[x1][y1] = "P"
 
-    movable = [("p", x, y)]
 
-    destination = [("P", x1, y1)]
+    movable = [movablePiece.movablePiece("p", x, y)]
+
+    # print(movable[0].col)
+
+    destination = [movablePiece.destinationPiece("P", x1, y1)]
+
+    # print(destination[0].col)
     
     return (array, movable, destination)
 
@@ -62,8 +68,8 @@ def execute_move(move, size, board, movable):
 def moveUp(board, movable):
 
     for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
+        cur_col = movable[i].col
+        cur_row = movable[i].row
 
         [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
         
@@ -74,16 +80,13 @@ def moveUp(board, movable):
         board[cur_row][cur_col] = "."
         board[newRow][newCol] = "p"
             
-        lst = list(movable[i])
-        lst[1] = newRow
-        movable[i] = tuple(lst)
-        # print(movable)
+        movable[i].row = newRow
 
 def moveDown(board, movable):
 
     for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
+        cur_col = movable[i].col
+        cur_row = movable[i].row
 
         [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
 
@@ -94,9 +97,7 @@ def moveDown(board, movable):
         board[cur_row][cur_col] = "."
         board[newRow][newCol] = "p"
             
-        lst = list(movable[i])
-        lst[1] = newRow
-        movable[i] = tuple(lst)
+        movable[i].row = newRow
             
 
 
@@ -104,8 +105,8 @@ def moveDown(board, movable):
 def moveLeft(board, movable):
 
     for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
+        cur_col = movable[i].col
+        cur_row = movable[i].row
 
         [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
 
@@ -115,18 +116,19 @@ def moveLeft(board, movable):
             
         board[cur_row][cur_col] = "."
         board[newRow][newCol] = "p"
-            
-        lst = list(movable[i])
-        lst[2] = newCol
-        movable[i] = tuple(lst)
+        
+        movable[i].col = newCol
+        # lst = list(movable[i])
+        # lst[2] = newCol
+        # movable[i] = tuple(lst)
             
 
 
 def moveRight(board, movable):
 
     for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
+        cur_col = movable[i].col
+        cur_row = movable[i].row
 
         [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
 
@@ -137,11 +139,7 @@ def moveRight(board, movable):
         board[cur_row][cur_col] = "."
         board[newRow][newCol] = "p"
             
-        lst = list(movable[i])
-        lst[2] = newCol
-        movable[i] = tuple(lst)
-
-    
+        movable[i].col = newCol
 
 
 
@@ -151,7 +149,7 @@ def check_end(movable, destination):
 
     for i in range(len(movable)):
         # accesses tuple on same pos of movable and destination arrays and compares x and y coords
-        if (movable[i][1] != destination[i][1] or movable[i][2] != destination[i][2]):
+        if (movable[i].row != destination[i].row or movable[i].col != destination[i].col):
             return False
     return True
 
@@ -176,4 +174,4 @@ main(5)
 # y = 4
 # x1 = 2
 # y1 = 4
-# print(check_end([("p", x, y)], [("P", x1, y1)]))
+# print(check_end([movablePiece.movablePiece("p", x, y)], [movablePiece.destinationPiece("P", x1, y1)]))

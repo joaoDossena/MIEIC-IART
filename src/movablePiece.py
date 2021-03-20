@@ -15,3 +15,10 @@ class movablePiece:
 # print("{} {}".format(p.row, p.col))
 # p.updatePos(5, 4)
 # print("{} {}".format(p.row, p.col))
+
+class destinationPiece:
+
+    def __init__(self, symbol, row, col):
+        self.symbol = symbol
+        self.row = row
+        self.col = col
