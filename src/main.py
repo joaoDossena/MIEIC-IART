@@ -52,94 +52,71 @@ def read_move():
     return move
 
 def execute_move(move, size, board, movable):
+
+    for i in range(len(movable)):
+        cur_col = movable[i].col
+        cur_row = movable[i].row
     
-    if (move == "w"): moveUp(board, movable)
-    elif (move == "a"): moveLeft(board, movable)
-    elif (move == "s"): moveDown(board, movable)
-    elif (move == "d"): moveRight(board, movable)
+        if (move == "w"):
+            newCoords = moveUp(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].row = newCoords[0]
+
+        elif (move == "a"):
+            newCoords = moveLeft(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].col = newCoords[1]
+            
+        elif (move == "s"):
+            newCoords = moveDown(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].row = newCoords[0]
+
+        elif (move == "d"):
+            newCoords = moveRight(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].col = newCoords[1]
+
+        board[cur_row][cur_col] = "."
+        board[newCoords[0]][newCoords[1]] = "p"
 
     return
 
 
-# Get the most left/right/down/up position (max "slide")
-
-
-
-def moveUp(board, movable):
-
-    for i in range(len(movable)):
-        cur_col = movable[i].col
-        cur_row = movable[i].row
-
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
-        
-        if (newRow == cur_row and newCol == cur_col): return
+def moveUp(board, cur_row, cur_col):
+    # Get the most "up" position (max "slide")
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("\nMoving Up\n")
+    return [newRow, newCol]
        
-        print("\nMoving Up\n")
-    
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-            
-        movable[i].row = newRow
 
-def moveDown(board, movable):
+def moveDown(board, cur_row, cur_col):
 
-    for i in range(len(movable)):
-        cur_col = movable[i].col
-        cur_row = movable[i].row
-
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
-
-        if (newRow == cur_row and newCol == cur_col): return
-
-        print("\nMoving Down\n")
-            
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-            
-        movable[i].row = newRow
-            
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("\nMoving Down\n")      
+    return [newRow, newCol]
 
 
+def moveLeft(board, cur_row, cur_col):
 
-def moveLeft(board, movable):
-
-    for i in range(len(movable)):
-        cur_col = movable[i].col
-        cur_row = movable[i].row
-
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
-
-        if (newRow == cur_row and newCol == cur_col): return
-
-        print("\nMoving Left\n")
-            
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-        
-        movable[i].col = newCol
-        # lst = list(movable[i])
-        # lst[2] = newCol
-        # movable[i] = tuple(lst)
-            
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("\nMoving Left\n")   
+    return [newRow, newCol]
 
 
-def moveRight(board, movable):
+def moveRight(board, cur_row, cur_col):
 
-    for i in range(len(movable)):
-        cur_col = movable[i].col
-        cur_row = movable[i].row
-
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
-
-        if (newRow == cur_row and newCol == cur_col): return
-
-        print("\nMoving Right\n")
-            
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-            
-        movable[i].col = newCol
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("\nMoving Right\n")       
+    return [newRow, newCol]
 
 
 
