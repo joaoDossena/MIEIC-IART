@@ -6,16 +6,12 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
     newCol = curCol
 
     while (True):
-        print("{} {}".format(newRow, newCol))
+
         if (newRow + rowMov >= 0 and newRow + rowMov < len(board) and newCol + colMov >= 0 and newCol + colMov < len(board)):
-            print("Inside First If\n")
+
             if (board[newRow + rowMov][newCol + colMov] != "." and board[newRow + rowMov][newCol + colMov] != "P" and board[newRow + rowMov][newCol + colMov] != "p"):
-                print("Inside Second If {} {}\n".format(newRow, newCol))
                 break # se o mov for para uma casa que não vazia
             else: # else muda para lá a pos atual
-                # print("\n")
-                # print(board[newRow + rowMov][curCol + colMov])
-                # print(board[newRow + rowMov][newCol + colMov])
                 newRow += rowMov
                 newCol += colMov
         else:
