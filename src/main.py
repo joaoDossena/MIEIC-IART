@@ -1,6 +1,7 @@
 # import other files
 import utils
 import movablePiece
+import ai
 
 import random
 
@@ -138,7 +139,7 @@ def check_end(movable, destination):
     print("Level Completed!\n")
     return True
 
-def game_loop(size, board, movable, destination):
+def game_loop_human(size, board, movable, destination):
     while(True):
         print_board(size, board)
         move = read_move()
@@ -161,7 +162,9 @@ def main(size):
         [".", ".", "/", "/", "."],
     ]
 
-    game_loop(size, board, movable, destination)
+    ai = ai()
+
+    game_loop_human(size, board, movable, destination)
     return
 
 main(5)
