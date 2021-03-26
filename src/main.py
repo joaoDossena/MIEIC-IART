@@ -148,6 +148,14 @@ def game_loop_human(size, board, movable, destination):
         if(check_end(movable, destination)):
             return
 
+def game_loop_ai(size, board, movable, destination, bot):
+    while(True):
+        print_board(size, board)
+        move = bot.choose_move()
+        execute_move(move, size, board, movable)
+        if(check_end(movable, destination)):
+            return
+
 def main(size):
     (board, movable, destination) = gen_array(size)
 
