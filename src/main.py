@@ -1,5 +1,6 @@
 # import other files
 import utils
+import movablePiece
 
 import random
 
@@ -13,7 +14,11 @@ def gen_array(size):
     for i in range(0, size):
         sub_array = []
         for k in range(0, size):
-            sub_array.append(".")
+
+            if (random.randint(0,size-1) % (size-1) == 0):
+                sub_array.append("/")
+            else:
+                sub_array.append(".")
         array.append(sub_array)
     (x, y) = gen_random_piece(size)
     array[x][y] = "p"
@@ -22,9 +27,14 @@ def gen_array(size):
         (x1, y1) = gen_random_piece(size)
     array[x1][y1] = "P"
 
-    movable = [("p", x, y)]
 
-    destination = [("P", x1, y1)]
+    movable = [movablePiece.movablePiece("p", x, y)]
+
+    # print(movable[0].col)
+
+    destination = [movablePiece.destinationPiece("P", x1, y1)]
+
+    # print(destination[0].col)
     
     return (array, movable, destination)
 
@@ -42,106 +52,77 @@ def read_move():
     move.lower()
     if(move not in ["w", "a", "s", "d"]):
         print("Illegal move!")
-        return
+        return -1
     return move
 
 def execute_move(move, size, board, movable):
+
+    for i in range(len(movable)):
+        cur_col = movable[i].col
+        cur_row = movable[i].row
     
-    if (move == "w"): moveUp(board, movable)
-    elif (move == "a"): moveLeft(board, movable)
-    elif (move == "s"): moveDown(board, movable)
-    elif (move == "d"): moveRight(board, movable)
+        if (move == "w"):
+            newCoords = moveUp(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].row = newCoords[0]
+
+        elif (move == "a"):
+            newCoords = moveLeft(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].col = newCoords[1]
+            
+        elif (move == "s"):
+            newCoords = moveDown(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].row = newCoords[0]
+
+        elif (move == "d"):
+            newCoords = moveRight(board, cur_row, cur_col)
+
+            if (len(newCoords) == 0): continue
+            else: movable[i].col = newCoords[1]
+
+        board[cur_row][cur_col] = "."
+        board[newCoords[0]][newCoords[1]] = "p"
 
     return
 
 
-# Get the most left/right/down/up position (max "slide")
-
-
-
-def moveUp(board, movable):
-
-    for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
-
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
-        
-        if (newRow == cur_row and newCol == cur_col): return
+def moveUp(board, cur_row, cur_col):
+    # Get the most "up" position (max "slide")
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("Moving Up")
+    return [newRow, newCol]
        
-        print("\nMoving Up\n")
-    
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-            
-        lst = list(movable[i])
-        lst[1] = newRow
-        movable[i] = tuple(lst)
-        # print(movable)
 
-def moveDown(board, movable):
+def moveDown(board, cur_row, cur_col):
 
-    for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
-
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
-
-        if (newRow == cur_row and newCol == cur_col): return
-
-        print("\nMoving Down\n")
-            
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-            
-        lst = list(movable[i])
-        lst[1] = newRow
-        movable[i] = tuple(lst)
-            
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("Moving Down")      
+    return [newRow, newCol]
 
 
 
-def moveLeft(board, movable):
+def moveLeft(board, cur_row, cur_col):
 
-    for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
-
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
-
-        if (newRow == cur_row and newCol == cur_col): return
-
-        print("\nMoving Left\n")
-            
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-            
-        lst = list(movable[i])
-        lst[2] = newCol
-        movable[i] = tuple(lst)
-            
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("Moving Left")   
+    return [newRow, newCol]
 
 
-def moveRight(board, movable):
 
-    for i in range(len(movable)):
-        cur_col = movable[i][2]
-        cur_row = movable[i][1]
+def moveRight(board, cur_row, cur_col):
 
-        [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
-
-        if (newRow == cur_row and newCol == cur_col): return
-
-        print("\nMoving Right\n")
-            
-        board[cur_row][cur_col] = "."
-        board[newRow][newCol] = "p"
-            
-        lst = list(movable[i])
-        lst[2] = newCol
-        movable[i] = tuple(lst)
-
-    
+    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
+    if (newRow == cur_row and newCol == cur_col): return []
+    print("Moving Right")
+    return [newRow, newCol]
 
 
 
@@ -151,20 +132,35 @@ def check_end(movable, destination):
 
     for i in range(len(movable)):
         # accesses tuple on same pos of movable and destination arrays and compares x and y coords
-        if (movable[i][1] != destination[i][1] or movable[i][2] != destination[i][2]):
+        if (movable[i].row != destination[i].row or movable[i].col != destination[i].col):
             return False
+        
+    print("Level Completed!\n")
     return True
 
 def game_loop(size, board, movable, destination):
     while(True):
         print_board(size, board)
         move = read_move()
+        if (move == -1): continue
         execute_move(move, size, board, movable)
         if(check_end(movable, destination)):
             return
 
 def main(size):
     (board, movable, destination) = gen_array(size)
+
+    movable = [movablePiece.movablePiece("p", 1, 0)]
+    destination = [movablePiece.destinationPiece("P", 2, 3)]
+
+    board = [
+        [".", ".", ".", "/", "/"],
+        ["p", ".", ".", ".", "/"],
+        ["/", ".", ".", "P", "."],
+        [".", ".", "/", "/", "."],
+        [".", ".", "/", "/", "."],
+    ]
+
     game_loop(size, board, movable, destination)
     return
 
@@ -176,4 +172,4 @@ main(5)
 # y = 4
 # x1 = 2
 # y1 = 4
-# print(check_end([("p", x, y)], [("P", x1, y1)]))
+# print(check_end([movablePiece.movablePiece("p", x, y)], [movablePiece.destinationPiece("P", x1, y1)]))
