@@ -162,7 +162,7 @@ def main(size):
         [".", ".", "/", "/", "."],
     ]
 
-    ai = ai.ai()
+    bot = ai.ai()
 
     game_loop_human(size, board, movable, destination)
     return

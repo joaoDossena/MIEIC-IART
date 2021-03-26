@@ -1,8 +1,5 @@
 class ai:
 
-	def __init__():
-		self.last_move = ""
-
 	def eval(board, movable, destination):
 		return 0
 
