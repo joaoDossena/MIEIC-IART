@@ -2,6 +2,7 @@
 import utils
 import pieces
 import ai
+import time
 
 import random
 
@@ -56,6 +57,7 @@ def read_move():
         return -1
     return move
 
+    
 def execute_move(move, size, board, movable):
 
     for i in range(len(movable)):
@@ -91,20 +93,46 @@ def execute_move(move, size, board, movable):
 
     return
 
+def valid_move(move, movable, board):
+    for i in range(len(movable)):
+        cur_col = movable[i].col
+        cur_row = movable[i].row
+    
+        if (move == "w"):
+            newCoords = moveUp(board, cur_row, cur_col)
+            if (newCoords == [cur_row, cur_col]): 
+                return False
+
+        elif (move == "a"):
+            newCoords = moveLeft(board, cur_row, cur_col)
+            if (newCoords == [cur_row, cur_col]): 
+                return False
+            
+        elif (move == "s"):
+            newCoords = moveDown(board, cur_row, cur_col)
+            if (newCoords == [cur_row, cur_col]): 
+                return False
+
+        elif (move == "d"):
+            newCoords = moveRight(board, cur_row, cur_col)
+            if (newCoords == [cur_row, cur_col]): 
+                return False
+        return True
+
 
 def moveUp(board, cur_row, cur_col):
     # Get the most "up" position (max "slide")
     [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
-    if (newRow == cur_row and newCol == cur_col): return []
-    print("Moving Up")
+    # if (newRow == cur_row and newCol == cur_col): return []
+    # print("Moving Up")
     return [newRow, newCol]
        
 
 def moveDown(board, cur_row, cur_col):
 
     [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
-    if (newRow == cur_row and newCol == cur_col): return []
-    print("Moving Down")      
+    # if (newRow == cur_row and newCol == cur_col): return []
+    # print("Moving Down")      
     return [newRow, newCol]
 
 
@@ -112,8 +140,8 @@ def moveDown(board, cur_row, cur_col):
 def moveLeft(board, cur_row, cur_col):
 
     [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
-    if (newRow == cur_row and newCol == cur_col): return []
-    print("Moving Left")   
+    # if (newRow == cur_row and newCol == cur_col): return []
+    # print("Moving Left")   
     return [newRow, newCol]
 
 
@@ -121,8 +149,8 @@ def moveLeft(board, cur_row, cur_col):
 def moveRight(board, cur_row, cur_col):
 
     [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
-    if (newRow == cur_row and newCol == cur_col): return []
-    print("Moving Right")
+    # if (newRow == cur_row and newCol == cur_col): return []
+    # print("Moving Right")
     return [newRow, newCol]
 
 
@@ -148,11 +176,18 @@ def game_loop_human(size, board, movable, destination):
         if(check_end(movable, destination)):
             return
 
-def game_loop_ai(size, board, movable, destination, bot):
+
+
+def game_loop_ai(size, board, movable, destination, bot, last_move):
     while(True):
+        time.sleep(0.5)
         print_board(size, board)
-        move = bot.choose_move()
-        execute_move(move, size, board, movable)
+        while(True):
+            move = bot.choose_move(last_move, board, movable, destination)
+            if(valid_move(move, movable, board)):
+                execute_move(move, size, board, movable)
+                last_move = move
+                break
         if(check_end(movable, destination)):
             return
 
@@ -170,9 +205,9 @@ def main(size):
         [".", ".", "/", "/", "."],
     ]
 
-    bot = ai.ai()
-
-    game_loop_human(size, board, movable, destination)
+    a_star_bot = ai.ai(1)
+    game_loop_ai(size, board, movable, destination, a_star_bot, "")
+    # game_loop_human(size, board, movable, destination)
     return
 
 main(5)
