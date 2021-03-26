@@ -28,16 +28,8 @@ def gen_array(size):
     while(x1 == x and y1 == y):
         (x1, y1) = gen_random_piece(size)
     array[x1][y1] = "P"
-
-
     movable = [pieces.movablePiece("p", x, y)]
-
-    # print(movable[0].col)
-
     destination = [pieces.destinationPiece("P", x1, y1)]
-
-    # print(destination[0].col)
-    
     return (array, movable, destination)
 
 
@@ -50,43 +42,35 @@ def print_board(size, board):
     return
 
 def read_move():
-    move = input("Execute your move: ")
-    move.lower()
-    if(move not in ["w", "a", "s", "d"]):
+    while(True):
+        move = input("Execute your move: ")
+        move.lower()
+        if(move in ["w", "a", "s", "d"]):
+            return move
         print("Illegal move!")
-        return -1
-    return move
+    
 
     
-def execute_move(move, size, board, movable):
-
+def execute_move(move, board, movable):
     for i in range(len(movable)):
         cur_col = movable[i].col
         cur_row = movable[i].row
     
         if (move == "w"):
             newCoords = moveUp(board, cur_row, cur_col)
-
-            if (len(newCoords) == 0): continue
-            else: movable[i].row = newCoords[0]
+            movable[i].row = newCoords[0]
 
         elif (move == "a"):
             newCoords = moveLeft(board, cur_row, cur_col)
-
-            if (len(newCoords) == 0): continue
-            else: movable[i].col = newCoords[1]
+            movable[i].col = newCoords[1]
             
         elif (move == "s"):
             newCoords = moveDown(board, cur_row, cur_col)
-
-            if (len(newCoords) == 0): continue
-            else: movable[i].row = newCoords[0]
+            movable[i].row = newCoords[0]
 
         elif (move == "d"):
             newCoords = moveRight(board, cur_row, cur_col)
-
-            if (len(newCoords) == 0): continue
-            else: movable[i].col = newCoords[1]
+            movable[i].col = newCoords[1]
 
         board[cur_row][cur_col] = "."
         board[newCoords[0]][newCoords[1]] = "p"
@@ -121,41 +105,18 @@ def valid_move(move, movable, board):
 
 
 def moveUp(board, cur_row, cur_col):
-    # Get the most "up" position (max "slide")
-    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
-    # if (newRow == cur_row and newCol == cur_col): return []
-    # print("Moving Up")
-    return [newRow, newCol]
-       
+    return utils.getNewPiecePosition(board, cur_row, cur_col, -1, 0)
 
 def moveDown(board, cur_row, cur_col):
-
-    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
-    # if (newRow == cur_row and newCol == cur_col): return []
-    # print("Moving Down")      
-    return [newRow, newCol]
-
-
+    return utils.getNewPiecePosition(board, cur_row, cur_col, 1, 0)
 
 def moveLeft(board, cur_row, cur_col):
-
-    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
-    # if (newRow == cur_row and newCol == cur_col): return []
-    # print("Moving Left")   
-    return [newRow, newCol]
-
-
+    return utils.getNewPiecePosition(board, cur_row, cur_col, 0, -1)
 
 def moveRight(board, cur_row, cur_col):
-
-    [newRow, newCol] = utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
-    # if (newRow == cur_row and newCol == cur_col): return []
-    # print("Moving Right")
-    return [newRow, newCol]
+    return utils.getNewPiecePosition(board, cur_row, cur_col, 0, 1)
 
 
-
-# btw... tá a funcionar
 # Checks if every movable piece has reached its destination
 def check_end(movable, destination):
 
@@ -170,22 +131,40 @@ def check_end(movable, destination):
 def game_loop_human(size, board, movable, destination):
     while(True):
         print_board(size, board)
-        move = read_move()
-        if (move == -1): continue
-        execute_move(move, size, board, movable)
+        while(True):
+            move = read_move()
+            if(valid_move(move, movable, board)):
+                execute_move(move, board, movable)
+                break
         if(check_end(movable, destination)):
             return
 
+def execute_string_move(string_of_moves, board, movable):
+    board_copy = board
+    movable_copy = movable
+    for c in string_of_moves:
+        print(c)
+        if(valid_move(c, movable_copy, board_copy)):
+            execute_move(c, board_copy, movable_copy)
+    return movable_copy
 
+def game_loop_ai(board, bot, movable, destination):
 
-def game_loop_ai(size, board, movable, destination, bot, last_move):
+    movable_copy = execute_string_move(bot.get_best_move(), board, movable)
+    if(check_end(movable_copy ,destination)):
+        return
+    
+    bot.choose_move(board, movable, destination)
+
+def game_loop_ai2(size, board, movable, destination, bot, last_move):
+
     while(True):
         time.sleep(0.5)
         print_board(size, board)
         while(True):
             move = bot.choose_move(last_move, board, movable, destination)
             if(valid_move(move, movable, board)):
-                execute_move(move, size, board, movable)
+                execute_move(move, board, movable)
                 last_move = move
                 break
         if(check_end(movable, destination)):
@@ -198,15 +177,15 @@ def main(size):
     destination = [pieces.destinationPiece("P", 2, 3)]
 
     board = [
-        [".", ".", ".", "/", "/"],
-        ["p", ".", ".", ".", "/"],
-        ["/", ".", ".", "P", "."],
-        [".", ".", "/", "/", "."],
-        [".", ".", "/", "/", "."],
+        [".", ".", ".", "=", "="],
+        ["p", ".", ".", ".", "="],
+        ["=", ".", ".", "P", "."],
+        [".", ".", "=", "=", "."],
+        [".", ".", "=", "=", "."],
     ]
 
-    a_star_bot = ai.ai(1)
-    game_loop_ai(size, board, movable, destination, a_star_bot, "")
+    bot = ai.ai(1)
+    game_loop_ai(board, bot, movable, destination)
     # game_loop_human(size, board, movable, destination)
     return
 

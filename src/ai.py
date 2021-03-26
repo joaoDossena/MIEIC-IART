@@ -5,27 +5,59 @@ class ai:
 	def __init__(self, num_pecas):
 		self.num_pecas = num_pecas
 		self.move_queue = []
-		heapq.heappush(self.move_queue, (0, 'w'))
-		heapq.heappush(self.move_queue, (0, 'd'))
-		heapq.heappush(self.move_queue, (0, 's'))
-    	heapq.heappush(self.move_queue, (0, 'a'))
+		heapq.heappush(self.move_queue, (0, "w"))
+		heapq.heappush(self.move_queue, (0, "s"))
+		heapq.heappush(self.move_queue, (0, "a"))
+		heapq.heappush(self.move_queue, (0, "d"))
+
 		
-	def eval(self, board, movable, destination):
+	def a_star(self, board, movable, destination):
+		cost = 1
+		for i in range(0, len(movable)):
+			cost += ((movable[i].row - destination[i].row)**2 + (movable[i].col - destination[i].col)**2)**1/2
+			
+		return cost
+
+	def no_heuristic(self):
+		return 1
+
+	
+	# best_move -> [0] -> value ; [1] -> string
+	def choose_move_horizontal(self, best_move):
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "s"))
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "w"))
+
+	def choose_move_vertical(self, best_move):
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "a"))
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "d"))
+
+	def choose_move(self, board, movable, destination):
+		best_move = heapq.heappop(self.move_queue)
 		
-		return 0
+		if(best_move[1][-1] in ["w", "s"]):
+			self.choose_move_horizontal(best_move)
+			
+		elif(best_move[1][-1] in ["a", "d"]):
+			self.choose_move_vertical(best_move)
 
-	def choose_move_horizontal(self, past_moves):
-		heapq.heappush(self.move_queue, (past_moves[0] + 1, past_moves[1] + "s"))
-		heapq.heappush(self.move_queue, (past_moves[0] + 1, past_moves[1] + "w"))
+		return
 
-	def choose_move_vertical(self, past_moves, board, movable, destination):
-		heapq.heappush(self.move_queue, (past_moves[0] + 1, past_moves[1] + "a"))
-		heapq.heappush(self.move_queue, (past_moves[0] + 1, past_moves[1] + "d"))
 
-	def choose_move(self, past_moves, board, movable, destination):
-		if(past_moves[1][-1] in ["w", "s"]):
-			move = self.choose_move_horizontal(past_moves, board, movable, destination)
-		elif(past_moves[1][-1] in ["a", "d"]):
-			move = self.choose_move_vertical(past_moves, board, movable, destination)
-		return move
+	def get_best_move(self):
+		return self.move_queue[0][1]
 
+
+
+
+
+
+
+
+
+
+# if(best_move[1][-1] in ["w", "s"]):
+# 			return
+# 			#self.choose_move_horizontal(best_move, board, movable, destination)
+# 		elif(best_move[1][-1] in ["a", "d"]):
+# 			return
+# 			#self.choose_move_vertical(best_move, board, movable, destination)
