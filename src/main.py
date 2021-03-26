@@ -1,6 +1,6 @@
 # import other files
 import utils
-import movablePiece
+import pieces
 import ai
 
 import random
@@ -29,11 +29,11 @@ def gen_array(size):
     array[x1][y1] = "P"
 
 
-    movable = [movablePiece.movablePiece("p", x, y)]
+    movable = [pieces.movablePiece("p", x, y)]
 
     # print(movable[0].col)
 
-    destination = [movablePiece.destinationPiece("P", x1, y1)]
+    destination = [pieces.destinationPiece("P", x1, y1)]
 
     # print(destination[0].col)
     
@@ -151,8 +151,8 @@ def game_loop_human(size, board, movable, destination):
 def main(size):
     (board, movable, destination) = gen_array(size)
 
-    movable = [movablePiece.movablePiece("p", 1, 0)]
-    destination = [movablePiece.destinationPiece("P", 2, 3)]
+    movable = [pieces.movablePiece("p", 1, 0)]
+    destination = [pieces.destinationPiece("P", 2, 3)]
 
     board = [
         [".", ".", ".", "/", "/"],
@@ -162,7 +162,7 @@ def main(size):
         [".", ".", "/", "/", "."],
     ]
 
-    ai = ai()
+    ai = ai.ai()
 
     game_loop_human(size, board, movable, destination)
     return
@@ -175,4 +175,4 @@ main(5)
 # y = 4
 # x1 = 2
 # y1 = 4
-# print(check_end([movablePiece.movablePiece("p", x, y)], [movablePiece.destinationPiece("P", x1, y1)]))
+# print(check_end([pieces.movablePiece("p", x, y)], [pieces.destinationPiece("P", x1, y1)]))
