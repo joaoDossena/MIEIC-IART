@@ -25,11 +25,7 @@ class ai:
 	
 	# best_move -> [0] -> value ; [1] -> string
 	def choose_move_horizontal(self, best_move):
-
-		# if (check_left_move()):
 		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "a"))
-		
-		# if (check_right_move()):
 		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "d"))
 
 	def choose_move_vertical(self, best_move):

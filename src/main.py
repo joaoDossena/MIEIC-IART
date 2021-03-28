@@ -46,31 +46,6 @@ def read_move():
         print("Illegal move!")
     
 
-    
-# def execute_move(move, board, movable):
-#     for i in range(len(movable)):
-#         cur_col = movable[i].col
-#         cur_row = movable[i].row
-    
-#         if (move == "w"):
-#             newCoords = moveUp(board, cur_row, cur_col)
-#             movable[i].row = newCoords[0]
-
-#         elif (move == "a"):
-#             newCoords = moveLeft(board, cur_row, cur_col)
-#             movable[i].col = newCoords[1]
-            
-#         elif (move == "s"):
-#             newCoords = moveDown(board, cur_row, cur_col)
-#             movable[i].row = newCoords[0]
-
-#         elif (move == "d"):
-#             newCoords = moveRight(board, cur_row, cur_col)
-#             movable[i].col = newCoords[1]
-
-#         board[cur_row][cur_col] = "."
-#         board[newCoords[0]][newCoords[1]] = "p"
-
 #     return
 
 # def valid_move(move, movable, board):
@@ -103,8 +78,6 @@ def read_move():
 
 
 
-
-
 # def game_loop_human(size, board, movable, destination):
 #     while(True):
 #         draw.print_board(size, board)
@@ -116,36 +89,7 @@ def read_move():
 #         if(utils.check_end(movable, destination)):
 #             return
 
-# def execute_string_move(string_of_moves, board, movable):
-#     board_copy = board
-#     movable_copy = movable
-#     for c in string_of_moves:
-#         print(c)
-#         if(valid_move(c, movable_copy, board_copy)):
-#             execute_move(c, board_copy, movable_copy)
-#     return movable_copy
 
-# def game_loop_ai(board, bot, movable, destination):
-
-#     movable_copy = execute_string_move(bot.get_best_move(), board, movable)
-#     if(utils.check_end(movable_copy ,destination)):
-#         return
-    
-#     bot.choose_move(board, movable, destination)
-
-# def game_loop_ai2(size, board, movable, destination, bot, last_move):
-
-#     while(True):
-#         time.sleep(0.5)
-#         draw.print_board(size, board)
-#         while(True):
-#             move = bot.choose_move(last_move, board, movable, destination)
-#             if(valid_move(move, movable, board)):
-#                 execute_move(move, board, movable)
-#                 last_move = move
-#                 break
-#         if(utils.check_end(movable, destination)):
-#             return
 
 def game_loop_ai(board, movablePieces, destinationTiles, bot):
 
@@ -153,29 +97,25 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
 
     while(True):
         mutable_board = deepcopy(board)
-        mutable_pieces = deepcopy(movablePieces)        
-
-        # time.sleep(5)
-
-        print(bot.get_move_queue())
+        mutable_pieces = deepcopy(movablePieces)
 
         best_move_sequence = bot.get_best_move()
 
-        print("Best move sequence: {}".format(best_move_sequence))
+        draw_move_sequence = False
 
-        # prints move sequence
-        draw.draw_move_sequence(mutable_board, mutable_pieces, best_move_sequence)
+        # executes (and optionally draws) move sequence
+        utils.execute_move_sequence(mutable_board, mutable_pieces, best_move_sequence, draw_move_sequence)
 
         # checks if move results in solution
         if (utils.check_end(mutable_pieces, destinationTiles)):
             print("FOUND SOLUTION! LET'S GOO")
+            print("Move Sequence Found: {}".format(best_move_sequence))
             break
 
         # consume from queue current best move and add possible moves from it to the heap queue
         bot.choose_move(mutable_board, movablePieces, destinationTiles)
 
 
-        time.sleep(1.0)
         # print(bot.get_move_queue())
         print("\n")
 
