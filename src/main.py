@@ -153,12 +153,9 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
 
     while(True):
         mutable_board = deepcopy(board)
-        mutable_pieces = deepcopy(movablePieces)
-        mutable_dest = deepcopy(destinationTiles)
-        
+        mutable_pieces = deepcopy(movablePieces)        
 
         # time.sleep(5)
-
 
         print(bot.get_move_queue())
 
@@ -167,20 +164,20 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
         print("Best move sequence: {}".format(best_move_sequence))
 
         # prints move sequence
-        draw.draw_move_sequence(mutable_board, mutable_pieces, mutable_dest, best_move_sequence)
+        draw.draw_move_sequence(mutable_board, mutable_pieces, best_move_sequence)
 
-        # test if current best move conducts to solution
-        if (bot.test_bot_move(bot.get_best_move(), movablePieces, destinationTiles)):
-            print("")
+        # checks if move results in solution
+        if (utils.check_end(mutable_pieces, destinationTiles)):
+            print("FOUND SOLUTION! LET'S GOO")
+            break
 
         # consume from queue current best move and add possible moves from it to the heap queue
         bot.choose_move(mutable_board, movablePieces, destinationTiles)
 
 
         time.sleep(1.0)
-        print(bot.get_move_queue())
-        print("\n\n")
-        break
+        # print(bot.get_move_queue())
+        print("\n")
 
 
 
@@ -188,14 +185,14 @@ def main(size):
     # (board, movablePieces, destinationTiles) = gen_array(size)
 
     movablePieces = [pieces.movablePiece("p", 1, 0), pieces.movablePiece("p", 1, 2)]
-    destinationTiles = [pieces.destinationPiece("P", 2, 3)]
+    destinationTiles = [pieces.destinationPiece("P", 4, 1), pieces.destinationPiece("P", 2, 3)]
 
     board = [
         [".", ".", ".", "=", "="],
         ["p", ".", "p", ".", "="],
         ["=", ".", ".", "P", "."],
         [".", ".", "=", "=", "."],
-        [".", ".", "=", "=", "."],
+        [".", "P", "=", "=", "."],
     ]
 
     bot = ai.ai(1)

@@ -40,10 +40,10 @@ def check_end(movable, destination):
 
     for i in range(len(movable)):
         # accesses tuple on same pos of movable and destination arrays and compares x and y coords
+        # print("Piece number {} Row: {} Col: {} Dest Row: {} Dest Col: {}".format(i, movable[i].row, destination[i].row, movable[i].col, destination[i].col))
         if (movable[i].row != destination[i].row or movable[i].col != destination[i].col):
             return False
-        
-    print("Level Completed!\n")
+
     return True
 
 

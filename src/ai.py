@@ -5,9 +5,10 @@ class ai:
 	def __init__(self, num_pecas):
 		self.num_pecas = num_pecas
 		self.move_queue = []
+		# heapq.heappush(self.move_queue, (0, "ds")) # <-- for testing
 		heapq.heappush(self.move_queue, (0, "w"))
 		heapq.heappush(self.move_queue, (0, "s"))
-		# heapq.heappush(self.move_queue, (0, "a"))
+		heapq.heappush(self.move_queue, (0, "a"))
 		heapq.heappush(self.move_queue, (0, "d"))
 
 		
@@ -54,11 +55,8 @@ class ai:
 		return self.move_queue
 
 	
-	def test_bot_move(self, bot_best_move, movablePieces, destinationTiles):
-		row_offset = 0
-		col_offset = 0
-
-		print("In test_bot_move")
+	# def test_bot_move(self, mutable_pieces, destinationTiles):
+	# 	print("In test_bot_move")
 
 
 
