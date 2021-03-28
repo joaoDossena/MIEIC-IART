@@ -6,10 +6,10 @@ class ai:
 		self.num_pecas = num_pecas
 		self.move_queue = []
 		# heapq.heappush(self.move_queue, (0, "ds")) # <-- for testing
-		heapq.heappush(self.move_queue, (0, "w"))
-		heapq.heappush(self.move_queue, (0, "s"))
-		heapq.heappush(self.move_queue, (0, "a"))
-		heapq.heappush(self.move_queue, (0, "d"))
+		heapq.heappush(self.move_queue, (1, "w"))
+		heapq.heappush(self.move_queue, (1, "s"))
+		heapq.heappush(self.move_queue, (1, "a"))
+		heapq.heappush(self.move_queue, (1, "d"))
 
 		
 	def a_star(self, board, movable, destination):
@@ -46,6 +46,9 @@ class ai:
 
 	def get_best_move(self):
 		return self.move_queue[0][1]
+	
+	def get_best_number_of_moves(self):
+		return self.move_queue[0][0]
 
 	def get_move_queue(self):
 		return self.move_queue

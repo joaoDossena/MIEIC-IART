@@ -110,6 +110,7 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
         if (utils.check_end(mutable_pieces, destinationTiles)):
             print("FOUND SOLUTION! LET'S GOO")
             print("Move Sequence Found: {}".format(best_move_sequence))
+            print("Number of moves of sequence: {}".format(bot.get_best_number_of_moves()))
             break
 
         # consume from queue current best move and add possible moves from it to the heap queue
