@@ -11,7 +11,7 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
 
         if (newRow + rowMov >= 0 and newRow + rowMov < len(board) and newCol + colMov >= 0 and newCol + colMov < len(board)):
 
-            if (board[newRow + rowMov][newCol + colMov] != "." and board[newRow + rowMov][newCol + colMov] != "P"):
+            if (board[newRow + rowMov][newCol + colMov] != "." and board[newRow + rowMov][newCol + colMov] != "P" and board[newRow + rowMov][newCol + colMov] != "T"):
                 break # se o mov for para uma casa que não vazia
             else: # else muda para lá a pos atual
                 newRow += rowMov
@@ -85,7 +85,7 @@ def execute_move_sequence(mutable_board, movablePieces, move_sequence, draw_move
                 movablePieces[i].col = newCoords[1]
             
             mutable_board[cur_row][cur_col] = "."
-            mutable_board[newCoords[0]][newCoords[1]] = "p"
+            mutable_board[newCoords[0]][newCoords[1]] = movablePieces[i].symbol
         
         if (draw_move_sequence):
             print("-- After move --")

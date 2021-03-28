@@ -101,37 +101,45 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
 
         best_move_sequence = bot.get_best_move()
 
-        draw_move_sequence = False
+        draw_move_sequence = True
+
+        # for i in range(len(mutable_pieces)):
+        #     print("Row: {} Col: {} \n".format(mutable_pieces[i].row, mutable_pieces[i].col))
 
         # executes (and optionally draws) move sequence
         utils.execute_move_sequence(mutable_board, mutable_pieces, best_move_sequence, draw_move_sequence)
 
+        # for i in range(len(mutable_pieces)):
+        #     print("Row: {} Col: {} \n".format(mutable_pieces[i].row, mutable_pieces[i].col))
+
         # checks if move results in solution
         if (utils.check_end(mutable_pieces, destinationTiles)):
-            print("FOUND SOLUTION! LET'S GOO")
+            print("FOUND SOLUTION")
             print("Move Sequence Found: {}".format(best_move_sequence))
-            print("Number of moves of sequence: {}".format(bot.get_best_number_of_moves()))
+            print("Number of Moves: {}".format(len(best_move_sequence)))
             break
 
         # consume from queue current best move and add possible moves from it to the heap queue
         bot.choose_move(mutable_board, movablePieces, destinationTiles)
 
-
-        # print(bot.get_move_queue())
+        
+        print(bot.get_move_queue())
+        print("\n")
+        
 
 
 def main(size):
     # (board, movablePieces, destinationTiles) = gen_array(size)
 
-    movablePieces = [pieces.movablePiece("p", 1, 0), pieces.movablePiece("p", 1, 2)]
-    destinationTiles = [pieces.destinationPiece("P", 4, 1), pieces.destinationPiece("P", 2, 3)]
+    movablePieces = [pieces.movablePiece("p", 1, 0), pieces.movablePiece("t", 1, 2)]
+    destinationTiles = [pieces.destinationPiece("P", 4, 0), pieces.destinationPiece("T", 2, 1)]
 
     board = [
         [".", ".", ".", "=", "="],
-        ["p", ".", "p", ".", "="],
-        ["=", ".", ".", "P", "."],
+        ["p", ".", "t", ".", "="],
+        ["=", "T", ".", ".", "."],
         [".", ".", "=", "=", "."],
-        [".", "P", "=", "=", "."],
+        ["P", ".", "=", "=", "."],
     ]
 
     bot = ai.ai(1)
