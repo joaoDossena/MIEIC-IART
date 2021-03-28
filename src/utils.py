@@ -51,6 +51,31 @@ def check_end(pieces):
     return True
 
 
+# import pieces
+
+# piecesArray = [pieces.Piece("p", 1, 0, 4, 0), pieces.Piece("t", 1, 2, 2, 1)]
+
+# for i in range(len(piecesArray)):
+#     print("Row: {} Col: {}".format(piecesArray[i].movable_row, piecesArray[i].movable_col))
+
+# piecesArray.sort(key=lambda x: x.movable_col, reverse=True)
+
+# print("\n")
+
+# for i in range(len(piecesArray)):
+#     print("Row: {} Col: {}".format(piecesArray[i].movable_row, piecesArray[i].movable_col))
+
+
+def sort_pieces(pieces, move):
+    if (move == "w"):
+        pieces.sort(key=lambda x: x.movable_row, reverse=False)
+    elif (move == "s"):
+        pieces.sort(key=lambda x: x.movable_row, reverse=True)
+    elif (move == "a"):
+        pieces.sort(key=lambda x: x.movable_col, reverse=False)
+    elif (move == "d"):
+        pieces.sort(key=lambda x: x.movable_col, reverse=True)
+
 # Executes the move sequence string one character at a time, updating positions and optionally drawing board after every move
 def execute_move_sequence(mutable_board, pieces, move_sequence, draw_move_sequence):
 
@@ -60,7 +85,8 @@ def execute_move_sequence(mutable_board, pieces, move_sequence, draw_move_sequen
 
     for move in move_sequence:
 
-        # TODO need to sort pieces using coords
+        # sort pieces using coords
+        sort_pieces(pieces, move)
         # for example, p . p . = moved to the right should start with the most right "p"
         # moving to the right and only after move the most left "p" to the right 
         for i in range(len(pieces)): 
