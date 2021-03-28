@@ -45,37 +45,6 @@ def read_move():
         print("Illegal move!")
     
 
-#     return
-
-# def valid_move(move, movable, board):
-#     for i in range(len(movable)):
-#         cur_col = movable[i].col
-#         cur_row = movable[i].row
-    
-#         if (move == "w"):
-#             newCoords = moveUp(board, cur_row, cur_col)
-#             if (newCoords == [cur_row, cur_col]): 
-#                 return False
-
-#         elif (move == "a"):
-#             newCoords = moveLeft(board, cur_row, cur_col)
-#             if (newCoords == [cur_row, cur_col]): 
-#                 return False
-            
-#         elif (move == "s"):
-#             newCoords = moveDown(board, cur_row, cur_col)
-#             if (newCoords == [cur_row, cur_col]): 
-#                 return False
-
-#         elif (move == "d"):
-#             newCoords = moveRight(board, cur_row, cur_col)
-#             if (newCoords == [cur_row, cur_col]): 
-#                 return False
-#         return True
-
-
-
-
 
 # def game_loop_human(size, board, movable, destination):
 #     while(True):
