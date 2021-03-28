@@ -44,26 +44,10 @@ def check_end(pieces):
 
     for i in range(len(pieces)):
         # accesses tuple on same pos of movable and destination arrays and compares x and y coords
-        # print("Piece number {} Row: {} Col: {} Dest Row: {} Dest Col: {}".format(i, movable[i].row, destination[i].row, movable[i].col, destination[i].col))
         if (pieces[i].check_coords_inequality()):
             return False
 
     return True
-
-
-# import pieces
-
-# piecesArray = [pieces.Piece("p", 1, 0, 4, 0), pieces.Piece("t", 1, 2, 2, 1)]
-
-# for i in range(len(piecesArray)):
-#     print("Row: {} Col: {}".format(piecesArray[i].movable_row, piecesArray[i].movable_col))
-
-# piecesArray.sort(key=lambda x: x.movable_col, reverse=True)
-
-# print("\n")
-
-# for i in range(len(piecesArray)):
-#     print("Row: {} Col: {}".format(piecesArray[i].movable_row, piecesArray[i].movable_col))
 
 
 def sort_pieces(pieces, move):
@@ -116,18 +100,3 @@ def execute_move_sequence(mutable_board, pieces, move_sequence, draw_move_sequen
         if (draw_move_sequence):
             print("-- After move --")
             draw.print_board(len(mutable_board), mutable_board)
-
-
-
-# board = [
-#     [".", "/", "."],
-#     [".", ".", "."],
-#     [".", ".", "."]
-# ]
-
-# startRow = 2
-# startCol = 0
-
-# [endRow, endCol] = getNewPiecePosition(board, startRow, startCol, 0, 0)
-# print("Start Position: {} {}".format(startRow, startCol))
-# print("End   Position: {} {}".format(endRow, endCol))
