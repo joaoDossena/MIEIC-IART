@@ -40,19 +40,19 @@ def moveRight(board, cur_row, cur_col):
 
 
 # Checks if every movable piece has reached its destination
-def check_end(movable, destination):
+def check_end(pieces):
 
-    for i in range(len(movable)):
+    for i in range(len(pieces)):
         # accesses tuple on same pos of movable and destination arrays and compares x and y coords
         # print("Piece number {} Row: {} Col: {} Dest Row: {} Dest Col: {}".format(i, movable[i].row, destination[i].row, movable[i].col, destination[i].col))
-        if (movable[i].row != destination[i].row or movable[i].col != destination[i].col):
+        if (pieces[i].check_coords_inequality()):
             return False
 
     return True
 
 
 # Executes the move sequence string one character at a time, updating positions and optionally drawing board after every move
-def execute_move_sequence(mutable_board, movablePieces, move_sequence, draw_move_sequence):
+def execute_move_sequence(mutable_board, pieces, move_sequence, draw_move_sequence):
 
     if (draw_move_sequence):
         print("-- Initial Board --")
@@ -63,29 +63,29 @@ def execute_move_sequence(mutable_board, movablePieces, move_sequence, draw_move
         # TODO need to sort pieces using coords
         # for example, p . p . = moved to the right should start with the most right "p"
         # moving to the right and only after move the most left "p" to the right 
-        for i in range(len(movablePieces)): 
+        for i in range(len(pieces)): 
             
-            cur_row = movablePieces[i].row
-            cur_col = movablePieces[i].col
+            cur_row = pieces[i].movable_row
+            cur_col = pieces[i].movable_col
 
             if (move == "w"):
                 newCoords = moveUp(mutable_board, cur_row, cur_col)
-                movablePieces[i].row = newCoords[0]
+                pieces[i].movable_row = newCoords[0]
 
             elif (move == "s"):
                 newCoords = moveDown(mutable_board, cur_row, cur_col)
-                movablePieces[i].row = newCoords[0]
+                pieces[i].movable_row = newCoords[0]
 
             elif (move == "a"):
                 newCoords = moveLeft(mutable_board, cur_row, cur_col)
-                movablePieces[i].col = newCoords[1]
+                pieces[i].movable_col = newCoords[1]
 
             elif (move == "d"):
                 newCoords = moveRight(mutable_board, cur_row, cur_col)
-                movablePieces[i].col = newCoords[1]
+                pieces[i].movable_col = newCoords[1]
             
             mutable_board[cur_row][cur_col] = "."
-            mutable_board[newCoords[0]][newCoords[1]] = movablePieces[i].symbol
+            mutable_board[newCoords[0]][newCoords[1]] = pieces[i].movable_symbol
         
         if (draw_move_sequence):
             print("-- After move --")

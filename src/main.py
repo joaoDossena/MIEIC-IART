@@ -32,9 +32,8 @@ def gen_array(size):
     while(x1 == x and y1 == y):
         (x1, y1) = gen_random_piece(size)
     array[x1][y1] = "P"
-    movable = [pieces.movablePiece("p", x, y)]
-    destination = [pieces.destinationPiece("P", x1, y1)]
-    return (array, movable, destination)
+    movable = [pieces.Piece("p", x, y, x1, y1)]
+    return (array, movable)
 
 
 def read_move():
@@ -91,7 +90,7 @@ def read_move():
 
 
 
-def game_loop_ai(board, movablePieces, destinationTiles, bot):
+def game_loop_ai(board, movablePieces, bot):
 
     # draw.print_board(len(mutable_board), mutable_board)
 
@@ -113,14 +112,14 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
         #     print("Row: {} Col: {} \n".format(mutable_pieces[i].row, mutable_pieces[i].col))
 
         # checks if move results in solution
-        if (utils.check_end(mutable_pieces, destinationTiles)):
+        if (utils.check_end(mutable_pieces)):
             print("FOUND SOLUTION")
             print("Move Sequence Found: {}".format(best_move_sequence))
             print("Number of Moves: {}".format(len(best_move_sequence)))
             break
 
         # consume from queue current best move and add possible moves from it to the heap queue
-        bot.choose_move(mutable_board, movablePieces, destinationTiles)
+        bot.choose_move(mutable_board, mutable_pieces)
 
         
         print(bot.get_move_queue())
@@ -131,8 +130,7 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
 def main(size):
     # (board, movablePieces, destinationTiles) = gen_array(size)
 
-    movablePieces = [pieces.movablePiece("p", 1, 0), pieces.movablePiece("t", 1, 2)]
-    destinationTiles = [pieces.destinationPiece("P", 4, 0), pieces.destinationPiece("T", 2, 1)]
+    movablePieces = [pieces.Piece("p", 1, 0, 4, 0), pieces.Piece("t", 1, 2, 2, 1)]
 
     board = [
         [".", ".", ".", "=", "="],
@@ -143,7 +141,7 @@ def main(size):
     ]
 
     bot = ai.ai(1)
-    game_loop_ai(board, movablePieces, destinationTiles, bot)
+    game_loop_ai(board, movablePieces, bot)
 
     # game_loop_ai(board, bot, movable, destination)
     # game_loop_human(size, board, movable, destination)

@@ -1,24 +1,13 @@
-class movablePiece:
+class Piece:
 
-    def __init__(self, symbol, startingRow, startingCol):
-        self.symbol = symbol
-        self.row = startingRow
-        self.col = startingCol
+    def __init__(self, symbol, starting_row, starting_col, dest_row, dest_col):
+        self.movable_symbol = symbol
+        self.movable_row = starting_row
+        self.movable_col = starting_col
 
-    def updatePos(self, newRow, newCol):
-        self.row = newRow
-        self.col = newCol
-
-
-# # Testing
-# p = movablePiece(".", 1, 2)
-# print("{} {}".format(p.row, p.col))
-# p.updatePos(5, 4)
-# print("{} {}".format(p.row, p.col))
-
-class destinationPiece:
-
-    def __init__(self, symbol, row, col):
-        self.symbol = symbol
-        self.row = row
-        self.col = col
+        self.dest_symbol = symbol.upper()
+        self.dest_row = dest_row
+        self.dest_col = dest_col
+    
+    def check_coords_inequality(self):
+        return (self.movable_row != self.dest_row or self.movable_col != self.dest_col)

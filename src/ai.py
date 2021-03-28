@@ -12,13 +12,12 @@ class ai:
 		heapq.heappush(self.move_queue, (1, "d"))
 
 		
-	def a_star(self, movable, destination):
+	def a_star(self, pieces):
 		cost = 1
-		for i in range(0, len(movable)):
-			conta = ((movable[i].row - destination[i].row)**2 + (movable[i].col - destination[i].col)**2)**1/2
+		for i in range(0, len(pieces)):
+			cost += ((pieces[i].movable_row - pieces[i].dest_row)**2 + (pieces[i].movable_col - pieces[i].dest_col)**2)**1/2
 			# print("movable row: {} col: {} dest row: {} col: {}".format(movable[i].row, movable[i].col, destination[i].row, destination[i].col))
 
-			cost += conta
 			# print(cost)
 		
 		return cost
@@ -28,23 +27,23 @@ class ai:
 
 	
 	# best_move -> [0] -> value ; [1] -> string
-	def choose_move_horizontal(self, best_move, movable, destination):
-		heapq.heappush(self.move_queue, (best_move[0] + self.a_star(movable, destination), best_move[1] + "a"))
-		heapq.heappush(self.move_queue, (best_move[0] + self.a_star(movable, destination), best_move[1] + "d"))
+	def choose_move_horizontal(self, best_move, pieces):
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "a"))
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "d"))
 
-	def choose_move_vertical(self, best_move, movable, destination):
-		heapq.heappush(self.move_queue, (best_move[0] + self.a_star(movable, destination), best_move[1] + "w"))
-		heapq.heappush(self.move_queue, (best_move[0] + self.a_star(movable, destination), best_move[1] + "s"))
+	def choose_move_vertical(self, best_move, pieces):
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "w"))
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "s"))
 
-	def choose_move(self, board, movable, destination):
+	def choose_move(self, board, pieces):
 		
 		best_move = heapq.heappop(self.move_queue)
 		
 		if(best_move[1][-1] in ["w", "s"]):
-			self.choose_move_horizontal(best_move, movable, destination)
+			self.choose_move_horizontal(best_move, pieces)
 			
 		elif(best_move[1][-1] in ["a", "d"]):
-			self.choose_move_vertical(best_move, movable, destination)
+			self.choose_move_vertical(best_move, pieces)
 
 		return
 
