@@ -7,7 +7,7 @@ class ai:
 		self.move_queue = []
 		heapq.heappush(self.move_queue, (0, "w"))
 		heapq.heappush(self.move_queue, (0, "s"))
-		heapq.heappush(self.move_queue, (0, "a"))
+		# heapq.heappush(self.move_queue, (0, "a"))
 		heapq.heappush(self.move_queue, (0, "d"))
 
 		
@@ -24,12 +24,16 @@ class ai:
 	
 	# best_move -> [0] -> value ; [1] -> string
 	def choose_move_horizontal(self, best_move):
-		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "s"))
-		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "w"))
+
+		# if (check_left_move()):
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "a"))
+		
+		# if (check_right_move()):
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "d"))
 
 	def choose_move_vertical(self, best_move):
-		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "a"))
-		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "d"))
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "w"))
+		heapq.heappush(self.move_queue, (best_move[0] + self.no_heuristic(), best_move[1] + "s"))
 
 	def choose_move(self, board, movable, destination):
 		best_move = heapq.heappop(self.move_queue)
@@ -46,6 +50,15 @@ class ai:
 	def get_best_move(self):
 		return self.move_queue[0][1]
 
+	def get_move_queue(self):
+		return self.move_queue
+
+	
+	def test_bot_move(self, bot_best_move, movablePieces, destinationTiles):
+		row_offset = 0
+		col_offset = 0
+
+		print("In test_bot_move")
 
 
 
