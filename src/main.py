@@ -117,8 +117,6 @@ def game_loop_ai(board, movablePieces, destinationTiles, bot):
 
 
         # print(bot.get_move_queue())
-        print("\n")
-
 
 
 def main(size):
