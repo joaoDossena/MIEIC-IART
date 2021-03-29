@@ -2,6 +2,8 @@ from collections import deque
 from state import State
 from pieces import Piece
 from copy import deepcopy
+import itertools
+from heapq import heappush, heappop, heapify
 
 initial_state = list()
 
@@ -66,7 +68,7 @@ def dfs(start_state, pieces):
         # if node.state == goal_state:
         #     goal_node = node
         #     return stack
-        
+
         if (node.move == "urdl"):
             print_board(node.state)
             break
@@ -84,7 +86,79 @@ def dfs(start_state, pieces):
         # if len(stack) > max_frontier_size:
         #     max_frontier_size = len(stack)
 
+# def h(state):
+#     cost = 1
+#     for i in range(len(state.pieces)):
+#             cost += ((state.pieces[i].movable_row - state.pieces[i].dest_row)**2 + (state.pieces[i].movable_col - state.pieces[i].dest_col)**2)**1/2
+#             # print("movable row: {} col: {} dest row: {} col: {}".format(movable[i].row, movable[i].col, destination[i].row, destination[i].col))
 
+#             # print(cost)
+        
+#     return cost
+
+# def a_star(start_state, pieces):
+
+#     global max_frontier_size, goal_node, max_search_depth
+
+#     explored, heap, heap_entry, counter = set(), list(), {}, itertools.count()
+
+#     key = h(start_state)
+
+#     root = State(start_state, None, "", 0, 0, key, pieces)
+
+#     entry = (key, 0, root)
+
+#     heappush(heap, entry)
+
+#     heap_entry[root.map] = entry
+
+#     while heap:
+
+#         node = heappop(heap)
+
+#         explored.add(node[2].map)
+
+#         # if node[2].state == goal_state:
+#         #     goal_node = node[2]
+#         #     return heap
+
+#         if (node[2].move == "urdl"):
+#             print_board(node.state)
+#             break
+
+#         neighbors = expand(node[2])
+
+#         for neighbor in neighbors:
+
+#             neighbor.key = neighbor.cost + h(neighbor.state)
+
+#             entry = (neighbor.key, neighbor.move, neighbor)
+
+#             if neighbor.map not in explored:
+
+#                 heappush(heap, entry)
+
+#                 explored.add(neighbor.map)
+
+#                 heap_entry[neighbor.map] = entry
+
+#                 if neighbor.depth > max_search_depth:
+#                     max_search_depth += 1
+
+#             elif neighbor.map in heap_entry and neighbor.key < heap_entry[neighbor.map][2].key:
+
+#                 hindex = heap.index((heap_entry[neighbor.map][2].key,
+#                                      heap_entry[neighbor.map][2].move,
+#                                      heap_entry[neighbor.map][2]))
+
+#                 heap[int(hindex)] = entry
+
+#                 heap_entry[neighbor.map] = entry
+
+#                 heapify(heap)
+
+#         if len(heap) > max_frontier_size:
+#             max_frontier_size = len(heap)
 
 def expand(node):
 
@@ -233,8 +307,9 @@ def main():
     # col = 0
     # print(getNewPiecePosition(board, row, col, 1, 0))
 
-    # bfs(board, pieces)
-    dfs(board, pieces)
+    bfs(board, pieces)
+    # dfs(board, pieces)
+    # a_star(board, pieces)
 
 
     # boardddd = [
