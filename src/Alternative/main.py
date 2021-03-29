@@ -160,6 +160,41 @@ def dfs(start_state, pieces):
 #         if len(heap) > max_frontier_size:
 #             max_frontier_size = len(heap)
 
+
+
+# def iterative_deepening(start_state, pieces):
+#     global max_frontier_size, goal_node, max_search_depth
+
+#     explored, stack = set(), list([State(start_state, None, "", 0, 0, 0, pieces)])
+
+#     while stack:
+
+#         node = stack.pop()
+
+#         explored.add(node.map)
+
+#         # if node.state == goal_state:
+#         #     goal_node = node
+#         #     return stack
+
+#         if (node.move == "urdl"):
+#             print_board(node.state)
+#             break
+
+#         neighbors = reversed(expand(node))
+
+#         for neighbor in neighbors:
+#             if neighbor.map not in explored:
+#                 stack.append(neighbor)
+#                 explored.add(neighbor.map)
+
+#                 if neighbor.depth > max_search_depth:
+#                     max_search_depth += 1
+
+#         if len(stack) > max_frontier_size:
+#             max_frontier_size = len(stack)
+
+
 def expand(node):
 
     global nodes_expanded
