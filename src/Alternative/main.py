@@ -1,0 +1,221 @@
+from collections import deque
+from state import State
+from pieces import Piece
+from copy import deepcopy
+
+initial_state = list()
+
+nodes_expanded = 0
+max_search_depth = 0
+
+
+def print_board(board):
+    side_len = int(len(board) ** 0.5)
+    for i in range(side_len):
+        for j in range(side_len):
+            print(board[i * side_len + j] + " ", end="")
+        print()
+
+
+
+def bfs(start_state, pieces):
+
+    global goal_node, max_search_depth
+
+    # explored, queue = set(), deque([State(start_state, None, "", 0, 0, 0, pieces)])
+    
+    explored, queue = set(), deque([State(start_state, None, "", 0, 0, 0, pieces)])
+
+    while queue:
+
+        node = queue.popleft()
+
+        explored.add(node.map)
+
+        # if (node.move == "u"):
+        # if (node.move == "ur"):
+        # if (node.move == "urd"):
+        if (node.move == "urdl"):
+            print_board(node.state)
+            break
+
+        neighbours = expand(node)
+
+        for neighbour in neighbours:
+
+            # print_board(neighbour.state)
+
+            if neighbour.map not in explored:
+                # print("Adding to Queue")
+                queue.append(neighbour)
+                # if neighbour.depth > max_search_depth:
+                #     max_search_depth += 1
+
+
+
+
+def expand(node):
+
+    global nodes_expanded
+    nodes_expanded += 1
+
+    neighbours = list()
+
+    if (node.move != ""):
+        if (node.move[-1] == "u" or node.move[-1] == "d"):
+            neighbours.append(move(node, "r"))
+            neighbours.append(move(node, "l"))
+        
+        elif (node.move[-1] == "l" or node.move[-1] == "r"):
+            neighbours.append(move(node, "u"))
+            neighbours.append(move(node, "d"))
+    
+    else:
+        neighbours.append(move(node, "u"))
+        neighbours.append(move(node, "d"))
+        neighbours.append(move(node, "r"))
+        neighbours.append(move(node, "l"))
+
+    # print_board(node.state)
+    # neighbours.append(State(move(node, "u"), node, "u", node.depth + 1, node.cost + 1, 0))
+    
+    return neighbours
+
+
+def move(node, offset):
+
+    new_node = deepcopy(node)
+
+    sort_pieces(new_node.pieces, offset)
+
+    for i in range(len(new_node.pieces)):
+        cur_row = new_node.pieces[i].movable_row
+        cur_col = new_node.pieces[i].movable_col
+
+        if (offset == "u"):
+            new_node.parent = node
+            new_node.move = new_node.parent.move + "u"
+            newCoords = moveUp(new_node.state, cur_row, cur_col)
+            new_node.pieces[i].movable_row = newCoords[0]
+
+        elif (offset == "d"):
+            new_node.parent = node
+            new_node.move = new_node.parent.move + "d"
+            newCoords = moveDown(new_node.state, cur_row, cur_col)
+            new_node.pieces[i].movable_row = newCoords[0]
+
+        elif (offset == "l"):
+            new_node.parent = node
+            new_node.move = new_node.parent.move + "l"
+            newCoords = moveLeft(new_node.state, cur_row, cur_col)
+            new_node.pieces[i].movable_col = newCoords[1]
+
+        elif (offset == "r"):
+            new_node.parent = node
+            new_node.move = new_node.parent.move + "r"
+            newCoords = moveRight(new_node.state, cur_row, cur_col)
+            new_node.pieces[i].movable_col = newCoords[1]
+            
+        size_board = int(len(new_node.state) ** 0.5)
+        new_node.state[cur_row * size_board + cur_col] = "."
+        new_node.state[newCoords[0] * size_board + newCoords[1]] = new_node.pieces[i].movable_symbol
+
+    print("New Node Move: {}".format(new_node.move))
+    new_node.calc_map()
+
+    # print("Map: {}".format(new_node.map))
+    return new_node
+
+
+# -----------------------------------------
+
+def sort_pieces(pieces, move):
+    if (move == "u"):
+        pieces.sort(key=lambda x: x.movable_row, reverse=False)
+    elif (move == "d"):
+        pieces.sort(key=lambda x: x.movable_row, reverse=True)
+    elif (move == "l"):
+        pieces.sort(key=lambda x: x.movable_col, reverse=False)
+    elif (move == "r"):
+        pieces.sort(key=lambda x: x.movable_col, reverse=True)
+
+def moveUp(board, cur_row, cur_col):
+    return getNewPiecePosition(board, cur_row, cur_col, -1, 0)
+
+def moveDown(board, cur_row, cur_col):
+    return getNewPiecePosition(board, cur_row, cur_col, 1, 0)
+
+def moveLeft(board, cur_row, cur_col):
+    return getNewPiecePosition(board, cur_row, cur_col, 0, -1)
+
+def moveRight(board, cur_row, cur_col):
+    return getNewPiecePosition(board, cur_row, cur_col, 0, 1)
+
+def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
+    size_board = int(len(board) ** 0.5)
+
+    if (rowMov == 0 and colMov == 0): return [curRow, curCol]
+
+    newRow = curRow
+    newCol = curCol
+
+    while (True):
+        # print("Row: {} Col: {}".format(newRow, newCol))
+
+        calc_pos = size_board * (newRow + rowMov) + newCol + colMov
+
+        if (calc_pos >= 0 and calc_pos < len(board) and newRow + rowMov >= 0 and newCol + colMov >= 0):
+            
+            if (board[calc_pos] != "." and board[calc_pos] != "P" and board[calc_pos] != "T"):
+                break # if move is to an occupied tile
+            else:
+                newRow += rowMov
+                newCol += colMov
+        else:
+            break
+    
+    # print("Returning: {} {}".format(newRow, newCol))
+    return [newRow, newCol]
+
+# -----------------------------------------
+
+def main():
+
+    board = [
+        ".", ".", ".", "=", "=",
+        "p", ".", "t", ".", "=",
+        "=", "T", ".", ".", ".",
+        ".", ".", "=", "=", ".",
+        "P", ".", "=", "=", ".",
+    ]
+
+        # ...==
+        # ....=
+        # =t...
+        # ..==p
+        # P.==.
+
+    pieces = [Piece("p", 1, 0, 4, 0), Piece("t", 1, 2, 2, 1)]
+
+    # row = 1
+    # col = 0
+    # print(getNewPiecePosition(board, row, col, 1, 0))
+
+    bfs(board, pieces)
+
+
+    # boardddd = [
+    #     ".", ".", ".", "=", "=",
+    #     ".", ".", ".", ".", "=",
+    #     "=", "T", "t", ".", ".",
+    #     ".", ".", "=", "=", ".",
+    #     "P", "p", "=", "=", ".",
+    # ]
+
+    # print(getNewPiecePosition(boardddd, 4, 0, 0, -1))
+
+    # print(''.join(str(e) for e in goal_board))
+
+
+
+main()
