@@ -369,9 +369,9 @@ def main():
     # col = 0
     # print(getNewPiecePosition(board, row, col, 1, 0))
 
-    # bfs(board, pieces)
-    # dfs(board, pieces)
-    # iterative_deepening(board, pieces)
+    bfs(board, pieces)
+    dfs(board, pieces)
+    iterative_deepening(board, pieces)
 
     a_star(board, pieces)
 
