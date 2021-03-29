@@ -3,6 +3,7 @@ from state import State
 from pieces import Piece
 from copy import deepcopy
 import itertools
+import levels
 from heapq import heappush, heappop, heapify
 
 initial_state = list()
@@ -98,12 +99,6 @@ def dfs(start_state, pieces):
 
 def h(state):
     cost = 1
-    # print(state)
-
-    # print("PIECES:")
-    # for piece in state.pieces:
-    #     print(piece)
-    # print("END PIECES")
 
     for i in range(len(state.pieces)):
         cost += ((state.pieces[i].movable_row - state.pieces[i].dest_row)**2 + (state.pieces[i].movable_col - state.pieces[i].dest_col)**2)**1/2
@@ -258,9 +253,6 @@ def move(node, offset):
 
     sort_pieces(new_node.pieces, offset)
 
-    # print("\nLength New Node Pieces Inside move function:")
-    # print(len(new_node.pieces))
-
     for i in range(len(new_node.pieces)):
         cur_row = new_node.pieces[i].movable_row
         cur_col = new_node.pieces[i].movable_col
@@ -349,44 +341,19 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
 
 def main():
 
-    board = [
-        ".", ".", ".", "=", "=",
-        "p", ".", "t", ".", "=",
-        "=", "T", ".", ".", ".",
-        ".", ".", "=", "=", ".",
-        "P", ".", "=", "=", ".",
-    ]
 
-        # ...==
-        # ....=
-        # =t...
-        # ..==p
-        # P.==.
+    for i in range (0, 2):
+        lvl = getattr(levels, 'lvl' + str(i))
+        (board, pieces) = levels.lvl1()
+        print("Using BFS:")
+        bfs(board, pieces)
+        print("Using DFS:")
+        dfs(board, pieces)
+        # print("Using Iterative Deepening:")
+        #iterative_deepening(board, pieces)
+        print("Using A*:")
+        a_star(board, pieces)
 
-    pieces = [Piece("p", 1, 0, 4, 0), Piece("t", 1, 2, 2, 1)]
-
-    # row = 1
-    # col = 0
-    # print(getNewPiecePosition(board, row, col, 1, 0))
-
-    bfs(board, pieces)
-    dfs(board, pieces)
-    iterative_deepening(board, pieces)
-
-    a_star(board, pieces)
-
-
-    # boardddd = [
-    #     ".", ".", ".", "=", "=",
-    #     ".", ".", ".", ".", "=",
-    #     "=", "T", "t", ".", ".",
-    #     ".", ".", "=", "=", ".",
-    #     "P", "p", "=", "=", ".",
-    # ]
-
-    # print(getNewPiecePosition(boardddd, 4, 0, 0, -1))
-
-    # print(''.join(str(e) for e in goal_board))
 
 
 
