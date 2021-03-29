@@ -162,37 +162,37 @@ def dfs(start_state, pieces):
 
 
 
-# def iterative_deepening(start_state, pieces):
-#     global max_frontier_size, goal_node, max_search_depth
+def iterative_deepening(start_state, pieces):
+    global max_frontier_size, goal_node, max_search_depth
 
-#     explored, stack = set(), list([State(start_state, None, "", 0, 0, 0, pieces)])
+    explored, stack = set(), list([State(start_state, None, "", 0, 0, 0, pieces)])
 
-#     while stack:
+    while stack:
 
-#         node = stack.pop()
+        node = stack.pop()
 
-#         explored.add(node.map)
+        explored.add(node.map)
 
-#         # if node.state == goal_state:
-#         #     goal_node = node
-#         #     return stack
+        # if node.state == goal_state:
+        #     goal_node = node
+        #     return stack
 
-#         if (node.move == "urdl"):
-#             print_board(node.state)
-#             break
+        if (node.move == "urdl"):
+            print_board(node.state)
+            break
 
-#         neighbors = reversed(expand(node))
+        neighbors = reversed(expand(node))
 
-#         for neighbor in neighbors:
-#             if neighbor.map not in explored:
-#                 stack.append(neighbor)
-#                 explored.add(neighbor.map)
+        for neighbor in neighbors:
+            if neighbor.map not in explored:
+                stack.append(neighbor)
+                explored.add(neighbor.map)
 
-#                 if neighbor.depth > max_search_depth:
-#                     max_search_depth += 1
+                if neighbor.depth > max_search_depth:
+                    max_search_depth += 1
 
-#         if len(stack) > max_frontier_size:
-#             max_frontier_size = len(stack)
+        # if len(stack) > max_frontier_size:
+        #     max_frontier_size = len(stack)
 
 
 def expand(node):
@@ -342,9 +342,10 @@ def main():
     # col = 0
     # print(getNewPiecePosition(board, row, col, 1, 0))
 
-    bfs(board, pieces)
+    # bfs(board, pieces)
     # dfs(board, pieces)
     # a_star(board, pieces)
+    iterative_deepening(board, pieces)
 
 
     # boardddd = [
