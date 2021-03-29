@@ -98,11 +98,17 @@ def dfs(start_state, pieces):
 
 def h(state):
     cost = 1
-    for i in range(len(state.pieces)):
-            cost += ((state.pieces[i].movable_row - state.pieces[i].dest_row)**2 + (state.pieces[i].movable_col - state.pieces[i].dest_col)**2)**1/2
-            # print("movable row: {} col: {} dest row: {} col: {}".format(movable[i].row, movable[i].col, destination[i].row, destination[i].col))
+    # print(state)
 
-            # print(cost)
+    # print("PIECES:")
+    # for piece in state.pieces:
+    #     print(piece)
+    # print("END PIECES")
+
+    for i in range(len(state.pieces)):
+        cost += ((state.pieces[i].movable_row - state.pieces[i].dest_row)**2 + (state.pieces[i].movable_col - state.pieces[i].dest_col)**2)**1/2
+        # print("movable row: {} col: {} dest row: {} col: {}".format(movable[i].row, movable[i].col, destination[i].row, destination[i].col))
+        # print("Cost ", cost)
         
     return cost
 
@@ -135,15 +141,18 @@ def a_star(start_state, pieces):
         #     return heap
 
         if (check_end(node[2].pieces)):
-            print("Solution: {}".format(node.move))
-            print_board(node.state)
+            print("Solution: {}".format(node[2].move))
+            print_board(node[2].state)
             break
 
         neighbors = expand(node[2])
 
+
+
         for neighbor in neighbors:
 
-            neighbor.key = neighbor.cost + h(neighbor.state)
+            
+            neighbor.key = neighbor.cost + h(neighbor)
 
             entry = (neighbor.key, neighbor.move, neighbor)
 
@@ -178,6 +187,8 @@ def a_star(start_state, pieces):
 def iterative_deepening(start_state, pieces):
     global max_frontier_size, goal_node, max_search_depth
 
+    current_search_depth = 1
+
     while True:
 
         explored, stack = set(), list([State(start_state, None, "", 0, 0, 0, pieces)])
@@ -200,16 +211,16 @@ def iterative_deepening(start_state, pieces):
             neighbors = reversed(expand(node))
 
             for neighbor in neighbors:
-                if neighbor.map not in explored and node.depth < max_search_depth: 
+                if neighbor.map not in explored and node.depth < current_search_depth: 
                     stack.append(neighbor)
                     explored.add(neighbor.map)
 
-                    # if neighbor.depth > max_search_depth:
-                    #     max_search_depth += 1
+                    if neighbor.depth > max_search_depth:
+                        max_search_depth += 1
 
             if len(stack) > max_frontier_size:
                 max_frontier_size = len(stack)
-        max_search_depth += 1
+        current_search_depth += 1
 
 
 def expand(node):
@@ -246,6 +257,9 @@ def move(node, offset):
     new_node = deepcopy(node)
 
     sort_pieces(new_node.pieces, offset)
+
+    # print("\nLength New Node Pieces Inside move function:")
+    # print(len(new_node.pieces))
 
     for i in range(len(new_node.pieces)):
         cur_row = new_node.pieces[i].movable_row
@@ -355,10 +369,11 @@ def main():
     # col = 0
     # print(getNewPiecePosition(board, row, col, 1, 0))
 
-    #bfs(board, pieces)
-    #dfs(board, pieces)
-    #a_star(board, pieces)
-    iterative_deepening(board, pieces)
+    # bfs(board, pieces)
+    # dfs(board, pieces)
+    # iterative_deepening(board, pieces)
+
+    a_star(board, pieces)
 
 
     # boardddd = [

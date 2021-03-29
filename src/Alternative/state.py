@@ -18,7 +18,11 @@ class State:
 
         if self.state:
             self.map = ''.join(str(e) for e in self.state)
-        
+    
+    def __str__(self):
+        return ''.join(str(e) for e in self.state) + " " + str(len(self.pieces))
+
+
     def calc_map(self):
         self.map = ''.join(str(e) for e in self.state)
 

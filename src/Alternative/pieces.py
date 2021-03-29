@@ -8,6 +8,9 @@ class Piece:
         self.dest_symbol = symbol.upper()
         self.dest_row = dest_row
         self.dest_col = dest_col
+
+    def __str__(self):
+        return "Symbol: " + str(self.movable_symbol) + "\nRow: " + str(self.movable_row) + "\nCol: " + str(self.movable_col)
     
     def check_coords_inequality(self):
         return (self.movable_row != self.dest_row or self.movable_col != self.dest_col)
