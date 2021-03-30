@@ -397,7 +397,7 @@ def read_move():
         move = input("> ")
         move.lower()
 
-        if(move in ["u", "d", "l", "r", "up", "down", "left", "right"]):
+        if(move in ["u", "d", "l", "r", "undo"]):
             return move
 
         print("Illegal move!")
@@ -407,25 +407,61 @@ def player_loop():
 
     (board, pieces) = levels.lvl1()
 
-    current_move = ""
+    previous_board = deepcopy(board)
+    previous_pieces = deepcopy(pieces)
 
+    original_board = deepcopy(board)
+    original_pieces = deepcopy(pieces)
+
+    current_move = ""
+    found_first_undo = False
+
+    print()
     print_board(board)
 
     while (True):
+        # print("beginning of while - cur move: {}".format(len(current_move)))
 
         if (check_end(pieces)):
             print("Level Completed!")
             break
 
+        print()
         new_move = read_move()
-        current_move += new_move
-        print("Current Move: {}".format(current_move))
+
+        if (new_move == "undo" and found_first_undo == False):
+            found_first_undo = True
+            # print(len(current_move))
+            # undo_move(current_move, board, pieces)
+            board = previous_board
+            pieces = previous_pieces
+            current_move = current_move[:-1]
+
+        elif (new_move == "undo"):
+            print("Second Undo in a Row. not allowed :p")
+            pass
+            
+        # elif (new_move == "restart"):
+        #     found_first_undo = False
+        #     board = original_board
+        #     pieces = original_pieces
+        #     current_move = ""
+
+        else:
+            found_first_undo = False
+            previous_board = deepcopy(board)
+            previous_pieces = deepcopy(pieces)
+
+            current_move += new_move
+
+        print("Current Move Sequence: {}".format(current_move))
         execute_move(current_move, board, pieces)
+
 
 def execute_move(move_sequence, board, pieces):
 
-    mutable_board = deepcopy(board)
-    mutable_pieces = deepcopy(pieces)
+    # mutable_board = deepcopy(board)
+    # mutable_pieces = deepcopy(pieces)
     
     for move in move_sequence:
 
@@ -448,9 +484,7 @@ def execute_move(move_sequence, board, pieces):
                 pieces[i].movable_col = newCoords[1]
 
             elif (move == "r"):
-                # print("Row: {} Col: {}".format(cur_row, cur_col))
                 newCoords = moveRight(board, cur_row, cur_col)
-                # print(newCoords)
                 pieces[i].movable_col = newCoords[1]
             
             size_board = int(len(board) ** 0.5)
