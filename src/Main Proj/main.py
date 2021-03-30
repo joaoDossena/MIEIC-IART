@@ -393,7 +393,7 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
 def read_move():
     while(True):
         print("Choose your move:")
-        print("up -> u  down -> d  left -> l  right -> r")
+        print("up -> u | down -> d | left -> l | right -> r | undo | restart")
         move = input("> ")
         move.lower()
 
