@@ -522,32 +522,32 @@ def main():
     start = time.time()
     bfs(board, pieces)
     end = time.time()
-    bfs_exec_time =  end - start
+    bfs_exec_time =  (end - start)*1000
 
 
     print("Using DFS:")
     start = time.time()
     dfs(board, pieces)
     end = time.time()
-    dfs_exec_time =  end - start
+    dfs_exec_time =  (end - start)*1000
 
 
     print("Using Iterative Deepening:")
     start = time.time()
     iterative_deepening(board, pieces)
     end = time.time()
-    ids_exec_time =  end - start
+    ids_exec_time =  (end - start)*1000
 
     print("Using A*:")
     start = time.time()
     a_star(board, pieces)
     end = time.time()
-    a_star_exec_time =  end - start
+    a_star_exec_time =  (end - start)*1000
 
-    print("BFS execution time: ", bfs_exec_time)
-    print("DFS execution time: ", dfs_exec_time)
-    print("Iterative Deepening execution time: ", ids_exec_time)
-    print("A* execution time: ", a_star_exec_time)
+    print("BFS execution time: ", bfs_exec_time, "ms")
+    print("DFS execution time: ", dfs_exec_time, "ms")
+    print("Iterative Deepening execution time: ", ids_exec_time, "ms")
+    print("A* execution time: ", a_star_exec_time, "ms")
 
 
     # curRow = pieces[0].movable_row
