@@ -6,6 +6,10 @@ import itertools
 import levels
 from heapq import heappush, heappop, heapify
 
+import time
+
+
+
 initial_state = list()
 
 max_frontier_size = 0
@@ -509,20 +513,42 @@ def main():
     
     
 
-    # for i in range (0, 2):
-    #     lvl = getattr(levels, 'lvl' + str(i))
-    # (board, pieces) = levels.lvl1()
-    # print_board(board)
-    # print("Using BFS:")
-    # bfs(board, pieces)
+    for i in range (0, 2):
+        lvl = getattr(levels, 'lvl' + str(i))
+    (board, pieces) = levels.lvl1()
+    print_board(board)
 
-    # print("Using DFS:")
-    # dfs(board, pieces)
+    print("Using BFS:")
+    start = time.time()
+    bfs(board, pieces)
+    end = time.time()
+    bfs_exec_time =  end - start
 
-        # print("Using Iterative Deepening:")
-        #iterative_deepening(board, pieces)
-        # print("Using A*:")
-        # a_star(board, pieces)
+
+    print("Using DFS:")
+    start = time.time()
+    dfs(board, pieces)
+    end = time.time()
+    dfs_exec_time =  end - start
+
+
+    print("Using Iterative Deepening:")
+    start = time.time()
+    iterative_deepening(board, pieces)
+    end = time.time()
+    ids_exec_time =  end - start
+
+    print("Using A*:")
+    start = time.time()
+    a_star(board, pieces)
+    end = time.time()
+    a_star_exec_time =  end - start
+
+    print("BFS execution time: ", bfs_exec_time)
+    print("DFS execution time: ", dfs_exec_time)
+    print("Iterative Deepening execution time: ", ids_exec_time)
+    print("A* execution time: ", a_star_exec_time)
+
 
     # curRow = pieces[0].movable_row
     # curCol = pieces[0].movable_col
