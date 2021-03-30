@@ -40,9 +40,51 @@ def bfs(start_state, pieces):
     
     explored, queue = set(), deque([State(start_state, None, "", 0, 0, 0, pieces)])
 
+    # print("Starting Board")
+    # print_board(start_state)
+    # print()
+
     while queue:
 
         node = queue.popleft()
+
+        # if (node.move == "r"):
+        #     print("r")
+        #     for piece in node.pieces: print(piece)
+        #     print_board(node.state)
+        #     print()
+        # if (node.move == "ru"):
+        #     print("ru")
+        #     print_board(node.state)
+        #     print()
+        # if (node.move == "rul"):
+        #     print("rul")
+        #     print_board(node.state)
+        #     print()
+        # if (node.move == "rulu"):
+        #     print("rulu")
+        #     print_board(node.state)
+        #     print()
+        # if (node.move == "rulur"):
+        #     print("rulur")
+        #     print_board(node.state)
+        #     print()
+        # if (node.move == "rulurd"):
+        #     print("rulurd")
+        #     print_board(node.state)
+        #     print()
+        # if (node.move == "rulurdl"):
+        #     print("rulurdl")
+        #     print_board(node.state)
+        #     print()
+        # if (node.move == "rulurdlu"):
+        #     print("rulurdlu")
+        #     print_board(node.state)
+        #     print()
+
+        # print_board(node.state)
+        # for piece in node.pieces:
+        #     print(piece)
 
         explored.add(node.map)
 
@@ -197,6 +239,12 @@ def iterative_deepening(start_state, pieces):
             #     goal_node = node
             #     return stack
 
+            # print(node.move)
+
+            # if (node.move == "rulurdlu"):
+            #     print_board(node.state)
+            #     return 
+
             if (check_end(node.pieces)):
                 print("Solution: {}".format(node.move))
                 print_board(node.state)
@@ -219,7 +267,7 @@ def iterative_deepening(start_state, pieces):
 
 
 def expand(node):
-    print("Expanding node: {} Depth: {}".format(node.move, node.depth))
+    # print("Expanding node: {} Depth: {}".format(node.move, node.depth))
 
     global nodes_expanded
     nodes_expanded += 1
@@ -270,7 +318,9 @@ def move(node, offset):
             new_node.pieces[i].movable_col = newCoords[1]
 
         elif (offset == "r"):
+            # print("Row: {} Col: {}".format(cur_row, cur_col))
             newCoords = moveRight(new_node.state, cur_row, cur_col)
+            # print(newCoords)
             new_node.pieces[i].movable_col = newCoords[1]
             
         size_board = int(len(new_node.state) ** 0.5)
@@ -324,7 +374,7 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
 
         calc_pos = size_board * (newRow + rowMov) + newCol + colMov
 
-        if (calc_pos >= 0 and calc_pos < len(board) and newRow + rowMov >= 0 and newCol + colMov >= 0):
+        if (calc_pos >= 0 and calc_pos < len(board) and newRow + rowMov >= 0 and newRow + rowMov < size_board and newCol + colMov >= 0 and newCol + colMov < size_board):
             
             if (board[calc_pos] != "." and board[calc_pos] != "P" and board[calc_pos] != "T"):
                 break # if move is to an occupied tile
@@ -337,6 +387,7 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
     # print("Returning: {} {}".format(newRow, newCol))
     return [newRow, newCol]
 
+
 # -----------------------------------------
 
 def main():
@@ -347,12 +398,22 @@ def main():
         (board, pieces) = levels.lvl1()
         print("Using BFS:")
         bfs(board, pieces)
+
         print("Using DFS:")
         dfs(board, pieces)
         # print("Using Iterative Deepening:")
         #iterative_deepening(board, pieces)
-        print("Using A*:")
-        a_star(board, pieces)
+        # print("Using A*:")
+        # a_star(board, pieces)
+
+    # curRow = pieces[0].movable_row
+    # curCol = pieces[0].movable_col
+    # rowMov = 0
+    # colMov = 1
+        
+    # returned_array = getNewPiecePosition(board, curRow, curCol, rowMov, colMov)
+
+    # print("Returned: [{}, {}]".format(returned_array[0], returned_array[1]))
 
 
 
