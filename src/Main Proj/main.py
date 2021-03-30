@@ -390,17 +390,96 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
 
 # -----------------------------------------
 
+def read_move():
+    while(True):
+        print("Choose your move:")
+        print("up -> u  down -> d  left -> l  right -> r")
+        move = input("> ")
+        move.lower()
+
+        if(move in ["u", "d", "l", "r", "up", "down", "left", "right"]):
+            return move
+
+        print("Illegal move!")
+
+
+def player_loop():
+
+    (board, pieces) = levels.lvl1()
+
+    current_move = ""
+
+    print_board(board)
+
+    while (True):
+
+        if (check_end(pieces)): # <-- TODO... here pieces is always has always the same coords cuz execute_move is mutating a deepcopy of pieces
+            print("Level Completed!")
+            break
+
+        new_move = read_move()
+        current_move += new_move
+        print("Current Move: {}".format(current_move))
+        execute_move(current_move, board, pieces)
+
+def execute_move(move_sequence, board, pieces):
+
+    mutable_board = deepcopy(board)
+    mutable_pieces = deepcopy(pieces)
+    
+    for move in move_sequence:
+
+        sort_pieces(pieces, move)
+
+        for i in range(len(mutable_pieces)):
+            cur_row = mutable_pieces[i].movable_row
+            cur_col = mutable_pieces[i].movable_col
+
+            if (move == "u"):
+                newCoords = moveUp(mutable_board, cur_row, cur_col)
+                mutable_pieces[i].movable_row = newCoords[0]
+
+            elif (move == "d"):
+                newCoords = moveDown(mutable_board, cur_row, cur_col)
+                mutable_pieces[i].movable_row = newCoords[0]
+
+            elif (move == "l"):
+                newCoords = moveLeft(mutable_board, cur_row, cur_col)
+                mutable_pieces[i].movable_col = newCoords[1]
+
+            elif (move == "r"):
+                # print("Row: {} Col: {}".format(cur_row, cur_col))
+                newCoords = moveRight(mutable_board, cur_row, cur_col)
+                # print(newCoords)
+                mutable_pieces[i].movable_col = newCoords[1]
+            
+            size_board = int(len(mutable_board) ** 0.5)
+            mutable_board[cur_row * size_board + cur_col] = "."
+            mutable_board[newCoords[0] * size_board + newCoords[1]] = mutable_pieces[i].movable_symbol
+    
+    print_board(mutable_board)
+
+
+# -----------------------------------------
+
 def main():
 
+    print("[0] Player")
+    print("[1] AI")
+    play_choice = input("Game mode: ")
 
-    for i in range (0, 2):
-        lvl = getattr(levels, 'lvl' + str(i))
-        (board, pieces) = levels.lvl1()
-        print("Using BFS:")
-        bfs(board, pieces)
+    if (play_choice == "0"):
+        player_loop()
 
-        print("Using DFS:")
-        dfs(board, pieces)
+    # for i in range (0, 2):
+    #     lvl = getattr(levels, 'lvl' + str(i))
+    #     (board, pieces) = levels.lvl1()
+    #     print("Using BFS:")
+    #     bfs(board, pieces)
+
+    #     print("Using DFS:")
+    #     dfs(board, pieces)
+
         # print("Using Iterative Deepening:")
         #iterative_deepening(board, pieces)
         # print("Using A*:")
