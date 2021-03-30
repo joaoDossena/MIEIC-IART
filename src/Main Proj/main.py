@@ -397,7 +397,7 @@ def read_move():
         move = input("> ")
         move.lower()
 
-        if(move in ["u", "d", "l", "r", "undo"]):
+        if(move in ["u", "d", "l", "r", "undo", "restart"]):
             return move
 
         print("Illegal move!")
@@ -441,11 +441,11 @@ def player_loop():
             print("Second Undo in a Row. not allowed :p")
             pass
             
-        # elif (new_move == "restart"):
-        #     found_first_undo = False
-        #     board = original_board
-        #     pieces = original_pieces
-        #     current_move = ""
+        elif (new_move == "restart"):
+            found_first_undo = False
+            board = original_board
+            pieces = original_pieces
+            current_move = ""
 
         else:
             found_first_undo = False
