@@ -267,7 +267,7 @@ def iterative_deepening(start_state, pieces):
 
 
 def expand(node):
-    # print("Expanding node: {} Depth: {}".format(node.move, node.depth))
+    print("Expanding node: {} Depth: {}".format(node.move, node.depth))
 
     global nodes_expanded
     nodes_expanded += 1
@@ -413,7 +413,7 @@ def player_loop():
 
     while (True):
 
-        if (check_end(pieces)): # <-- TODO... here pieces is always has always the same coords cuz execute_move is mutating a deepcopy of pieces
+        if (check_end(pieces)):
             print("Level Completed!")
             break
 
@@ -431,55 +431,59 @@ def execute_move(move_sequence, board, pieces):
 
         sort_pieces(pieces, move)
 
-        for i in range(len(mutable_pieces)):
-            cur_row = mutable_pieces[i].movable_row
-            cur_col = mutable_pieces[i].movable_col
+        for i in range(len(pieces)):
+            cur_row = pieces[i].movable_row
+            cur_col = pieces[i].movable_col
 
             if (move == "u"):
-                newCoords = moveUp(mutable_board, cur_row, cur_col)
-                mutable_pieces[i].movable_row = newCoords[0]
+                newCoords = moveUp(board, cur_row, cur_col)
+                pieces[i].movable_row = newCoords[0]
 
             elif (move == "d"):
-                newCoords = moveDown(mutable_board, cur_row, cur_col)
-                mutable_pieces[i].movable_row = newCoords[0]
+                newCoords = moveDown(board, cur_row, cur_col)
+                pieces[i].movable_row = newCoords[0]
 
             elif (move == "l"):
-                newCoords = moveLeft(mutable_board, cur_row, cur_col)
-                mutable_pieces[i].movable_col = newCoords[1]
+                newCoords = moveLeft(board, cur_row, cur_col)
+                pieces[i].movable_col = newCoords[1]
 
             elif (move == "r"):
                 # print("Row: {} Col: {}".format(cur_row, cur_col))
-                newCoords = moveRight(mutable_board, cur_row, cur_col)
+                newCoords = moveRight(board, cur_row, cur_col)
                 # print(newCoords)
-                mutable_pieces[i].movable_col = newCoords[1]
+                pieces[i].movable_col = newCoords[1]
             
-            size_board = int(len(mutable_board) ** 0.5)
-            mutable_board[cur_row * size_board + cur_col] = "."
-            mutable_board[newCoords[0] * size_board + newCoords[1]] = mutable_pieces[i].movable_symbol
+            size_board = int(len(board) ** 0.5)
+            board[cur_row * size_board + cur_col] = "."
+            board[pieces[i].dest_row * size_board + pieces[i].dest_col] = pieces[i].dest_symbol
+            board[newCoords[0] * size_board + newCoords[1]] = pieces[i].movable_symbol
     
-    print_board(mutable_board)
+    print_board(board)
 
 
 # -----------------------------------------
 
 def main():
 
-    # print("[0] Player")
-    # print("[1] AI")
-    # play_choice = input("Game mode: ")
+    print("[0] Player")
+    print("[1] AI")
+    play_choice = input("Game mode: ")
 
-    # if (play_choice == "0"):
-    #     player_loop()
+    if (play_choice == "0"):
+        player_loop()
+        return
+    
+    
 
     # for i in range (0, 2):
     #     lvl = getattr(levels, 'lvl' + str(i))
-    (board, pieces) = levels.lvl0()
-    print_board(board)
-    print("Using BFS:")
-    bfs(board, pieces)
+    # (board, pieces) = levels.lvl1()
+    # print_board(board)
+    # print("Using BFS:")
+    # bfs(board, pieces)
 
-    print("Using DFS:")
-    dfs(board, pieces)
+    # print("Using DFS:")
+    # dfs(board, pieces)
 
         # print("Using Iterative Deepening:")
         #iterative_deepening(board, pieces)
