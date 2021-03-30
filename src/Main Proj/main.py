@@ -464,21 +464,22 @@ def execute_move(move_sequence, board, pieces):
 
 def main():
 
-    print("[0] Player")
-    print("[1] AI")
-    play_choice = input("Game mode: ")
+    # print("[0] Player")
+    # print("[1] AI")
+    # play_choice = input("Game mode: ")
 
-    if (play_choice == "0"):
-        player_loop()
+    # if (play_choice == "0"):
+    #     player_loop()
 
     # for i in range (0, 2):
     #     lvl = getattr(levels, 'lvl' + str(i))
-    #     (board, pieces) = levels.lvl1()
-    #     print("Using BFS:")
-    #     bfs(board, pieces)
+    (board, pieces) = levels.lvl0()
+    print_board(board)
+    print("Using BFS:")
+    bfs(board, pieces)
 
-    #     print("Using DFS:")
-    #     dfs(board, pieces)
+    print("Using DFS:")
+    dfs(board, pieces)
 
         # print("Using Iterative Deepening:")
         #iterative_deepening(board, pieces)
