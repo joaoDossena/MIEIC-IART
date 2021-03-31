@@ -452,7 +452,7 @@ def main():
     
     for i in range (0, 2):
         lvl = getattr(levels, 'lvl' + str(i))
-    (board, pieces) = levels.lvl3()
+    (board, pieces) = levels.lvl4()
     print_board(board)
 
     print("Using BFS:")

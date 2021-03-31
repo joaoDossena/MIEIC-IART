@@ -49,4 +49,13 @@ def lvl3(): # Level 21 -> 9 moves for perfect score
     pcs = [pieces.Piece("p", 0, 2, 1, 3), pieces.Piece("t", 0, 3, 0, 0)]
     return (board, pcs)
 
-    
+def lvl4(): # Level 22 -> 9 moves for perfect score
+    board = [
+        ".", "p", ".", "=", 
+        "=", "t", ".", "T",
+        "=", ".", "=", "P",
+        "=", ".", "=", "=",
+    ]
+    pcs = [pieces.Piece("p", 0, 1, 2, 3), pieces.Piece("t", 1, 1, 1, 3)]
+    return (board, pcs)
+
