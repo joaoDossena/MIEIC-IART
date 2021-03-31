@@ -23,6 +23,14 @@ def print_board(board):
             print(board[i * side_len + j] + " ", end="")
         print()
 
+# Prints a list of tuples of strings as a nice table
+def print_table(table):
+    col_width = [max(len(x) for x in col) for col in zip(*table)]
+    for line in table:
+        print ("| " + " | ".join("{:{}}".format(x, col_width[i])
+                                for i, x in enumerate(line)) + " |")
+
+
 # Checks if every movable piece has reached its destination
 def check_end(pieces):
     for i in range(len(pieces)):
@@ -407,15 +415,7 @@ def execute_move(move_sequence, board, pieces):
     
     print_board(board)
 
-
-def print_table(table):
-    col_width = [max(len(x) for x in col) for col in zip(*table)]
-    for line in table:
-        print ("| " + " | ".join("{:{}}".format(x, col_width[i])
-                                for i, x in enumerate(line)) + " |")
-
 # --------------------------------------------------------------------------------------------------
-
 
 def main():
     print("[0] Player")
@@ -426,10 +426,12 @@ def main():
         player_loop()
         return
     
-    for i in range (0, 2):
-        lvl = getattr(levels, 'lvl' + str(i))
+    # for i in range (0, 2):
+    #     lvl = getattr(levels, 'lvl' + str(i))
     (board, pieces) = levels.lvl4()
     print_board(board)
+    global nodes_expanded
+    nodes_expanded = 0 
 
     print("Using BFS:")
     # start_mem = memory_usage()[0]
@@ -438,40 +440,47 @@ def main():
     end = time.time()
     # end_mem = memory_usage()[0]
     bfs_exec_time =  (end - start)*1000
+    bfs_nodes = nodes_expanded
     # bfs_mem_usage = (end_mem - start_mem)
 
     print("Using DFS:")
     # start_mem = memory_usage()[0]
+    nodes_expanded = 0 
     start = time.time()
     dfs_sol = dfs(board, pieces)
     end = time.time()
     # end_mem = memory_usage()[0]
     dfs_exec_time =  (end - start)*1000
+    dfs_nodes = nodes_expanded
     # dfs_mem_usage = (end_mem - start_mem)
 
     print("Using Iterative Deepening:")
     # start_mem = memory_usage()[0]
+    nodes_expanded = 0 
     start = time.time()
     ids_sol = iterative_deepening(board, pieces)
     end = time.time()
     # end_mem = memory_usage()[0]
     ids_exec_time =  (end - start)*1000
+    ids_nodes = nodes_expanded
     # ids_mem_usage = (end_mem - start_mem)
 
     print("Using A*:")
     # start_mem = memory_usage()[0]
+    nodes_expanded = 0 
     start = time.time()
     a_star_sol = a_star(board, pieces)
     end = time.time()
     # end_mem = memory_usage()[0]
     a_star_exec_time =  (end - start)*1000
+    a_star_nodes = nodes_expanded
     # a_star_mem_usage = (end_mem - start_mem)
 
-    print_table([("Algorithm",   "No. Moves",        "Sol",     "Exec Time",               "Nodes Exp", "Mem Usage"),
-                 ("BFS",       str(len(bfs_sol)),   bfs_sol,    str(round(bfs_exec_time)),    "N/A",      "N/A"),                 
-                 ("DFS",       str(len(dfs_sol)),   dfs_sol,    str(round(dfs_exec_time)),    "N/A",      "N/A"),
-                 ("IDS",       str(len(ids_sol)),   ids_sol,    str(round(ids_exec_time)),    "N/A",      "N/A"),
-                 ("A*",      str(len(a_star_sol)),  a_star_sol, str(round(a_star_exec_time)), "N/A",      "N/A"),
+    print_table([("Algorithm",   "No. Moves",        "Sol",        "Exec Time",                 "Nodes Exp",    "Mem Usage"),
+                 ("BFS",       str(len(bfs_sol)),   bfs_sol,    str(round(bfs_exec_time)),    str(bfs_nodes),      "N/A"),                 
+                 ("DFS",       str(len(dfs_sol)),   dfs_sol,    str(round(dfs_exec_time)),    str(dfs_nodes),      "N/A"),
+                 ("IDS",       str(len(ids_sol)),   ids_sol,    str(round(ids_exec_time)),    str(ids_nodes),      "N/A"),
+                 ("A*",      str(len(a_star_sol)),  a_star_sol, str(round(a_star_exec_time)), str(a_star_nodes),   "N/A"),
     ])
 
 main()
