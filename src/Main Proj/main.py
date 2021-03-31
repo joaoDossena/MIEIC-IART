@@ -10,13 +10,11 @@ import time
 import resource
 from memory_profiler import memory_usage
 
-
 initial_state = list()
 
 max_frontier_size = 0
 nodes_expanded = 0
 max_search_depth = 1
-
 
 def print_board(board):
     side_len = int(len(board) ** 0.5)
@@ -25,10 +23,8 @@ def print_board(board):
             print(board[i * side_len + j] + " ", end="")
         print()
 
-
 # Checks if every movable piece has reached its destination
 def check_end(pieces):
-
     for i in range(len(pieces)):
         # accesses tuple on same pos of movable and destination arrays and compares x and y coords
         if (pieces[i].check_coords_inequality()):
@@ -39,7 +35,6 @@ def check_end(pieces):
 def bfs(start_state, pieces):
 
     global goal_node, max_search_depth
-
     
     explored, queue = set(), deque([State(start_state, None, "", 0, 0, 0, pieces)])
 
@@ -95,9 +90,7 @@ def h(state):
 
     for i in range(len(state.pieces)):
         cost += ((state.pieces[i].movable_row - state.pieces[i].dest_row)**2 + (state.pieces[i].movable_col - state.pieces[i].dest_col)**2)**1/2
-        # print("movable row: {} col: {} dest row: {} col: {}".format(movable[i].row, movable[i].col, destination[i].row, destination[i].col))
-        # print("Cost ", cost)
-        
+
     return cost
 
 def a_star(start_state, pieces):
@@ -177,16 +170,6 @@ def iterative_deepening(start_state, pieces):
 
             explored.add(node.map)
 
-            # if node.state == goal_state:
-            #     goal_node = node
-            #     return stack
-
-            # print(node.move)
-
-            # if (node.move == "rulurdlu"):
-            #     print_board(node.state)
-            #     return 
-
             if (check_end(node.pieces)):
                 print("Solution: {}".format(node.move))
                 print_board(node.state)
@@ -230,9 +213,6 @@ def expand(node):
         neighbours.append(move(node, "d"))
         neighbours.append(move(node, "r"))
         neighbours.append(move(node, "l"))
-
-    # print_board(node.state)
-    # neighbours.append(State(move(node, "u"), node, "u", node.depth + 1, node.cost + 1, 0))
     
     return neighbours
 
@@ -269,13 +249,11 @@ def move(node, offset):
         new_node.state[cur_row * size_board + cur_col] = "."
         new_node.state[newCoords[0] * size_board + newCoords[1]] = new_node.pieces[i].movable_symbol
 
-    # print("New Node Move: {}".format(new_node.move))
     new_node.calc_map()
 
     new_node.parent = node
     new_node.move = new_node.parent.move + offset
     new_node.depth = new_node.parent.depth + 1
-    # print("Map: {}".format(new_node.map))
     return new_node
 
 
@@ -362,8 +340,6 @@ def player_loop():
     print_board(board)
 
     while (True):
-        # print("beginning of while - cur move: {}".format(len(current_move)))
-
         if (check_end(pieces)):
             print("Level Completed!")
             break
@@ -373,8 +349,6 @@ def player_loop():
 
         if (new_move == "undo" and found_first_undo == False):
             found_first_undo = True
-            # print(len(current_move))
-            # undo_move(current_move, board, pieces)
             board = previous_board
             pieces = previous_pieces
             current_move = current_move[:-1]
@@ -401,9 +375,6 @@ def player_loop():
 
 
 def execute_move(move_sequence, board, pieces):
-
-    # mutable_board = deepcopy(board)
-    # mutable_pieces = deepcopy(pieces)
     
     for move in move_sequence:
 
@@ -437,11 +408,10 @@ def execute_move(move_sequence, board, pieces):
     print_board(board)
 
 
-# -----------------------------------------
-# main_log = open('mem_usage.log', 'w+')
-# @profile(stream = main_log)
-def main():
+# --------------------------------------------------------------------------------------------------
 
+
+def main():
     print("[0] Player")
     print("[1] AI")
     play_choice = input("Game mode: ")
@@ -461,12 +431,8 @@ def main():
     bfs(board, pieces)
     end = time.time()
     end_mem = memory_usage()[0]
-
-
     bfs_exec_time =  (end - start)*1000
     bfs_mem_usage = (end_mem - start_mem)
-
-
 
     print("Using DFS:")
     start_mem = memory_usage()[0]
@@ -474,10 +440,8 @@ def main():
     dfs(board, pieces)
     end = time.time()
     end_mem = memory_usage()[0]
-
     dfs_exec_time =  (end - start)*1000
     dfs_mem_usage = (end_mem - start_mem)
-
 
     print("Using Iterative Deepening:")
     start_mem = memory_usage()[0]
@@ -485,7 +449,6 @@ def main():
     iterative_deepening(board, pieces)
     end = time.time()
     end_mem = memory_usage()[0]
-
     ids_exec_time =  (end - start)*1000
     ids_mem_usage = (end_mem - start_mem)
 
@@ -495,33 +458,17 @@ def main():
     a_star(board, pieces)
     end = time.time()
     end_mem = memory_usage()[0]
-
     a_star_exec_time =  (end - start)*1000
     a_star_mem_usage = (end_mem - start_mem)
 
     print("BFS execution time: ", bfs_exec_time, "ms")
     print("BFS memory Usage: ",  bfs_mem_usage, "MB")
-
     print("DFS execution time: ", dfs_exec_time, "ms")
     print("DFS memory Usage: ",  dfs_mem_usage, "MB")
-
     print("IDS execution time: ", ids_exec_time, "ms")
     print("IDS memory Usage: ",  ids_mem_usage, "MB")
-
     print("A* execution time: ", a_star_exec_time, "ms")
     print("A* memory Usage: ",  a_star_mem_usage, "MB")
-
-
-    # curRow = pieces[0].movable_row
-    # curCol = pieces[0].movable_col
-    # rowMov = 0
-    # colMov = 1
-        
-    # returned_array = getNewPiecePosition(board, curRow, curCol, rowMov, colMov)
-
-    # print("Returned: [{}, {}]".format(returned_array[0], returned_array[1]))
-
-
 
 
 main()
