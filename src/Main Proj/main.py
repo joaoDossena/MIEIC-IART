@@ -46,7 +46,7 @@ def bfs(start_state, pieces):
         if (check_end(node.pieces)):
             print("Solution: {}".format(node.move))
             print_board(node.state)
-            break
+            return node.move
 
         neighbours = expand(node)
 
@@ -70,7 +70,7 @@ def dfs(start_state, pieces):
         if (check_end(node.pieces)):
             print("Solution: {}".format(node.move))
             print_board(node.state)
-            break
+            return node.move
 
         neighbors = reversed(expand(node))
 
@@ -118,7 +118,7 @@ def a_star(start_state, pieces):
         if (check_end(node[2].pieces)):
             print("Solution: {}".format(node[2].move))
             print_board(node[2].state)
-            break
+            return node[2].move
 
         neighbors = expand(node[2])
 
@@ -173,7 +173,7 @@ def iterative_deepening(start_state, pieces):
             if (check_end(node.pieces)):
                 print("Solution: {}".format(node.move))
                 print_board(node.state)
-                return
+                return node.move
             
 
             neighbors = reversed(expand(node))
@@ -426,49 +426,49 @@ def main():
     print_board(board)
 
     print("Using BFS:")
-    start_mem = memory_usage()[0]
+    # start_mem = memory_usage()[0]
     start = time.time()
-    bfs(board, pieces)
+    bfs_sol = bfs(board, pieces)
     end = time.time()
-    end_mem = memory_usage()[0]
+    # end_mem = memory_usage()[0]
     bfs_exec_time =  (end - start)*1000
-    bfs_mem_usage = (end_mem - start_mem)
+    # bfs_mem_usage = (end_mem - start_mem)
 
     print("Using DFS:")
-    start_mem = memory_usage()[0]
+    # start_mem = memory_usage()[0]
     start = time.time()
-    dfs(board, pieces)
+    dfs_sol = dfs(board, pieces)
     end = time.time()
-    end_mem = memory_usage()[0]
+    # end_mem = memory_usage()[0]
     dfs_exec_time =  (end - start)*1000
-    dfs_mem_usage = (end_mem - start_mem)
+    # dfs_mem_usage = (end_mem - start_mem)
 
     print("Using Iterative Deepening:")
-    start_mem = memory_usage()[0]
+    # start_mem = memory_usage()[0]
     start = time.time()
-    iterative_deepening(board, pieces)
+    ids_sol = iterative_deepening(board, pieces)
     end = time.time()
-    end_mem = memory_usage()[0]
+    # end_mem = memory_usage()[0]
     ids_exec_time =  (end - start)*1000
-    ids_mem_usage = (end_mem - start_mem)
+    # ids_mem_usage = (end_mem - start_mem)
 
     print("Using A*:")
-    start_mem = memory_usage()[0]
+    # start_mem = memory_usage()[0]
     start = time.time()
-    a_star(board, pieces)
+    a_star_sol = a_star(board, pieces)
     end = time.time()
-    end_mem = memory_usage()[0]
+    # end_mem = memory_usage()[0]
     a_star_exec_time =  (end - start)*1000
-    a_star_mem_usage = (end_mem - start_mem)
+    # a_star_mem_usage = (end_mem - start_mem)
 
     print("BFS execution time: ", bfs_exec_time, "ms")
-    print("BFS memory Usage: ",  bfs_mem_usage, "MB")
+    # print("BFS memory Usage: ",  bfs_mem_usage, "MB")
     print("DFS execution time: ", dfs_exec_time, "ms")
-    print("DFS memory Usage: ",  dfs_mem_usage, "MB")
+    # print("DFS memory Usage: ",  dfs_mem_usage, "MB")
     print("IDS execution time: ", ids_exec_time, "ms")
-    print("IDS memory Usage: ",  ids_mem_usage, "MB")
+    # print("IDS memory Usage: ",  ids_mem_usage, "MB")
     print("A* execution time: ", a_star_exec_time, "ms")
-    print("A* memory Usage: ",  a_star_mem_usage, "MB")
+    # print("A* memory Usage: ",  a_star_mem_usage, "MB")
 
 
 main()
