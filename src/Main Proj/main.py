@@ -331,10 +331,7 @@ def read_move():
         print("Illegal move!")
 
 
-def player_loop():
-
-    (board, pieces) = levels.lvl1()
-
+def player_loop(board, pieces):
     previous_board = deepcopy(board)
     previous_pieces = deepcopy(pieces)
 
@@ -422,17 +419,24 @@ def execute_move(move_sequence, board, pieces):
 # --------------------------------------------------------------------------------------------------
 
 def main():
+
+    for i in range(4):
+        print("[{}] Level {}".format(i + 1, i + 1))
+
+    lvl = input("Level: ")
+    lvl = getattr(levels, 'lvl' + str(lvl))
+    (board, pieces) = lvl()
+
     print("[0] Player")
     print("[1] AI")
     play_choice = input("Game mode: ")
 
     if (play_choice == "0"):
-        player_loop()
+        player_loop(board, pieces)
         return
     
-    # for i in range (0, 2):
-    #     lvl = getattr(levels, 'lvl' + str(i))
-    (board, pieces) = levels.lvl4()
+
+    
     print_board(board)
     global nodes_expanded
     nodes_expanded = 0 
