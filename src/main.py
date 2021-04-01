@@ -15,6 +15,7 @@ initial_state = list()
 max_frontier_size = 0
 nodes_expanded = 0
 max_search_depth = 1
+debug = False
 
 def print_board(board):
     side_len = int(len(board) ** 0.5)
@@ -210,7 +211,9 @@ def iterative_deepening(start_state, pieces):
 
 
 def expand(node):
-    print("Expanding node: {} Depth: {}".format(node.move, node.depth))
+    global debug
+    if(debug):
+        print("Expanding node: {} Depth: {}".format(node.move, node.depth))
 
     global nodes_expanded
     nodes_expanded += 1
@@ -429,21 +432,30 @@ def execute_move(move_sequence, board, pieces):
 # --------------------------------------------------------------------------------------------------
 
 def main():
+    global debug
 
-    for i in range(22):
-        print("[{}] Level {}".format(i + 1, i + 1))
+    while(True):
+        print("Choose a Level between 1 and 25:")
+        lvl = input("Level: ")
+        if(int(lvl) > 0 and int(lvl) < 26): break
 
-    lvl = input("Level: ")
     lvl = getattr(levels, 'lvl' + str(lvl))
     (board, pieces) = lvl()
 
-    print("[0] Player")
-    print("[1] AI")
-    play_choice = input("Game mode: ")
+
+    while(True):
+        print("[0] Player")
+        print("[1] AI")
+        play_choice = input("Game mode: ")
+        if(int(play_choice) == 0 or int(play_choice) == 1): break
 
     if (play_choice == "0"):
         player_loop(board, pieces)
         return
+
+    debug_str = input("Show expanding nodes? (y/N)")
+    if(debug_str == "y"): debug = True
+
     
 
     

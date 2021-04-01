@@ -228,3 +228,33 @@ def lvl22(): # Level 22 -> 9 moves for perfect score
     ]
     pcs = [pieces.Piece("p", 0, 1, 2, 3), pieces.Piece("t", 1, 1, 1, 3)]
     return (board, pcs)
+
+def lvl23():
+    board = [
+        ".", "T", "p", "=", 
+        ".", "=", ".", "t",
+        ".", ".", "P", ".",
+        ".", "=", "=", "=",
+    ]
+    pcs = [pieces.Piece("p", 0, 2, 2, 2), pieces.Piece("t", 1, 3, 0, 1)]
+    return (board, pcs)
+
+def lvl24():
+    board = [
+        "p", ".", "T", "P", 
+        "=", ".", ".", ".",
+        ".", ".", "t", ".",
+        ".", "=", "=", ".",
+    ]
+    pcs = [pieces.Piece("p", 0, 0, 0, 3), pieces.Piece("t", 2, 2, 0, 2)]
+    return (board, pcs)
+
+def lvl25():
+    board = [
+        ".", "t", "p", ".", 
+        ".", ".", "=", "=",
+        ".", ".", ".", ".",
+        "P", "T", ".", "=",
+    ]
+    pcs = [pieces.Piece("p", 0, 2, 3, 0), pieces.Piece("t", 0, 1, 3, 1)]
+    return (board, pcs)
