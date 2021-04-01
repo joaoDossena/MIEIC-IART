@@ -321,11 +321,11 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
 def read_move():
     while(True):
         print("Choose your move:")
-        print("up -> u | down -> d | left -> l | right -> r | undo | restart")
+        print("up -> u | down -> d | left -> l | right -> r | undo | restart | hint -> h")
         move = input("> ")
         move.lower()
 
-        if(move in ["u", "d", "l", "r", "undo", "restart"]):
+        if(move in ["u", "d", "l", "r", "undo", "restart", "h"]):
             return move
 
         print("Illegal move!")
@@ -370,6 +370,10 @@ def player_loop():
             board = original_board
             pieces = original_pieces
             current_move = ""
+
+        elif (new_move == "h"):
+            hint = a_star(board, pieces)
+            print("Hint: ", hint[0])
 
         else:
             found_first_undo = False
