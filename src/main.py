@@ -93,7 +93,7 @@ def dfs(start_state, pieces):
         if len(stack) > max_frontier_size:
             max_frontier_size = len(stack)
 
-def h(state):
+def euclidian_distance(state):
     cost = 1
 
     for i in range(len(state.pieces)):
@@ -101,7 +101,17 @@ def h(state):
 
     return cost
 
-def a_star(start_state, pieces):
+def min_string(state):
+    cost = 1
+
+    for i in range(len(state.pieces)):
+        cost += ((state.pieces[i].movable_row - state.pieces[i].dest_row)**2 + (state.pieces[i].movable_col - state.pieces[i].dest_col)**2)**1/2
+
+    cost += state.depth**2
+
+    return cost
+
+def a_star(start_state, pieces, heuristic):
 
     global max_frontier_size, goal_node, max_search_depth
 
@@ -109,7 +119,7 @@ def a_star(start_state, pieces):
 
     root = State(start_state, None, "", 0, 0, 0, pieces)
 
-    key = h(root)
+    key = heuristic(root)
 
     root.key = key
 
@@ -133,7 +143,7 @@ def a_star(start_state, pieces):
         for neighbor in neighbors:
 
             
-            neighbor.key = neighbor.cost + h(neighbor)
+            neighbor.key = neighbor.cost + heuristic(neighbor)
 
             entry = (neighbor.key, neighbor.move, neighbor)
 
@@ -369,7 +379,7 @@ def player_loop(board, pieces):
             current_move = ""
 
         elif (new_move == "h"):
-            hint = a_star(board, pieces)
+            hint = a_star(board, pieces, min_string)
             print("Hint: ", hint[0])
 
         else:
@@ -420,7 +430,7 @@ def execute_move(move_sequence, board, pieces):
 
 def main():
 
-    for i in range(4):
+    for i in range(22):
         print("[{}] Level {}".format(i + 1, i + 1))
 
     lvl = input("Level: ")
@@ -473,11 +483,22 @@ def main():
     ids_nodes = nodes_expanded
     ids_mem_usage = (end_mem - start_mem)
 
+    print("Using Greedy:")
+    nodes_expanded = 0
+    start_mem = memory_usage()[0]
+    start = time.time()
+    greedy_sol = a_star(board, pieces, euclidian_distance)
+    end = time.time()
+    end_mem = memory_usage()[0]
+    greedy_exec_time =  (end - start)*1000
+    greedy_nodes = nodes_expanded
+    greedy_mem_usage = (end_mem - start_mem)
+
     print("Using A*:")
     nodes_expanded = 0
     start_mem = memory_usage()[0]
     start = time.time()
-    a_star_sol = a_star(board, pieces)
+    a_star_sol = a_star(board, pieces, min_string)
     end = time.time()
     end_mem = memory_usage()[0]
     a_star_exec_time =  (end - start)*1000
@@ -488,6 +509,7 @@ def main():
                  ("BFS",       str(len(bfs_sol)),   bfs_sol,    str(round(bfs_exec_time)),    str(bfs_nodes),      str(bfs_mem_usage)),                 
                  ("DFS",       str(len(dfs_sol)),   dfs_sol,    str(round(dfs_exec_time)),    str(dfs_nodes),      str(dfs_mem_usage)),
                  ("IDS",       str(len(ids_sol)),   ids_sol,    str(round(ids_exec_time)),    str(ids_nodes),      str(ids_mem_usage)),
+                 ("GREEDY",      str(len(greedy_sol)),  greedy_sol, str(round(greedy_exec_time)), str(greedy_nodes),   str(greedy_mem_usage)),
                  ("A*",      str(len(a_star_sol)),  a_star_sol, str(round(a_star_exec_time)), str(a_star_nodes),   str(a_star_mem_usage)),
     ])
 
