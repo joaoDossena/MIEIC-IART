@@ -105,9 +105,9 @@ def dfs(start_state, pieces):
             max_frontier_size = len(stack)
 
 # Receives a state.State
-# Calculates the euclidian distance between the pieces and adds 1 for the cost of the move
+# Calculates the euclidean distance between the pieces and adds 1 for the cost of the move
 # Returns said calculation
-def euclidian_distance(state):
+def euclidean_distance(state):
     cost = 1
 
     for i in range(len(state.pieces)):
@@ -116,7 +116,7 @@ def euclidian_distance(state):
     return cost
 
 # Receives a state.State
-# Calculates the euclidian distance between the pieces, adds 1 for the cost of the move,
+# Calculates the euclidean distance between the pieces, adds 1 for the cost of the move,
 # and adds the state depth squared so that it finds the best answer
 # Returns said calculation
 def min_string(state):
@@ -491,7 +491,7 @@ def main():
     if(debug_str == "y"): debug = True
     
     print_board(board)
-    
+
     global nodes_expanded
     nodes_expanded = 0 
 
@@ -531,7 +531,7 @@ def main():
     nodes_expanded = 0
     start_mem = memory_usage()[0]
     start = time.time()
-    greedy_sol = a_star(board, pieces, euclidian_distance)
+    greedy_sol = a_star(board, pieces, euclidean_distance)
     end = time.time()
     end_mem = memory_usage()[0]
     greedy_exec_time =  (end - start)*1000
