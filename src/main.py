@@ -7,7 +7,6 @@ import levels
 from heapq import heappush, heappop, heapify
 
 import time
-import resource
 from memory_profiler import memory_usage
 
 initial_state = list()
@@ -17,6 +16,9 @@ nodes_expanded = 0
 max_search_depth = 1
 debug = False
 
+# Receives 2D matrix
+# Prints matrix as a nice board
+# Returns nothing
 def print_board(board):
     side_len = int(len(board) ** 0.5)
     for i in range(side_len):
@@ -24,23 +26,28 @@ def print_board(board):
             print(board[i * side_len + j] + " ", end="")
         print()
 
-# Prints a list of tuples of strings as a nice table
+# Receives list of tuples of strings
+# Prints said argument as a nice table
+# Returns nothing
 def print_table(table):
     col_width = [max(len(x) for x in col) for col in zip(*table)]
     for line in table:
         print ("| " + " | ".join("{:{}}".format(x, col_width[i])
                                 for i, x in enumerate(line)) + " |")
 
-
+# Receives list of pieces.Piece
 # Checks if every movable piece has reached its destination
+# Returns boolean
 def check_end(pieces):
     for i in range(len(pieces)):
         # accesses tuple on same pos of movable and destination arrays and compares x and y coords
         if (pieces[i].check_coords_inequality()):
             return False
-
     return True
 
+# Receives initial state.State and a list of pieces.Piece
+# Does a Breadth First Search on the tree generated from the initial state
+# Returns solution string with its moves
 def bfs(start_state, pieces):
 
     global goal_node, max_search_depth
@@ -65,6 +72,9 @@ def bfs(start_state, pieces):
                 if neighbour.depth > max_search_depth:
                     max_search_depth += 1
 
+# Receives initial state.State and a list of pieces.Piece
+# Does a Depth First Search on the tree generated from the initial state
+# Returns solution string with its moves
 def dfs(start_state, pieces):
 
     global max_frontier_size, goal_node, max_search_depth
@@ -94,6 +104,9 @@ def dfs(start_state, pieces):
         if len(stack) > max_frontier_size:
             max_frontier_size = len(stack)
 
+# Receives a state.State
+# Calculates the euclidian distance between the pieces and adds 1 for the cost of the move
+# Returns said calculation
 def euclidian_distance(state):
     cost = 1
 
@@ -102,6 +115,10 @@ def euclidian_distance(state):
 
     return cost
 
+# Receives a state.State
+# Calculates the euclidian distance between the pieces, adds 1 for the cost of the move,
+# and adds the state depth squared so that it finds the best answer
+# Returns said calculation
 def min_string(state):
     cost = 1
 
@@ -112,6 +129,9 @@ def min_string(state):
 
     return cost
 
+# Receives initial state.State, a list of pieces.Piece, and a heuristic function
+# Does a A* Search on the tree generated from the initial state, using the given heuristic function
+# Returns solution string with its moves
 def a_star(start_state, pieces, heuristic):
 
     global max_frontier_size, goal_node, max_search_depth
@@ -175,6 +195,9 @@ def a_star(start_state, pieces, heuristic):
             max_frontier_size = len(heap)
 
 
+# Receives initial state.State and a list of pieces.Piece
+# Does a Iterative Deepening Search on the tree generated from the initial state
+# Returns solution string with its moves
 def iterative_deepening(start_state, pieces):
     global max_frontier_size, goal_node, max_search_depth
 
@@ -209,7 +232,9 @@ def iterative_deepening(start_state, pieces):
                 max_frontier_size = len(stack)
         current_search_depth += 1
 
-
+# Receives node state.State
+# Calculates its children, here called neighbors
+# Returns list of children
 def expand(node):
     global debug
     if(debug):
@@ -237,7 +262,9 @@ def expand(node):
     
     return neighbours
 
-
+# Receives node state.State and offset
+# Performs adequate move
+# Returns new node
 def move(node, offset):
 
     new_node = deepcopy(node)
@@ -277,9 +304,9 @@ def move(node, offset):
     new_node.depth = new_node.parent.depth + 1
     return new_node
 
-
-# -----------------------------------------
-
+# Receives list of pieces.Piece and move character
+# Sorts list of pieces by the correct order so as to not have movement problems with the order
+# Returns nothing
 def sort_pieces(pieces, move):
     if (move == "u"):
         pieces.sort(key=lambda x: x.movable_row, reverse=False)
@@ -290,18 +317,21 @@ def sort_pieces(pieces, move):
     elif (move == "r"):
         pieces.sort(key=lambda x: x.movable_col, reverse=True)
 
+# Receives board, current row and current column of piece
+# Returns new position after move
 def moveUp(board, cur_row, cur_col):
     return getNewPiecePosition(board, cur_row, cur_col, -1, 0)
-
 def moveDown(board, cur_row, cur_col):
     return getNewPiecePosition(board, cur_row, cur_col, 1, 0)
-
 def moveLeft(board, cur_row, cur_col):
     return getNewPiecePosition(board, cur_row, cur_col, 0, -1)
-
 def moveRight(board, cur_row, cur_col):
     return getNewPiecePosition(board, cur_row, cur_col, 0, 1)
 
+
+# Receives board, piece current row, piece current column, row move and column move 
+# Calculates new position after move
+# Returns new position calculated
 def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
     size_board = int(len(board) ** 0.5)
 
@@ -311,8 +341,6 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
     newCol = curCol
 
     while (True):
-        # print("Row: {} Col: {}".format(newRow, newCol))
-
         calc_pos = size_board * (newRow + rowMov) + newCol + colMov
 
         if (calc_pos >= 0 and calc_pos < len(board) and newRow + rowMov >= 0 and newRow + rowMov < size_board and newCol + colMov >= 0 and newCol + colMov < size_board):
@@ -325,12 +353,14 @@ def getNewPiecePosition(board, curRow, curCol, rowMov, colMov):
         else:
             break
     
-    # print("Returning: {} {}".format(newRow, newCol))
     return [newRow, newCol]
 
 
 # -----------------------------------------
 
+# Receives nothing
+# Reads move from human player
+# Returns move read
 def read_move():
     while(True):
         print("Choose your move:")
@@ -343,7 +373,9 @@ def read_move():
 
         print("Illegal move!")
 
-
+# Receives board and list of pieces.Piece
+# Allows human player to play until they win
+# Returns nothing
 def player_loop(board, pieces):
     previous_board = deepcopy(board)
     previous_pieces = deepcopy(pieces)
@@ -395,7 +427,9 @@ def player_loop(board, pieces):
         print("Current Move Sequence: {}".format(current_move))
         execute_move(current_move, board, pieces)
 
-
+# Receives a move sequence, the board, and a list of pieces.Piece
+# Executes all moves in the sequence
+# Returns nothing
 def execute_move(move_sequence, board, pieces):
     
     for move in move_sequence:
@@ -455,11 +489,9 @@ def main():
 
     debug_str = input("Show expanding nodes? (y/N)")
     if(debug_str == "y"): debug = True
-
-    
-
     
     print_board(board)
+    
     global nodes_expanded
     nodes_expanded = 0 
 
