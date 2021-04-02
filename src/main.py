@@ -275,26 +275,26 @@ def move(node, offset):
         cur_col = new_node.pieces[i].movable_col
 
         if (offset == "u"):
-            newCoords = moveUp(new_node.state, cur_row, cur_col)
+            newCoords = moveUp(new_node.board, cur_row, cur_col)
             new_node.pieces[i].movable_row = newCoords[0]
 
         elif (offset == "d"):
-            newCoords = moveDown(new_node.state, cur_row, cur_col)
+            newCoords = moveDown(new_node.board, cur_row, cur_col)
             new_node.pieces[i].movable_row = newCoords[0]
 
         elif (offset == "l"):
-            newCoords = moveLeft(new_node.state, cur_row, cur_col)
+            newCoords = moveLeft(new_node.board, cur_row, cur_col)
             new_node.pieces[i].movable_col = newCoords[1]
 
         elif (offset == "r"):
             # print("Row: {} Col: {}".format(cur_row, cur_col))
-            newCoords = moveRight(new_node.state, cur_row, cur_col)
+            newCoords = moveRight(new_node.board, cur_row, cur_col)
             # print(newCoords)
             new_node.pieces[i].movable_col = newCoords[1]
             
-        size_board = int(len(new_node.state) ** 0.5)
-        new_node.state[cur_row * size_board + cur_col] = "."
-        new_node.state[newCoords[0] * size_board + newCoords[1]] = new_node.pieces[i].movable_symbol
+        size_board = int(len(new_node.board) ** 0.5)
+        new_node.board[cur_row * size_board + cur_col] = "."
+        new_node.board[newCoords[0] * size_board + newCoords[1]] = new_node.pieces[i].movable_symbol
 
     new_node.calc_map()
 
