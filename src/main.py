@@ -60,7 +60,7 @@ def bfs(start_state, pieces):
         explored.add(node.map)
 
         if (check_end(node.pieces)):
-            print_board(node.state)
+            print("Solution Found!")
             return node.move
 
         neighbours = expand(node)
@@ -86,7 +86,7 @@ def dfs(start_state, pieces):
         explored.add(node.map)
 
         if (check_end(node.pieces)):
-            print_board(node.state)
+            print("Solution Found!")
             return node.move
 
         neighbors = reversed(expand(node))
@@ -153,7 +153,7 @@ def a_star(start_state, pieces, heuristic):
         node = heappop(heap)
         explored.add(node[2].map)
         if (check_end(node[2].pieces)):
-            print_board(node[2].state)
+            print("Solution Found!")
             return node[2].move
 
         neighbors = expand(node[2])
@@ -210,7 +210,7 @@ def iterative_deepening(start_state, pieces):
             explored.add(node.map)
 
             if (check_end(node.pieces)):
-                print_board(node.state)
+                print("Solution Found!")
                 return node.move
             
 
