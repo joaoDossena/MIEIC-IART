@@ -60,7 +60,6 @@ def bfs(start_state, pieces):
         explored.add(node.map)
 
         if (check_end(node.pieces)):
-            print("Solution: {}".format(node.move))
             print_board(node.state)
             return node.move
 
@@ -87,7 +86,6 @@ def dfs(start_state, pieces):
         explored.add(node.map)
 
         if (check_end(node.pieces)):
-            print("Solution: {}".format(node.move))
             print_board(node.state)
             return node.move
 
@@ -155,7 +153,6 @@ def a_star(start_state, pieces, heuristic):
         node = heappop(heap)
         explored.add(node[2].map)
         if (check_end(node[2].pieces)):
-            print("Solution: {}".format(node[2].move))
             print_board(node[2].state)
             return node[2].move
 
@@ -213,7 +210,6 @@ def iterative_deepening(start_state, pieces):
             explored.add(node.map)
 
             if (check_end(node.pieces)):
-                print("Solution: {}".format(node.move))
                 print_board(node.state)
                 return node.move
             
@@ -431,35 +427,38 @@ def player_loop(board, pieces):
 # Executes all moves in the sequence
 # Returns nothing
 def execute_move(move_sequence, board, pieces):
+
+    move = move_sequence[-1]
+
+    sort_pieces(pieces, move)
+
+    for i in range(len(pieces)):
+        cur_row = pieces[i].movable_row
+        cur_col = pieces[i].movable_col
+
+        if (move == "u"):
+            newCoords = moveUp(board, cur_row, cur_col)
+            pieces[i].movable_row = newCoords[0]
+
+        elif (move == "d"):
+            newCoords = moveDown(board, cur_row, cur_col)
+            pieces[i].movable_row = newCoords[0]
+
+        elif (move == "l"):
+            newCoords = moveLeft(board, cur_row, cur_col)
+            pieces[i].movable_col = newCoords[1]
+
+        elif (move == "r"):
+            newCoords = moveRight(board, cur_row, cur_col)
+            pieces[i].movable_col = newCoords[1]
+        
+        size_board = int(len(board) ** 0.5)
+        board[cur_row * size_board + cur_col] = "."
+        board[newCoords[0] * size_board + newCoords[1]] = pieces[i].movable_symbol
     
-    for move in move_sequence:
-
-        sort_pieces(pieces, move)
-
-        for i in range(len(pieces)):
-            cur_row = pieces[i].movable_row
-            cur_col = pieces[i].movable_col
-
-            if (move == "u"):
-                newCoords = moveUp(board, cur_row, cur_col)
-                pieces[i].movable_row = newCoords[0]
-
-            elif (move == "d"):
-                newCoords = moveDown(board, cur_row, cur_col)
-                pieces[i].movable_row = newCoords[0]
-
-            elif (move == "l"):
-                newCoords = moveLeft(board, cur_row, cur_col)
-                pieces[i].movable_col = newCoords[1]
-
-            elif (move == "r"):
-                newCoords = moveRight(board, cur_row, cur_col)
-                pieces[i].movable_col = newCoords[1]
-            
-            size_board = int(len(board) ** 0.5)
-            board[cur_row * size_board + cur_col] = "."
+    for i in range(len(pieces)):
+        if (board[pieces[i].dest_row * size_board + pieces[i].dest_col] == "."):
             board[pieces[i].dest_row * size_board + pieces[i].dest_col] = pieces[i].dest_symbol
-            board[newCoords[0] * size_board + newCoords[1]] = pieces[i].movable_symbol
     
     print_board(board)
 
