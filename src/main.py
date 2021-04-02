@@ -21,10 +21,13 @@ debug = False
 # Returns nothing
 def print_board(board):
     side_len = int(len(board) ** 0.5)
+    print( (side_len * 2 + 3) * "-")
     for i in range(side_len):
+        print("| ", end="")
         for j in range(side_len):
             print(board[i * side_len + j] + " ", end="")
-        print()
+        print("|")
+    print( (side_len * 2 + 3) * "-")
 
 # Receives list of tuples of strings
 # Prints said argument as a nice table
