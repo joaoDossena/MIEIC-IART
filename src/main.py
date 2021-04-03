@@ -503,7 +503,7 @@ def main():
     end_mem = memory_usage()[0]
     bfs_exec_time =  (end - start)*1000
     bfs_nodes = nodes_expanded
-    bfs_mem_usage = (end_mem - start_mem)
+    bfs_mem_usage = (end_mem - start_mem)*1024
 
     print("Using DFS:")
     nodes_expanded = 0 
@@ -514,7 +514,7 @@ def main():
     end_mem = memory_usage()[0]
     dfs_exec_time =  (end - start)*1000
     dfs_nodes = nodes_expanded
-    dfs_mem_usage = (end_mem - start_mem)
+    dfs_mem_usage = (end_mem - start_mem)*1024
 
     print("Using Iterative Deepening:")
     nodes_expanded = 0 
@@ -525,7 +525,7 @@ def main():
     end_mem = memory_usage()[0]
     ids_exec_time =  (end - start)*1000
     ids_nodes = nodes_expanded
-    ids_mem_usage = (end_mem - start_mem)
+    ids_mem_usage = (end_mem - start_mem)*1024
 
     print("Using Greedy:")
     nodes_expanded = 0
@@ -536,7 +536,7 @@ def main():
     end_mem = memory_usage()[0]
     greedy_exec_time =  (end - start)*1000
     greedy_nodes = nodes_expanded
-    greedy_mem_usage = (end_mem - start_mem)
+    greedy_mem_usage = (end_mem - start_mem)*1024
 
     print("Using A*:")
     nodes_expanded = 0
@@ -547,13 +547,13 @@ def main():
     end_mem = memory_usage()[0]
     a_star_exec_time =  (end - start)*1000
     a_star_nodes = nodes_expanded
-    a_star_mem_usage = (end_mem - start_mem)
+    a_star_mem_usage = (end_mem - start_mem)*1024
 
-    print_table([("Alg.",          "Moves",        "Sol.",        "Exec Time(ms)",            "Nodes Exp.",        "Mem. Usage(MiB)"),
+    print_table([("Alg.",          "Moves",        "Sol.",        "Exec Time(ms)",            "Nodes Exp.",        "Mem. Usage(KiB)"),
                  ("BFS",       str(len(bfs_sol)),   bfs_sol,    str(round(bfs_exec_time)),    str(bfs_nodes),      str(bfs_mem_usage)),                 
                  ("DFS",       str(len(dfs_sol)),   dfs_sol,    str(round(dfs_exec_time)),    str(dfs_nodes),      str(dfs_mem_usage)),
                  ("IDS",       str(len(ids_sol)),   ids_sol,    str(round(ids_exec_time)),    str(ids_nodes),      str(ids_mem_usage)),
-                 ("GREEDY",      str(len(greedy_sol)),  greedy_sol, str(round(greedy_exec_time)), str(greedy_nodes),   str(greedy_mem_usage)),
+                 ("GREEDY",  str(len(greedy_sol)),  greedy_sol, str(round(greedy_exec_time)), str(greedy_nodes),   str(greedy_mem_usage)),
                  ("A*",      str(len(a_star_sol)),  a_star_sol, str(round(a_star_exec_time)), str(a_star_nodes),   str(a_star_mem_usage)),
     ])
 
