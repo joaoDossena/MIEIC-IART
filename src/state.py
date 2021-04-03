@@ -1,8 +1,8 @@
 class State:
 
-    def __init__(self, state, parent, move, depth, cost, key, pieces):
+    def __init__(self, board, parent, move, depth, cost, key, pieces):
 
-        self.state = state
+        self.board = board
 
         self.parent = parent
 
@@ -16,14 +16,14 @@ class State:
 
         self.pieces = pieces
 
-        if self.state:
-            self.map = ''.join(str(e) for e in self.state)
+        if self.board:
+            self.map = ''.join(str(e) for e in self.board)
     
     def __str__(self):
-        return ''.join(str(e) for e in self.state) + " " + str(len(self.pieces))
+        return ''.join(str(e) for e in self.board) + " " + str(len(self.pieces))
 
 
     def calc_map(self):
-        self.map = ''.join(str(e) for e in self.state)
+        self.map = ''.join(str(e) for e in self.board)
 
 
