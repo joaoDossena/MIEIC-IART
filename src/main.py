@@ -2,7 +2,6 @@ from collections import deque
 from state import State
 from pieces import Piece
 from copy import deepcopy
-import itertools
 import levels
 from heapq import heappush, heappop, heapify
 
@@ -11,7 +10,6 @@ from memory_profiler import memory_usage
 
 initial_state = list()
 
-max_frontier_size = 0
 nodes_expanded = 0
 max_search_depth = 1
 debug = False
@@ -52,18 +50,12 @@ def check_end(pieces):
 # Does a Breadth First Search on the tree generated from the initial state
 # Returns solution string with its moves
 def bfs(start_state, pieces):
-
-    global goal_node, max_search_depth
     
     explored, queue = set(), deque([State(start_state, None, "", 0, 0, 0, pieces)])
 
     while queue:
-        for n in range(len(queue)):
-            print(queue[n].move, end=" ")
-        print()
 
         node = queue.popleft()
-        # print(node.move)
         explored.add(node.map)
 
         if (check_end(node.pieces)):
@@ -71,31 +63,19 @@ def bfs(start_state, pieces):
             return node.move
 
         neighbours = expand(node)
-        # print("Len: {}".format(len(neighbours)))
-        # for n in neighbours:
-        #     print(n.move, end=" ")
-
-        # print()
 
         for neighbour in neighbours:
             if neighbour.map not in explored:
                 queue.append(neighbour)
-                if neighbour.depth > max_search_depth:
-                    max_search_depth += 1
 
 # Receives initial state.State and a list of pieces.Piece
 # Does a Depth First Search on the tree generated from the initial state
 # Returns solution string with its moves
 def dfs(start_state, pieces):
 
-    global max_frontier_size, goal_node, max_search_depth
-
     explored, stack = set(), list([State(start_state, None, "", 0, 0, 0, pieces)])
 
     while stack:
-        for n in range(len(stack)):
-            print(stack[n].move, end=" ")
-        print()
 
         node = stack.pop()
         explored.add(node.map)
@@ -110,12 +90,6 @@ def dfs(start_state, pieces):
             if neighbor.map not in explored:
                 stack.append(neighbor)
                 explored.add(neighbor.map)
-
-                if neighbor.depth > max_search_depth:
-                    max_search_depth += 1
-
-        if len(stack) > max_frontier_size:
-            max_frontier_size = len(stack)
 
 # Receives a state.State
 # Calculates the euclidean distance between the pieces and adds 1 for the cost of the move
@@ -147,9 +121,7 @@ def min_string(state):
 # Returns solution string with its moves
 def a_star(start_state, pieces, heuristic):
 
-    global max_frontier_size, goal_node, max_search_depth
-
-    explored, heap, heap_entry, counter = set(), list(), {}, itertools.count()
+    explored, heap, heap_entry = set(), list(), {}
 
     root = State(start_state, None, "", 0, 0, 0, pieces)
 
@@ -188,9 +160,6 @@ def a_star(start_state, pieces, heuristic):
 
                 heap_entry[neighbor.map] = entry
 
-                if neighbor.depth > max_search_depth:
-                    max_search_depth += 1
-
             elif neighbor.map in heap_entry and neighbor.key < heap_entry[neighbor.map][2].key:
 
                 hindex = heap.index((heap_entry[neighbor.map][2].key,
@@ -203,33 +172,20 @@ def a_star(start_state, pieces, heuristic):
 
                 heapify(heap)
 
-        if len(heap) > max_frontier_size:
-            max_frontier_size = len(heap)
-
 
 # Receives initial state.State and a list of pieces.Piece
 # Does a Iterative Deepening Search on the tree generated from the initial state
 # Returns solution string with its moves
 def iterative_deepening(start_state, pieces):
-    global max_frontier_size, goal_node, max_search_depth
 
     current_search_depth = 1
 
     original = deepcopy(start_state)
 
     while True:
-
-        explored, stack = set(), list([State(original, None, "", 0, 0, 0, pieces)])
+        stack = list([State(original, None, "", 0, 0, 0, pieces)])
         while stack:
-            # print("Current search depth: {}".format(current_search_depth))
-            # for n in range(len(stack)):
-            #     print(stack[n].move, end=" ")
-            # print()
-
             node = stack.pop()
-
-            explored.add(node.map)
-
             if (check_end(node.pieces)):
                 print("Solution Found!")
                 return node.move
@@ -238,25 +194,17 @@ def iterative_deepening(start_state, pieces):
             neighbors = reversed(expand(node))
 
             for neighbor in neighbors:
-                # if neighbor.map not in explored and node.depth < current_search_depth: 
-                if node.depth < current_search_depth:
+                if node.depth < current_search_depth: 
                     stack.append(neighbor)
-                    explored.add(neighbor.map)
-
-                    if neighbor.depth > max_search_depth:
-                        max_search_depth += 1
-
-            # if len(stack) > max_frontier_size:
-            #     max_frontier_size = len(stack)
         current_search_depth += 1
 
 # Receives node state.State
 # Calculates its children, here called neighbors
 # Returns list of children
 def expand(node):
-    # global debug
-    # if(debug):
-    #     print("Expanding node: {} Depth: {}".format(node.move, node.depth))
+    global debug
+    if(debug):
+        print("Expanding node: {} Depth: {}".format(node.move, node.depth))
 
     global nodes_expanded
     nodes_expanded += 1
@@ -265,18 +213,27 @@ def expand(node):
 
     if (node.move != ""):
         if (node.move[-1] == "u" or node.move[-1] == "d"):
-            neighbours.append(move(node, "r"))
-            neighbours.append(move(node, "l"))
+            if(node.map != move(node,'r').map):
+                neighbours.append(move(node, "r"))
+
+            if(node.map != move(node,'l').map):
+                neighbours.append(move(node, "l"))
         
         elif (node.move[-1] == "l" or node.move[-1] == "r"):
-            neighbours.append(move(node, "u"))
-            neighbours.append(move(node, "d"))
+            if(node.map != move(node,'u').map):
+                neighbours.append(move(node, "u"))
+            if(node.map != move(node,'d').map):
+                neighbours.append(move(node, "d"))
     
     else:
-        neighbours.append(move(node, "u"))
-        neighbours.append(move(node, "d"))
-        neighbours.append(move(node, "r"))
-        neighbours.append(move(node, "l"))
+        if(node.map != move(node,'u').map):
+            neighbours.append(move(node, "u"))
+        if(node.map != move(node,'d').map):
+            neighbours.append(move(node, "d"))
+        if(node.map != move(node,'r').map):
+            neighbours.append(move(node, "r"))
+        if(node.map != move(node,'l').map):
+            neighbours.append(move(node, "l"))
     
     return neighbours
 
@@ -306,9 +263,7 @@ def move(node, offset):
             new_node.pieces[i].movable_col = newCoords[1]
 
         elif (offset == "r"):
-            # print("Row: {} Col: {}".format(cur_row, cur_col))
             newCoords = moveRight(new_node.board, cur_row, cur_col)
-            # print(newCoords)
             new_node.pieces[i].movable_col = newCoords[1]
             
         size_board = int(len(new_node.board) ** 0.5)
@@ -516,26 +471,26 @@ def main():
     global nodes_expanded
     nodes_expanded = 0 
 
-    # print("Using BFS:")
-    # start_mem = memory_usage()[0]
-    # start = time.time()
-    # bfs_sol = bfs(board, pieces)
-    # end = time.time()
-    # end_mem = memory_usage()[0]
-    # bfs_exec_time =  (end - start)*1000
-    # bfs_nodes = nodes_expanded
-    # bfs_mem_usage = (end_mem - start_mem)
+    print("Using BFS:")
+    start_mem = memory_usage()[0]
+    start = time.time()
+    bfs_sol = bfs(board, pieces)
+    end = time.time()
+    end_mem = memory_usage()[0]
+    bfs_exec_time =  (end - start)*1000
+    bfs_nodes = nodes_expanded
+    bfs_mem_usage = (end_mem - start_mem)*1024
 
-    # print("Using DFS:")
-    # nodes_expanded = 0 
-    # start_mem = memory_usage()[0]
-    # start = time.time()
-    # dfs_sol = dfs(board, pieces)
-    # end = time.time()
-    # end_mem = memory_usage()[0]
-    # dfs_exec_time =  (end - start)*1000
-    # dfs_nodes = nodes_expanded
-    # dfs_mem_usage = (end_mem - start_mem)
+    print("Using DFS:")
+    nodes_expanded = 0 
+    start_mem = memory_usage()[0]
+    start = time.time()
+    dfs_sol = dfs(board, pieces)
+    end = time.time()
+    end_mem = memory_usage()[0]
+    dfs_exec_time =  (end - start)*1000
+    dfs_nodes = nodes_expanded
+    dfs_mem_usage = (end_mem - start_mem)*1024
 
     print("Using Iterative Deepening:")
     nodes_expanded = 0 
@@ -548,16 +503,16 @@ def main():
     ids_nodes = nodes_expanded
     ids_mem_usage = (end_mem - start_mem)*1024
 
-    # print("Using Greedy:")
-    # nodes_expanded = 0
-    # start_mem = memory_usage()[0]
-    # start = time.time()
-    # greedy_sol = a_star(board, pieces, euclidean_distance)
-    # end = time.time()
-    # end_mem = memory_usage()[0]
-    # greedy_exec_time =  (end - start)*1000
-    # greedy_nodes = nodes_expanded
-    # greedy_mem_usage = (end_mem - start_mem)
+    print("Using Greedy:")
+    nodes_expanded = 0
+    start_mem = memory_usage()[0]
+    start = time.time()
+    greedy_sol = a_star(board, pieces, euclidean_distance)
+    end = time.time()
+    end_mem = memory_usage()[0]
+    greedy_exec_time =  (end - start)*1000
+    greedy_nodes = nodes_expanded
+    greedy_mem_usage = (end_mem - start_mem)*1024
 
     print("Using A*:")
     nodes_expanded = 0
@@ -570,11 +525,11 @@ def main():
     a_star_nodes = nodes_expanded
     a_star_mem_usage = (end_mem - start_mem)*1024
 
-    print_table([("Alg.",          "Moves",        "Sol.",        "Exec Time(ms)",            "Nodes Exp.",        "Mem. Usage(MiB)"),
-                #  ("BFS",       str(len(bfs_sol)),   bfs_sol,    str(round(bfs_exec_time)),    str(bfs_nodes),      str(bfs_mem_usage)),                 
-                #  ("DFS",       str(len(dfs_sol)),   dfs_sol,    str(round(dfs_exec_time)),    str(dfs_nodes),      str(dfs_mem_usage)),
+    print_table([("Alg.",          "Moves",        "Sol.",        "Exec Time(ms)",            "Nodes Exp.",        "Mem. Usage(KiB)"),
+                 ("BFS",       str(len(bfs_sol)),   bfs_sol,    str(round(bfs_exec_time)),    str(bfs_nodes),      str(bfs_mem_usage)),                 
+                 ("DFS",       str(len(dfs_sol)),   dfs_sol,    str(round(dfs_exec_time)),    str(dfs_nodes),      str(dfs_mem_usage)),
                  ("IDS",       str(len(ids_sol)),   ids_sol,    str(round(ids_exec_time)),    str(ids_nodes),      str(ids_mem_usage)),
-                #  ("GREEDY",      str(len(greedy_sol)),  greedy_sol, str(round(greedy_exec_time)), str(greedy_nodes),   str(greedy_mem_usage)),
+                 ("Greedy",  str(len(greedy_sol)),  greedy_sol, str(round(greedy_exec_time)), str(greedy_nodes),   str(greedy_mem_usage)),
                  ("A*",      str(len(a_star_sol)),  a_star_sol, str(round(a_star_exec_time)), str(a_star_nodes),   str(a_star_mem_usage)),
     ])
 
