@@ -546,7 +546,7 @@ def main():
     end_mem = memory_usage()[0]
     ids_exec_time =  (end - start)*1000
     ids_nodes = nodes_expanded
-    ids_mem_usage = (end_mem - start_mem)
+    ids_mem_usage = (end_mem - start_mem)*1024
 
     # print("Using Greedy:")
     # nodes_expanded = 0
@@ -568,7 +568,7 @@ def main():
     end_mem = memory_usage()[0]
     a_star_exec_time =  (end - start)*1000
     a_star_nodes = nodes_expanded
-    a_star_mem_usage = (end_mem - start_mem)
+    a_star_mem_usage = (end_mem - start_mem)*1024
 
     print_table([("Alg.",          "Moves",        "Sol.",        "Exec Time(ms)",            "Nodes Exp.",        "Mem. Usage(MiB)"),
                 #  ("BFS",       str(len(bfs_sol)),   bfs_sol,    str(round(bfs_exec_time)),    str(bfs_nodes),      str(bfs_mem_usage)),                 
