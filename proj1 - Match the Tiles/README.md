@@ -1,7 +1,4 @@
-# MIEIC-IART 
-
-## Solitaire Game: Match the Tiles
-
+# Project 1 - Solitaire Game: Match the Tiles
 
 ### External Modules
 In this project, we used a memory profiling python module called ```memory_profiler```
