@@ -4,7 +4,7 @@ import pandas as pd
 
 df = pd.read_csv("./datasets/train/train-taskA.txt", sep="	")
 # print(df)
-printf("Reading data done!")
+print("Reading data done!")
 
 # tá lendo errado o dataframe: ignorando 17 índices
 # indices nao lidos (inclusive): 1646-1648, 3029-3039, 3459-3461
@@ -33,7 +33,7 @@ for i in range(len(df)):
     corpus.append(tweet)
 
 # print(corpus)
-printf("Tokenizing done!")
+print("Tokenizing done!")
 
 ##################################################################################
 
@@ -50,7 +50,7 @@ y = df.iloc[:,-1].values
 # print(vectorizer.get_feature_names())
 # print(X.shape, y.shape)
 
-printf("Bag of words done!")
+print("Bag of words done!")
 
 ##################################################################################
 
@@ -65,7 +65,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, rand
 # print(X_train.shape, y_train.shape)
 # print(X_test.shape, y_test.shape)
 
-printf("Splitting done!")
+print("Splitting done!")
 
 ##################################################################################
 
@@ -77,7 +77,7 @@ from sklearn.naive_bayes import GaussianNB
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
 
-printf("Naive Bayes done!")
+print("Naive Bayes done!")
 
 ##################################################################################
 
