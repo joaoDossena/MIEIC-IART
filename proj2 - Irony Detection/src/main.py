@@ -50,13 +50,12 @@ print("Tokenizing done!")
 from sklearn.feature_extraction.text import CountVectorizer
 
 # TODO: change max_features parameter
-vectorizer = CountVectorizer(max_features = 1500)
+vectorizer = CountVectorizer(max_features = 1500) # original = 1500
 X = vectorizer.fit_transform(corpus).toarray()
-y = df.iloc[:,-1].values
+y = df.iloc[:,1].values
 
 # print(vectorizer.get_feature_names())
-print(X.shape, y.shape)
-print("\n\ny:\n\n", y)
+# print(X.shape, y.shape)
 
 
 print("Bag of words done!")
@@ -64,68 +63,64 @@ print("Bag of words done!")
 # ##################################################################################
 
 
-# # Split dataset into training and test sets
+# Split dataset into training and test sets
 
-# #TODO: split with different test file
-# from sklearn.model_selection import train_test_split
+#TODO: split with different test file
+from sklearn.model_selection import train_test_split
 
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
 
-# # print(X_train.shape, y_train.shape)
-# # print(X_test.shape, y_test.shape)
+# print(X_train.shape, y_train.shape)
+# print(X_test.shape, y_test.shape)
 
-# print("Splitting done!")
+print("Splitting done!")
 
-# ##################################################################################
-
-
-# # Fit Naive Bayes to the training set
-
-# from sklearn.naive_bayes import GaussianNB
-
-# classifier = GaussianNB()
-# classifier.fit(X_train, y_train)
-
-# print("Naive Bayes done!")
-# print("Predicting test set results...")
-# y_pred = classifier.predict(X_test)
-
-# print("y_pred: ", y_pred)
-# print("y_test: ", y_test)
-
-# print("Test set results predicting done!")
-# print("Generating metrics...")
-
-# print(confusion_matrix(y_test, y_pred))
-# print('Accuracy: ', accuracy_score(y_test, y_pred))
-# print('Precision: ', precision_score(y_test, y_pred))
-# print('Recall: ', recall_score(y_test, y_pred))
-# print('F1: ', f1_score(y_test, y_pred))
-
-# print("Metrics generated...")
+#################################################################################
 
 
-# #################################################################################
+# Fit Naive Bayes to the training set
+
+from sklearn.naive_bayes import GaussianNB
+
+classifier = GaussianNB()
+classifier.fit(X_train, y_train)
+
+print("Naive Bayes done!")
+print("Predicting test set results...")
+y_pred = classifier.predict(X_test)
+
+print("Test set results predicting done!")
+print("Generating metrics...")
+
+print(confusion_matrix(y_test, y_pred))
+print('Accuracy: ', accuracy_score(y_test, y_pred))
+print('Precision: ', precision_score(y_test, y_pred))
+print('Recall: ', recall_score(y_test, y_pred))
+print('F1: ', f1_score(y_test, y_pred))
+
+print("Metrics generated...")
+
+
+#################################################################################
 
 
 # SVM
 
-# from sklearn.svm import SVC
+from sklearn.svm import SVC
 
-# classifier = SVC()
-# classifier.fit(X_train, y_train)
-# print("SVC done!")
+classifier = SVC()
+classifier.fit(X_train, y_train)
+print("SVC done!")
 
-# y_pred = classifier.predict(X_test)
-# print("Test set results predicting done!")
+y_pred = classifier.predict(X_test)
+print("Test set results predicting done!")
 
 
-# print(confusion_matrix(y_test, y_pred))
-# print('Accuracy: ', accuracy_score(y_test, y_pred))
-# print('Precision: ', precision_score(y_test, y_pred, average=None))
-# print('Recall: ', recall_score(y_test, y_pred, average=None))
-# print('F1: ', f1_score(y_test, y_pred, average=None))
-
+print(confusion_matrix(y_test, y_pred))
+print('Accuracy: ', accuracy_score(y_test, y_pred))
+print('Precision: ', precision_score(y_test, y_pred))
+print('Recall: ', recall_score(y_test, y_pred))
+print('F1: ', f1_score(y_test, y_pred))
 
 # # ##################################################################################
 
@@ -202,18 +197,18 @@ print("Bag of words done!")
 # ##################################################################################
 
 
-# # Simple test
+# Simple test
 
-# rev = input("Enter tweet: ")
-# rev = re.sub('[^a-zA-Z]', ' ', rev).lower().split()
-# rev = ' '.join([ps.stem(w) for w in rev])
-# X = vectorizer.transform([rev]).toarray()
+rev = input("Enter tweet: ")
+rev = re.sub('[^a-zA-Z]', ' ', rev).lower().split()
+rev = ' '.join([ps.stem(w) for w in rev])
+X = vectorizer.transform([rev]).toarray()
 
 # print(X.shape)
 # print(X)
 
-# if(classifier.predict(X) == [1]):
-#     print('Irony detected! (+)')
-# else:
-#     print('Not ironic (-)')
+if(classifier.predict(X) == [1]):
+    print('Irony detected! (+)')
+else:
+    print('Not ironic (-)')
 
