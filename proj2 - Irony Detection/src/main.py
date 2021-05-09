@@ -60,7 +60,7 @@ print("Bag of words done!")
 #TODO: split with different test file
 from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 0)
 
 # print(X_train.shape, y_train.shape)
 # print(X_test.shape, y_test.shape)
@@ -83,10 +83,15 @@ print("Naive Bayes done!")
 
 
 # Predict test set results
+print("Predicting test set results...")
+
 
 y_pred = classifier.predict(X_test)
 
-# print(y_pred)
+# print("y_pred: ", y_pred)
+# print("y_test: ", y_test)
+
+print("Test set results predicting done!")
 
 
 ##################################################################################
@@ -99,6 +104,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
+
+print("Generating metrics...")
+
 
 # confusion matrix
 print(confusion_matrix(y_test, y_pred))
@@ -114,6 +122,8 @@ print('Recall: ', recall_score(y_test, y_pred))
 
 # f1
 print('F1: ', f1_score(y_test, y_pred))
+
+print("Metrics generated...")
 
 
 # # ##################################################################################
