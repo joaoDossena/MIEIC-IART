@@ -2,6 +2,13 @@
 # Coleta de dados
 import pandas as pd 
 
+
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+
 df = pd.read_csv("./datasets/train/train-taskA.txt", sep="	")
 # print(df)
 print("Reading data done!")
@@ -24,8 +31,8 @@ from nltk.corpus import stopwords
 corpus = []
 ps = PorterStemmer()
 for i in range(len(df)):
-    # get tweet and remove non alpha chars
-    tweet = re.sub('[^a-zA-Z]', ' ', df['Tweet text'][i])
+    # get tweet and remove usernames (@username) and links to pictures (https://t.co/link)
+    tweet = re.sub('@[a-zA-Z0-9_]+|https?://t.co/[a-zA-Z0-9_]+|[^a-zA-Z]', ' ', df['Tweet text'][i])
     # to lower-case and tokenize
     tweet = tweet.lower().split()
     # stemming and stop word removal
@@ -48,100 +55,76 @@ X = vectorizer.fit_transform(corpus).toarray()
 y = df.iloc[:,-1].values
 
 # print(vectorizer.get_feature_names())
-# print(X.shape, y.shape)
+print(X.shape, y.shape)
+print("\n\ny:\n\n", y)
+
 
 print("Bag of words done!")
 
-##################################################################################
+# ##################################################################################
 
 
-# Split dataset into training and test sets
+# # Split dataset into training and test sets
 
-#TODO: split with different test file
-from sklearn.model_selection import train_test_split
+# #TODO: split with different test file
+# from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 0)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
 
-# print(X_train.shape, y_train.shape)
-# print(X_test.shape, y_test.shape)
+# # print(X_train.shape, y_train.shape)
+# # print(X_test.shape, y_test.shape)
 
-print("Splitting done!")
+# print("Splitting done!")
 
-##################################################################################
-
-
-# Fit Naive Bayes to the training set
-
-from sklearn.naive_bayes import GaussianNB
-
-classifier = GaussianNB()
-classifier.fit(X_train, y_train)
-
-print("Naive Bayes done!")
-
-##################################################################################
+# ##################################################################################
 
 
-# Predict test set results
-print("Predicting test set results...")
+# # Fit Naive Bayes to the training set
 
+# from sklearn.naive_bayes import GaussianNB
 
-y_pred = classifier.predict(X_test)
+# classifier = GaussianNB()
+# classifier.fit(X_train, y_train)
+
+# print("Naive Bayes done!")
+# print("Predicting test set results...")
+# y_pred = classifier.predict(X_test)
 
 # print("y_pred: ", y_pred)
 # print("y_test: ", y_test)
 
-print("Test set results predicting done!")
+# print("Test set results predicting done!")
+# print("Generating metrics...")
+
+# print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred))
+# print('Recall: ', recall_score(y_test, y_pred))
+# print('F1: ', f1_score(y_test, y_pred))
+
+# print("Metrics generated...")
 
 
-##################################################################################
+# #################################################################################
 
 
-# Generate metrics
+# SVM
 
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
-from sklearn.metrics import f1_score
+# from sklearn.svm import SVC
 
-print("Generating metrics...")
+# classifier = SVC()
+# classifier.fit(X_train, y_train)
+# print("SVC done!")
 
-
-# confusion matrix
-print(confusion_matrix(y_test, y_pred))
-
-# accuracy
-print('Accuracy: ', accuracy_score(y_test, y_pred))
-
-# precision
-print('Precision: ', precision_score(y_test, y_pred))
-
-# recall
-print('Recall: ', recall_score(y_test, y_pred))
-
-# f1
-print('F1: ', f1_score(y_test, y_pred))
-
-print("Metrics generated...")
+# y_pred = classifier.predict(X_test)
+# print("Test set results predicting done!")
 
 
-# # ##################################################################################
-
-
-# # # SVM
-
-# # from sklearn.svm import SVC
-
-# # classifier = SVC()
-# # classifier.fit(X_train, y_train)
-# # y_pred = classifier.predict(X_test)
-
-# # print(confusion_matrix(y_test, y_pred))
-# # print('Accuracy: ', accuracy_score(y_test, y_pred))
-# # print('Precision: ', precision_score(y_test, y_pred))
-# # print('Recall: ', recall_score(y_test, y_pred))
-# # print('F1: ', f1_score(y_test, y_pred))
+# print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred, average=None))
+# print('Recall: ', recall_score(y_test, y_pred, average=None))
+# print('F1: ', f1_score(y_test, y_pred, average=None))
 
 
 # # ##################################################################################
