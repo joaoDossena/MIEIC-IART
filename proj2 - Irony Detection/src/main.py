@@ -4,6 +4,7 @@ import pandas as pd
 
 df = pd.read_csv("./datasets/train/train-taskA.txt", sep="	")
 # print(df)
+printf("Reading data done!")
 
 # tá lendo errado o dataframe: ignorando 17 índices
 # indices nao lidos (inclusive): 1646-1648, 3029-3039, 3459-3461
@@ -32,82 +33,87 @@ for i in range(len(df)):
     corpus.append(tweet)
 
 # print(corpus)
+printf("Tokenizing done!")
+
+##################################################################################
 
 
-# ##################################################################################
+# Create bag-of-words model
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+# TODO: change max_features parameter
+vectorizer = CountVectorizer(max_features = 1500)
+X = vectorizer.fit_transform(corpus).toarray()
+y = df.iloc[:,-1].values
+
+# print(vectorizer.get_feature_names())
+# print(X.shape, y.shape)
+
+printf("Bag of words done!")
+
+##################################################################################
 
 
-# # Create bag-of-words model
+# Split dataset into training and test sets
 
-# from sklearn.feature_extraction.text import CountVectorizer
+#TODO: split with different test file
+from sklearn.model_selection import train_test_split
 
-# vectorizer = CountVectorizer(max_features = 1500)
-# X = vectorizer.fit_transform(corpus).toarray()
-# y = df.iloc[:,-1].values
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
 
-# # print(vectorizer.get_feature_names())
-# # print(X.shape, y.shape)
+# print(X_train.shape, y_train.shape)
+# print(X_test.shape, y_test.shape)
 
+printf("Splitting done!")
 
-# ##################################################################################
-
-
-# # Split dataset into training and test sets
-
-# from sklearn.model_selection import train_test_split
-
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
-
-# # print(X_train.shape, y_train.shape)
-# # print(X_test.shape, y_test.shape)
+##################################################################################
 
 
-# ##################################################################################
+# Fit Naive Bayes to the training set
+
+from sklearn.naive_bayes import GaussianNB
+
+classifier = GaussianNB()
+classifier.fit(X_train, y_train)
+
+printf("Naive Bayes done!")
+
+##################################################################################
 
 
-# # Fit Naive Bayes to the training set
+# Predict test set results
 
-# from sklearn.naive_bayes import GaussianNB
+y_pred = classifier.predict(X_test)
 
-# classifier = GaussianNB()
-# classifier.fit(X_train, y_train)
-
-
-# ##################################################################################
+# print(y_pred)
 
 
-# # Predict test set results
-
-# y_pred = classifier.predict(X_test)
-
-# # print(y_pred)
+##################################################################################
 
 
-# # ##################################################################################
+# Generate metrics
 
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
 
-# # # Generate metrics
+# confusion matrix
+print(confusion_matrix(y_test, y_pred))
 
-# from sklearn.metrics import confusion_matrix
-# from sklearn.metrics import accuracy_score
-# from sklearn.metrics import precision_score
-# from sklearn.metrics import recall_score
-# from sklearn.metrics import f1_score
+# accuracy
+print('Accuracy: ', accuracy_score(y_test, y_pred))
 
-# # confusion matrix
-# print(confusion_matrix(y_test, y_pred))
+# precision
+print('Precision: ', precision_score(y_test, y_pred))
 
-# # accuracy
-# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# recall
+print('Recall: ', recall_score(y_test, y_pred))
 
-# # precision
-# print('Precision: ', precision_score(y_test, y_pred))
-
-# # recall
-# print('Recall: ', recall_score(y_test, y_pred))
-
-# # f1
-# print('F1: ', f1_score(y_test, y_pred))
+# f1
+print('F1: ', f1_score(y_test, y_pred))
 
 
 # # ##################################################################################
@@ -205,7 +211,7 @@ for i in range(len(df)):
 
 # # Simple test
 
-# rev = input("Enter review: ")
+# rev = input("Enter tweet: ")
 # rev = re.sub('[^a-zA-Z]', ' ', rev).lower().split()
 # rev = ' '.join([ps.stem(w) for w in rev])
 # X = vectorizer.transform([rev]).toarray()
@@ -214,7 +220,7 @@ for i in range(len(df)):
 # print(X)
 
 # if(classifier.predict(X) == [1]):
-#     print('positive review (+)')
+#     print('Irony detected! (+)')
 # else:
-#     print('negative review (-)')
+#     print('Not ironic (-)')
 
