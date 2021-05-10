@@ -26,18 +26,26 @@ print("Reading data done!")
 import re
 import nltk
 from nltk.stem.porter import PorterStemmer
+from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
 corpus = []
+lemmatizer = WordNetLemmatizer()
 ps = PorterStemmer()
 for i in range(len(df)):
     # get tweet and remove usernames (@username) and links to pictures (https://t.co/link)
     tweet = re.sub('@[a-zA-Z0-9_]+|https?://t.co/[a-zA-Z0-9_]+|[^a-zA-Z]', ' ', df['Tweet text'][i])
     # to lower-case and tokenize
     tweet = tweet.lower().split()
-    # stemming and stop word removal
-    tweet = ' '.join([ps.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
-    corpus.append(tweet)
+
+
+    # # stemming and stop word removal
+    stemmed_tweet = ' '.join([ps.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
+
+    #lemmatizing
+    lemma_tweet = ' '.join([lemmatizer.lemmatize(w) for w in tweet if not w in set(stopwords.words('english'))])
+
+    corpus.append(stemmed_tweet)
 
 # print(corpus)
 print("Tokenizing done!")
@@ -125,73 +133,73 @@ print('F1: ', f1_score(y_test, y_pred))
 # # ##################################################################################
 
 
-# # # Logistic Regression
+# Logistic Regression
 
-# # from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression
 
-# # classifier = LogisticRegression()
-# # classifier.fit(X_train, y_train)
-# # y_pred = classifier.predict(X_test)
+classifier = LogisticRegression()
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
 
-# # print(confusion_matrix(y_test, y_pred))
-# # print('Accuracy: ', accuracy_score(y_test, y_pred))
-# # print('Precision: ', precision_score(y_test, y_pred))
-# # print('Recall: ', recall_score(y_test, y_pred))
-# # print('F1: ', f1_score(y_test, y_pred))
-
-
-# # ##################################################################################
-
-
-# # # Perceptron
-
-# # from sklearn.linear_model import Perceptron
-
-# # classifier = Perceptron()
-# # classifier.fit(X_train, y_train)
-# # y_pred = classifier.predict(X_test)
-
-# # print(confusion_matrix(y_test, y_pred))
-# # print('Accuracy: ', accuracy_score(y_test, y_pred))
-# # print('Precision: ', precision_score(y_test, y_pred))
-# # print('Recall: ', recall_score(y_test, y_pred))
-# # print('F1: ', f1_score(y_test, y_pred))
+print(confusion_matrix(y_test, y_pred))
+print('Accuracy: ', accuracy_score(y_test, y_pred))
+print('Precision: ', precision_score(y_test, y_pred))
+print('Recall: ', recall_score(y_test, y_pred))
+print('F1: ', f1_score(y_test, y_pred))
 
 
 # # ##################################################################################
 
 
-# # # Decision Tree
+# Perceptron
 
-# # from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import Perceptron
 
-# # classifier = DecisionTreeClassifier()
-# # classifier.fit(X_train, y_train)
-# # y_pred = classifier.predict(X_test)
+classifier = Perceptron()
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
 
-# # print(confusion_matrix(y_test, y_pred))
-# # print('Accuracy: ', accuracy_score(y_test, y_pred))
-# # print('Precision: ', precision_score(y_test, y_pred))
-# # print('Recall: ', recall_score(y_test, y_pred))
-# # print('F1: ', f1_score(y_test, y_pred))
+print(confusion_matrix(y_test, y_pred))
+print('Accuracy: ', accuracy_score(y_test, y_pred))
+print('Precision: ', precision_score(y_test, y_pred))
+print('Recall: ', recall_score(y_test, y_pred))
+print('F1: ', f1_score(y_test, y_pred))
 
 
 # # ##################################################################################
 
 
-# # # Random Forest
+# Decision Tree
 
-# # from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 
-# # classifier = RandomForestClassifier()
-# # classifier.fit(X_train, y_train)
-# # y_pred = classifier.predict(X_test)
+classifier = DecisionTreeClassifier()
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
 
-# # print(confusion_matrix(y_test, y_pred))
-# # print('Accuracy: ', accuracy_score(y_test, y_pred))
-# # print('Precision: ', precision_score(y_test, y_pred))
-# # print('Recall: ', recall_score(y_test, y_pred))
-# # print('F1: ', f1_score(y_test, y_pred))
+print(confusion_matrix(y_test, y_pred))
+print('Accuracy: ', accuracy_score(y_test, y_pred))
+print('Precision: ', precision_score(y_test, y_pred))
+print('Recall: ', recall_score(y_test, y_pred))
+print('F1: ', f1_score(y_test, y_pred))
+
+
+# # ##################################################################################
+
+
+# Random Forest
+
+from sklearn.ensemble import RandomForestClassifier
+
+classifier = RandomForestClassifier()
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred))
+print('Accuracy: ', accuracy_score(y_test, y_pred))
+print('Precision: ', precision_score(y_test, y_pred))
+print('Recall: ', recall_score(y_test, y_pred))
+print('F1: ', f1_score(y_test, y_pred))
 
 
 # ##################################################################################
