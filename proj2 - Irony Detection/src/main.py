@@ -118,7 +118,7 @@ from sklearn.svm import SVC
 
 classifier = SVC()
 classifier.fit(X_train, y_train)
-print("SVC done!")
+print("SVM done!")
 
 y_pred = classifier.predict(X_test)
 print("Test set results predicting done!")
