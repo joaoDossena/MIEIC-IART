@@ -1,6 +1,7 @@
 ##################################################################################
 # Coleta de dados
 import pandas as pd 
+import matplotlib.pyplot as plt
 
 
 from sklearn.metrics import confusion_matrix
@@ -83,30 +84,42 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, rand
 
 print("Splitting done!")
 
-#################################################################################
+# #################################################################################
 
 
-# Fit Naive Bayes to the training set
+# # Fit Naive Bayes to the training set
 
-from sklearn.naive_bayes import GaussianNB
+# from sklearn.naive_bayes import GaussianNB
 
-classifier = GaussianNB()
-classifier.fit(X_train, y_train)
+# classifier = GaussianNB()
+# classifier.fit(X_train, y_train)
 
-print("Naive Bayes done!")
-print("Predicting test set results...")
-y_pred = classifier.predict(X_test)
+# print("Naive Bayes done!")
+# print("Predicting test set results...")
+# y_pred = classifier.predict(X_test)
 
-print("Test set results predicting done!")
-print("Generating metrics...")
+# print("Test set results predicting done!")
+# print("Generating metrics...")
 
-print(confusion_matrix(y_test, y_pred))
-print('Accuracy: ', accuracy_score(y_test, y_pred))
-print('Precision: ', precision_score(y_test, y_pred))
-print('Recall: ', recall_score(y_test, y_pred))
-print('F1: ', f1_score(y_test, y_pred))
+# conf_matrix = confusion_matrix(y_true=y_test, y_pred=y_pred)
+# fig, ax = plt.subplots(figsize=(7.5, 7.5))
+# ax.matshow(conf_matrix, cmap=plt.cm.Blues, alpha=0.3)
+# for i in range(conf_matrix.shape[0]):
+#     for j in range(conf_matrix.shape[1]):
+#         ax.text(x=j, y=i,s=conf_matrix[i, j], va='center', ha='center', size='xx-large')
+ 
+# plt.xlabel('Predictions', fontsize=18)
+# plt.ylabel('Actuals', fontsize=18)
+# plt.title('Confusion Matrix', fontsize=18)
+# plt.show()
 
-print("Metrics generated...")
+# # print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred))
+# print('Recall: ', recall_score(y_test, y_pred))
+# print('F1: ', f1_score(y_test, y_pred))
+
+# print("Metrics generated...")
 
 
 #################################################################################
@@ -114,98 +127,148 @@ print("Metrics generated...")
 
 # SVM
 
-from sklearn.svm import SVC
+# from sklearn.svm import SVC
 
-classifier = SVC()
-classifier.fit(X_train, y_train)
-print("SVC done!")
+# classifier = SVC()
+# classifier.fit(X_train, y_train)
+# print("SVC done!")
 
-y_pred = classifier.predict(X_test)
-print("Test set results predicting done!")
-
-
-print(confusion_matrix(y_test, y_pred))
-print('Accuracy: ', accuracy_score(y_test, y_pred))
-print('Precision: ', precision_score(y_test, y_pred))
-print('Recall: ', recall_score(y_test, y_pred))
-print('F1: ', f1_score(y_test, y_pred))
-
-# # ##################################################################################
+# y_pred = classifier.predict(X_test)
+# print("Test set results predicting done!")
 
 
-# Logistic Regression
+# print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred))
+# print('Recall: ', recall_score(y_test, y_pred))
+# print('F1: ', f1_score(y_test, y_pred))
 
-from sklearn.linear_model import LogisticRegression
-
-classifier = LogisticRegression()
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
-
-print(confusion_matrix(y_test, y_pred))
-print('Accuracy: ', accuracy_score(y_test, y_pred))
-print('Precision: ', precision_score(y_test, y_pred))
-print('Recall: ', recall_score(y_test, y_pred))
-print('F1: ', f1_score(y_test, y_pred))
+# # # ##################################################################################
 
 
-# # ##################################################################################
+# # Logistic Regression
+
+# from sklearn.linear_model import LogisticRegression
+
+# classifier = LogisticRegression()
+# classifier.fit(X_train, y_train)
+# y_pred = classifier.predict(X_test)
+
+# print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred))
+# print('Recall: ', recall_score(y_test, y_pred))
+# print('F1: ', f1_score(y_test, y_pred))
 
 
-# Perceptron
-
-from sklearn.linear_model import Perceptron
-
-classifier = Perceptron()
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
-
-print(confusion_matrix(y_test, y_pred))
-print('Accuracy: ', accuracy_score(y_test, y_pred))
-print('Precision: ', precision_score(y_test, y_pred))
-print('Recall: ', recall_score(y_test, y_pred))
-print('F1: ', f1_score(y_test, y_pred))
+# # # ##################################################################################
 
 
-# # ##################################################################################
+# # Perceptron
+
+# from sklearn.linear_model import Perceptron
+
+# classifier = Perceptron()
+# classifier.fit(X_train, y_train)
+# y_pred = classifier.predict(X_test)
+
+# print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred))
+# print('Recall: ', recall_score(y_test, y_pred))
+# print('F1: ', f1_score(y_test, y_pred))
 
 
-# Decision Tree
-
-from sklearn.tree import DecisionTreeClassifier
-
-classifier = DecisionTreeClassifier()
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
-
-print(confusion_matrix(y_test, y_pred))
-print('Accuracy: ', accuracy_score(y_test, y_pred))
-print('Precision: ', precision_score(y_test, y_pred))
-print('Recall: ', recall_score(y_test, y_pred))
-print('F1: ', f1_score(y_test, y_pred))
+# # # ##################################################################################
 
 
-# # ##################################################################################
+# # Decision Tree
 
+# from sklearn.tree import DecisionTreeClassifier
 
-# Random Forest
+# classifier = DecisionTreeClassifier()
+# classifier.fit(X_train, y_train)
+# y_pred = classifier.predict(X_test)
 
-from sklearn.ensemble import RandomForestClassifier
-
-classifier = RandomForestClassifier()
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
-
-print(confusion_matrix(y_test, y_pred))
-print('Accuracy: ', accuracy_score(y_test, y_pred))
-print('Precision: ', precision_score(y_test, y_pred))
-print('Recall: ', recall_score(y_test, y_pred))
-print('F1: ', f1_score(y_test, y_pred))
+# print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred))
+# print('Recall: ', recall_score(y_test, y_pred))
+# print('F1: ', f1_score(y_test, y_pred))
 
 
 # ##################################################################################
 
 
-# Simple test
+# # Random Forest
+
+# from sklearn.ensemble import RandomForestClassifier
+
+# classifier = RandomForestClassifier()
+# classifier.fit(X_train, y_train)
+# y_pred = classifier.predict(X_test)
+
+# print(confusion_matrix(y_test, y_pred))
+# print('Accuracy: ', accuracy_score(y_test, y_pred))
+# print('Precision: ', precision_score(y_test, y_pred))
+# print('Recall: ', recall_score(y_test, y_pred))
+# print('F1: ', f1_score(y_test, y_pred))
+
+
+ ##################################################################################
+
+
+# # Multi Layered Perceptron
+
+from sklearn.neural_network import MLPClassifier
+
+classifier = MLPClassifier(hidden_layer_sizes=100, activation="tanh" , alpha = 0.0001 , learning_rate = "constant", solver ="sgd")
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred))
+print('Accuracy: ', accuracy_score(y_test, y_pred))
+print('Precision: ', precision_score(y_test, y_pred))
+print('Recall: ', recall_score(y_test, y_pred))
+print('F1: ', f1_score(y_test, y_pred))
+
+
+# # ##################################################################################
+
+
+# # Finding the best parameters for MLP
+
+# parameter_space = {
+#     'hidden_layer_sizes': [(50,50,50), (50,100,50), (100,)],
+#     'activation': ['tanh', 'relu'],
+#     'solver': ['sgd', 'adam'],
+#     'alpha': [0.0001, 0.05],
+#     'learning_rate': ['constant','adaptive'],
+# }
+
+# from sklearn.model_selection import GridSearchCV
+
+# clf = GridSearchCV(classifier, parameter_space, n_jobs=-1, cv=3)
+# clf.fit(X_train, y_train)
+
+# # Best paramete set
+# print('Best parameters found:\n', clf.best_params_)
+
+# # All results
+# means = clf.cv_results_['mean_test_score']
+# stds = clf.cv_results_['std_test_score']
+# for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+#     print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+
+# y_true, y_pred = y_test , clf.predict(X_test)
+
+# from sklearn.metrics import classification_report
+# print('Results on the test set:')
+# print(classification_report(y_true, y_pred))
+
+# # ##################################################################################
+
+# # Simple test
 
 rev = input("Enter tweet: ")
 rev = re.sub('[^a-zA-Z]', ' ', rev).lower().split()
