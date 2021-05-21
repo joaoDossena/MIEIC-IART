@@ -10,7 +10,13 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 
+from imblearn.over_sampling import SMOTE
+
+
 df = pd.read_csv("./datasets/train/train-taskA.txt", sep="	")
+
+test_df = pd.read_csv("./datasets/test/gold_test_TaskA.txt", sep="	")
+
 # print(df)
 print("Reading data done!")
 
@@ -26,29 +32,45 @@ print("Reading data done!")
 # TODO: tentar tokenização diferente pra levar em consideração as hashtags, links de fotos, arrobas, etc
 import re
 import nltk
-from nltk.stem.porter import PorterStemmer
+# from nltk.stem.porter import PorterStemmer
+from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
 corpus = []
 lemmatizer = WordNetLemmatizer()
-ps = PorterStemmer()
+stemmer = LancasterStemmer()
+# stemmer = PorterStemmer()
 for i in range(len(df)):
     # get tweet and remove usernames (@username) and links to pictures (https://t.co/link)
     tweet = re.sub('@[a-zA-Z0-9_]+|https?://t.co/[a-zA-Z0-9_]+|[^a-zA-Z]', ' ', df['Tweet text'][i])
     # to lower-case and tokenize
     tweet = tweet.lower().split()
 
-
     # # stemming and stop word removal
-    stemmed_tweet = ' '.join([ps.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
+    stemmed_tweet = ' '.join([stemmer.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
 
     #lemmatizing
     lemma_tweet = ' '.join([lemmatizer.lemmatize(w) for w in tweet if not w in set(stopwords.words('english'))])
 
     corpus.append(stemmed_tweet)
 
-# print(corpus)
+test_corpus = []
+for i in range(len(test_df)):
+    # get tweet and remove usernames (@username) and links to pictures (https://t.co/link)
+    tweet = re.sub('@[a-zA-Z0-9_]+|https?://t.co/[a-zA-Z0-9_]+|[^a-zA-Z]', ' ', test_df['Tweet text'][i])
+    # to lower-case and tokenize
+    tweet = tweet.lower().split()
+
+    # # stemming and stop word removal
+    stemmed_tweet = ' '.join([stemmer.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
+
+    #lemmatizing
+    lemma_tweet = ' '.join([lemmatizer.lemmatize(w) for w in tweet if not w in set(stopwords.words('english'))])
+
+    test_corpus.append(stemmed_tweet)
+
+# print(test_corpus)
 print("Tokenizing done!")
 
 ##################################################################################
@@ -62,6 +84,10 @@ from sklearn.feature_extraction.text import CountVectorizer
 vectorizer = CountVectorizer(max_features = 1500) # original = 1500
 X = vectorizer.fit_transform(corpus).toarray()
 y = df.iloc[:,1].values
+
+X_test = vectorizer.fit_transform(test_corpus).toarray()
+y_test = test_df.iloc[:,1].values
+
 
 # print(vectorizer.get_feature_names())
 # print(X.shape, y.shape)
@@ -77,17 +103,28 @@ print("Bag of words done!")
 #TODO: split with different test file
 from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+X_train = X
+y_train = y
+
 
 # print(X_train.shape, y_train.shape)
 # print(X_test.shape, y_test.shape)
 
 print("Splitting done!")
 
-# #################################################################################
+###################################################################################
+
+# SMOTE
+
+sm = SMOTE()
+
+X_train, y_train = sm.fit_resample(X_train, y_train)
+
+#################################################################################
 
 
-# # Fit Naive Bayes to the training set
+# Fit Naive Bayes to the training set
 
 # from sklearn.naive_bayes import GaussianNB
 
@@ -98,8 +135,6 @@ print("Splitting done!")
 # print("Predicting test set results...")
 # y_pred = classifier.predict(X_test)
 
-# print("Test set results predicting done!")
-# print("Generating metrics...")
 
 # conf_matrix = confusion_matrix(y_true=y_test, y_pred=y_pred)
 # fig, ax = plt.subplots(figsize=(7.5, 7.5))
@@ -113,16 +148,14 @@ print("Splitting done!")
 # plt.title('Confusion Matrix', fontsize=18)
 # plt.show()
 
-# # print(confusion_matrix(y_test, y_pred))
+# print(confusion_matrix(y_test, y_pred))
 # print('Accuracy: ', accuracy_score(y_test, y_pred))
 # print('Precision: ', precision_score(y_test, y_pred))
 # print('Recall: ', recall_score(y_test, y_pred))
 # print('F1: ', f1_score(y_test, y_pred))
 
-# print("Metrics generated...")
 
-
-#################################################################################
+################################################################################
 
 
 # SVM
@@ -131,11 +164,8 @@ print("Splitting done!")
 
 # classifier = SVC()
 # classifier.fit(X_train, y_train)
-# print("SVC done!")
 
 # y_pred = classifier.predict(X_test)
-# print("Test set results predicting done!")
-
 
 # print(confusion_matrix(y_test, y_pred))
 # print('Accuracy: ', accuracy_score(y_test, y_pred))
@@ -143,10 +173,10 @@ print("Splitting done!")
 # print('Recall: ', recall_score(y_test, y_pred))
 # print('F1: ', f1_score(y_test, y_pred))
 
-# # # ##################################################################################
+# # ##################################################################################
 
 
-# # Logistic Regression
+# Logistic Regression
 
 # from sklearn.linear_model import LogisticRegression
 
@@ -161,10 +191,10 @@ print("Splitting done!")
 # print('F1: ', f1_score(y_test, y_pred))
 
 
-# # # ##################################################################################
+# # ##################################################################################
 
 
-# # Perceptron
+# Perceptron
 
 # from sklearn.linear_model import Perceptron
 
@@ -179,10 +209,10 @@ print("Splitting done!")
 # print('F1: ', f1_score(y_test, y_pred))
 
 
-# # # ##################################################################################
+# # ##################################################################################
 
 
-# # Decision Tree
+# Decision Tree
 
 # from sklearn.tree import DecisionTreeClassifier
 
@@ -197,10 +227,10 @@ print("Splitting done!")
 # print('F1: ', f1_score(y_test, y_pred))
 
 
-# ##################################################################################
+##################################################################################
 
 
-# # Random Forest
+# Random Forest
 
 # from sklearn.ensemble import RandomForestClassifier
 
@@ -218,11 +248,11 @@ print("Splitting done!")
  ##################################################################################
 
 
-# # Multi Layered Perceptron
+# Multi Layered Perceptron
 
 from sklearn.neural_network import MLPClassifier
-
-classifier = MLPClassifier(hidden_layer_sizes=100, activation="tanh" , alpha = 0.0001 , learning_rate = "constant", solver ="sgd")
+# 'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (50, 50, 50), 'learning_rate': 'adaptive', 'solver': 'sgd'
+classifier = MLPClassifier(max_iter=2000)
 classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)
 
@@ -233,53 +263,52 @@ print('Recall: ', recall_score(y_test, y_pred))
 print('F1: ', f1_score(y_test, y_pred))
 
 
-# # ##################################################################################
+# ##################################################################################
 
 
-# # Finding the best parameters for MLP
+# Finding the best parameters for MLP
 
-# parameter_space = {
-#     'hidden_layer_sizes': [(50,50,50), (50,100,50), (100,)],
-#     'activation': ['tanh', 'relu'],
-#     'solver': ['sgd', 'adam'],
-#     'alpha': [0.0001, 0.05],
-#     'learning_rate': ['constant','adaptive'],
-# }
+parameter_space = {
+    'hidden_layer_sizes': [(50,50,50), (20,20,20,20), (50,50,50,50), (50,100,50), (100,)],
+    'activation': ['identity', 'logistic', 'tanh', 'relu'],
+    'solver': ['sgd', 'adam', 'lbfgs'],
+    'alpha': [0.0001, 0.05, 0.01],
+    'learning_rate': ['constant','adaptive', 'invscaling'],
+}
 
-# from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV
 
-# clf = GridSearchCV(classifier, parameter_space, n_jobs=-1, cv=3)
-# clf.fit(X_train, y_train)
+clf = GridSearchCV(classifier, parameter_space, n_jobs=-1, cv=3)
+clf.fit(X_train, y_train)
 
-# # Best paramete set
-# print('Best parameters found:\n', clf.best_params_)
+# Best paramete set
+print('Best parameters found:\n', clf.best_params_)
 
-# # All results
-# means = clf.cv_results_['mean_test_score']
-# stds = clf.cv_results_['std_test_score']
-# for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-#     print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+# All results
+means = clf.cv_results_['mean_test_score']
+stds = clf.cv_results_['std_test_score']
+for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+    print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
 
-# y_true, y_pred = y_test , clf.predict(X_test)
+y_true, y_pred = y_test , clf.predict(X_test)
 
-# from sklearn.metrics import classification_report
-# print('Results on the test set:')
-# print(classification_report(y_true, y_pred))
+from sklearn.metrics import classification_report
+print('Results on the test set:')
+print(classification_report(y_true, y_pred))
 
 # # ##################################################################################
 
 # # Simple test
 
-rev = input("Enter tweet: ")
-rev = re.sub('[^a-zA-Z]', ' ', rev).lower().split()
-rev = ' '.join([ps.stem(w) for w in rev])
-X = vectorizer.transform([rev]).toarray()
+# rev = input("Enter tweet: ")
+# rev = re.sub('[^a-zA-Z]', ' ', rev).lower().split()
+# rev = ' '.join([ps.stem(w) for w in rev])
+# X = vectorizer.transform([rev]).toarray()
 
-# print(X.shape)
-# print(X)
+# # print(X.shape)
+# # print(X)
 
-if(classifier.predict(X) == [1]):
-    print('Irony detected! (+)')
-else:
-    print('Not ironic (-)')
-
+# if(classifier.predict(X) == [1]):
+#     print('Irony detected! (+)')
+# else:
+#     print('Not ironic (-)')
