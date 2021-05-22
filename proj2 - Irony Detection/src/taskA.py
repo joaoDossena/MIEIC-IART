@@ -15,7 +15,7 @@ from imblearn.over_sampling import SMOTE
 
 df = pd.read_csv("./datasets/train/train-taskA.txt", sep="	")
 
-test_df = pd.read_csv("./datasets/test/gold_test_TaskA.txt", sep="	")
+test_df = pd.read_csv("./datasets/test/gold_test_taskA.txt", sep="	")
 
 # print(df)
 print("Reading data done!")
@@ -252,7 +252,7 @@ X_train, y_train = sm.fit_resample(X_train, y_train)
 
 from sklearn.neural_network import MLPClassifier
 # 'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (50, 50, 50), 'learning_rate': 'adaptive', 'solver': 'sgd'
-classifier = MLPClassifier(max_iter=2000)
+classifier = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50, 50), learning_rate='adaptive', solver='sgd')
 classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)
 
@@ -268,33 +268,33 @@ print('F1: ', f1_score(y_test, y_pred))
 
 # Finding the best parameters for MLP
 
-parameter_space = {
-    'hidden_layer_sizes': [(50,50,50), (20,20,20,20), (50,50,50,50), (50,100,50), (100,)],
-    'activation': ['identity', 'logistic', 'tanh', 'relu'],
-    'solver': ['sgd', 'adam', 'lbfgs'],
-    'alpha': [0.0001, 0.05, 0.01],
-    'learning_rate': ['constant','adaptive', 'invscaling'],
-}
+# parameter_space = {
+#     'hidden_layer_sizes': [(50,50,50), (20,20,20,20), (50,50,50,50), (50,100,50), (100,)],
+#     'activation': ['identity', 'logistic', 'tanh', 'relu'],
+#     'solver': ['sgd', 'adam', 'lbfgs'],
+#     'alpha': [0.0001, 0.05, 0.01],
+#     'learning_rate': ['constant','adaptive', 'invscaling'],
+# }
 
-from sklearn.model_selection import GridSearchCV
+# from sklearn.model_selection import GridSearchCV
 
-clf = GridSearchCV(classifier, parameter_space, n_jobs=-1, cv=3)
-clf.fit(X_train, y_train)
+# clf = GridSearchCV(classifier, parameter_space, n_jobs=-1, cv=3)
+# clf.fit(X_train, y_train)
 
-# Best paramete set
-print('Best parameters found:\n', clf.best_params_)
+# # Best paramete set
+# print('Best parameters found:\n', clf.best_params_)
 
-# All results
-means = clf.cv_results_['mean_test_score']
-stds = clf.cv_results_['std_test_score']
-for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-    print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+# # All results
+# means = clf.cv_results_['mean_test_score']
+# stds = clf.cv_results_['std_test_score']
+# for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+#     print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
 
-y_true, y_pred = y_test , clf.predict(X_test)
+# y_true, y_pred = y_test , clf.predict(X_test)
 
-from sklearn.metrics import classification_report
-print('Results on the test set:')
-print(classification_report(y_true, y_pred))
+# from sklearn.metrics import classification_report
+# print('Results on the test set:')
+# print(classification_report(y_true, y_pred))
 
 # # ##################################################################################
 
