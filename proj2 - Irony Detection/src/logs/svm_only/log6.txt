@@ -1,0 +1,10 @@
+lower case stemming
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+SVM
+[[271 107]
+ [177 209]]
+Accuracy:  0.6282722513089005
+Precision:  0.6613924050632911
+Recall:  0.5414507772020726
+F1:  0.5954415954415955

@@ -1,0 +1,54 @@
+lower case stemming without usernames and links removal
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+
+-----
+
+SVM
+[[211 167]
+ [125 261]]
+Accuracy:  0.6178010471204188
+Precision:  0.6098130841121495
+Recall:  0.6761658031088082
+F1:  0.6412776412776413
+
+-----
+
+LogisticRegression
+[[219 159]
+ [137 249]]
+Accuracy:  0.612565445026178
+Precision:  0.6102941176470589
+Recall:  0.6450777202072538
+F1:  0.6272040302267002
+
+-----
+
+Perceptron
+[[238 140]
+ [169 217]]
+Accuracy:  0.5955497382198953
+Precision:  0.6078431372549019
+Recall:  0.5621761658031088
+F1:  0.5841184387617766
+
+-----
+
+Decision Tree
+[[190 188]
+ [132 254]]
+Accuracy:  0.581151832460733
+Precision:  0.5746606334841629
+Recall:  0.6580310880829016
+F1:  0.6135265700483092
+
+-----
+
+Random Forest
+[[197 181]
+ [126 260]]
+Accuracy:  0.5981675392670157
+Precision:  0.5895691609977324
+Recall:  0.6735751295336787
+F1:  0.6287787182587666

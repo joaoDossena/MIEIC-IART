@@ -1,0 +1,67 @@
+lower case stemming
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+
+-----
+
+SVM
+[[267 111]
+ [171 215]]
+Accuracy:  0.6308900523560209
+Precision:  0.6595092024539877
+Recall:  0.5569948186528497
+F1:  0.6039325842696629
+
+-----
+
+LogisticRegression
+[[233 145]
+ [164 222]]
+Accuracy:  0.5955497382198953
+Precision:  0.6049046321525886
+Recall:  0.5751295336787565
+F1:  0.5896414342629482
+
+-----
+
+Perceptron
+[[217 161]
+ [190 196]]
+Accuracy:  0.5405759162303665
+Precision:  0.5490196078431373
+Recall:  0.5077720207253886
+F1:  0.5275908479138627
+
+-----
+
+Decision Tree
+[[198 180]
+ [114 272]]
+Accuracy:  0.6151832460732984
+Precision:  0.6017699115044248
+Recall:  0.7046632124352331
+F1:  0.6491646778042961
+
+-----
+
+Random Forest
+[[205 173]
+ [128 258]]
+Accuracy:  0.606020942408377
+Precision:  0.5986078886310905
+Recall:  0.6683937823834197
+F1:  0.6315789473684211
+
+-----
+
+MLP activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50, 50), learning_rate='adaptive', solver='sgd', max_iter=1000
+[[219 159]
+ [177 209]]
+Accuracy:  0.5602094240837696
+average=weighted
+Precision:  0.5605605767439935
+average=weighted
+Recall:  0.5602094240837696
+average=weighted
+F1:  0.56007377835682

@@ -1,0 +1,54 @@
+lower case stemming
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+
+-----
+
+SVM
+[[265 113]
+ [174 212]]
+Accuracy:  0.6243455497382199
+Precision:  0.6523076923076923
+Recall:  0.5492227979274611
+F1:  0.5963431786216596
+
+-----
+
+LogisticRegression
+[[232 146]
+ [165 221]]
+Accuracy:  0.5929319371727748
+Precision:  0.6021798365122616
+Recall:  0.572538860103627
+F1:  0.5869853917662684
+
+-----
+
+Perceptron
+[[249 129]
+ [203 183]]
+Accuracy:  0.5654450261780105
+Precision:  0.5865384615384616
+Recall:  0.4740932642487047
+F1:  0.5243553008595989
+
+-----
+
+Decision Tree
+[[187 191]
+ [118 268]]
+Accuracy:  0.5955497382198953
+Precision:  0.5838779956427015
+Recall:  0.694300518134715
+F1:  0.6343195266272189
+
+-----
+
+Random Forest
+[[198 180]
+ [121 265]]
+Accuracy:  0.606020942408377
+Precision:  0.5955056179775281
+Recall:  0.6865284974093264
+F1:  0.6377858002406738

@@ -1,0 +1,11 @@
+lower case stemming
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+SVM kernel: sigmoid
+[[255 123]
+ [165 221]]
+Accuracy:  0.6230366492146597
+Precision:  0.6424418604651163
+Recall:  0.572538860103627
+F1:  0.6054794520547946

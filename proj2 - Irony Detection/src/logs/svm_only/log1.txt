@@ -1,0 +1,11 @@
+lower case stemming
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+SVM
+[[265 113]
+ [174 212]]
+Accuracy:  0.6243455497382199
+Precision:  0.6523076923076923
+Recall:  0.5492227979274611
+F1:  0.5963431786216596

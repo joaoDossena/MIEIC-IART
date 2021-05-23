@@ -1,0 +1,11 @@
+lower case lemmatizing
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+SVM
+[[270 108]
+ [178 208]]
+Accuracy:  0.6256544502617801
+Precision:  0.6582278481012658
+Recall:  0.538860103626943
+F1:  0.5925925925925924
