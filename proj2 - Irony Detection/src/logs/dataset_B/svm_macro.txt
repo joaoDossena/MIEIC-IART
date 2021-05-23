@@ -1,0 +1,16 @@
+lower case stemming
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+
+-----
+
+SVM average=macro
+[[273  62  19  24]
+ [143 123   4   9]
+ [ 57   9   3   1]
+ [ 23   7   1   6]]
+Accuracy:  0.5301047120418848
+Precision:  0.35586365885625637
+Recall:  0.3420254355738227
+F1:  0.33872844618932935

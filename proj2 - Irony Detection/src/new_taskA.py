@@ -137,12 +137,12 @@ def svm(X_train, X_test, y_train, y_test):
 
     y_pred = classifier.predict(X_test)
 
-    print("SVM", file=f)
+    print("SVM average=macro", file=f)
     print(confusion_matrix(y_test, y_pred), file=f)
     print('Accuracy: ', accuracy_score(y_test, y_pred), file=f)
-    print('Precision: ', precision_score(y_test, y_pred), file=f)
-    print('Recall: ', recall_score(y_test, y_pred), file=f)
-    print('F1: ', f1_score(y_test, y_pred), file=f)
+    print('Precision: ', precision_score(y_test, y_pred, average='macro'), file=f)
+    print('Recall: ', recall_score(y_test, y_pred, average='macro'), file=f)
+    print('F1: ', f1_score(y_test, y_pred, average='macro'), file=f)
 
 # --------------------------------------------------------------
 
@@ -291,7 +291,7 @@ def main():
     
     
 
-    df = readData("./datasets/train/train-taskA.txt")
+    df = readData("./datasets/train/train-taskB.txt")
     processing(df)
 
     (X, y) = bagOfWords(df)
@@ -306,33 +306,33 @@ def main():
 
     svm(X_train, X_test, y_train, y_test)
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    logisticRegression(X_train, X_test, y_train, y_test)
+    # logisticRegression(X_train, X_test, y_train, y_test)
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    perceptron(X_train, X_test, y_train, y_test)
+    # perceptron(X_train, X_test, y_train, y_test)
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    decisionTree(X_train, X_test, y_train, y_test)
+    # decisionTree(X_train, X_test, y_train, y_test)
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    randomForest(X_train, X_test, y_train, y_test)
+    # randomForest(X_train, X_test, y_train, y_test)
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    mlp(X_train, X_test, y_train, y_test)
+    # mlp(X_train, X_test, y_train, y_test)
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
     # findMlp(X_train, X_test, y_train, y_test)
 
     print("Finished")
 
 # Change Filename everytime xd
-f = open("./logs/log1.txt", "w")
+f = open("./logs/svm_macro.txt", "w")
 main()
 f.close()

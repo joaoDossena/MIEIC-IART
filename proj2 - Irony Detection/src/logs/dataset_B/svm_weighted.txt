@@ -1,0 +1,16 @@
+lower case stemming
+bag_of_words: 1500 max_features
+test_size: 0.2 | random_state: 0
+Oversampling with Smote
+
+-----
+
+SVM average=weighted
+[[271  66  16  25]
+ [148 116   5  10]
+ [ 57  10   2   1]
+ [ 25   5   1   6]]
+Accuracy:  0.5170157068062827
+Precision:  0.49721253592500253
+Recall:  0.5170157068062827
+F1:  0.4943202462560714
