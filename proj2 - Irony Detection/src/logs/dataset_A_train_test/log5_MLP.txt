@@ -1,0 +1,15 @@
+lower case stemming
+lower case stemming
+bag_of_words: 1500 max_features
+bag_of_words: 1500 max_features
+Oversampling with Smote
+
+-----
+
+MLP activation='tanh', alpha=0.05, hidden_layer_sizes=(10), learning_rate= 'adaptive', max_iter=500, solver='sgd'
+[[297 176]
+ [212  99]]
+Accuracy:  0.5051020408163265
+Precision:  0.36
+Recall:  0.3183279742765273
+F1:  0.3378839590443686

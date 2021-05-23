@@ -1,0 +1,14 @@
+lower case lemmat
+lower case lemmat
+bag_of_words: 1500 max_features
+bag_of_words: 1500 max_features
+
+-----
+
+SVM
+[[350 123]
+ [224  87]]
+Accuracy:  0.5573979591836735
+Precision:  0.4142857142857143
+Recall:  0.2797427652733119
+F1:  0.33397312859884837

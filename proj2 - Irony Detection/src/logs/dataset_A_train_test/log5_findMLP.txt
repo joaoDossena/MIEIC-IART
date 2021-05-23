@@ -1,0 +1,37 @@
+lower case stemming
+lower case stemming
+bag_of_words: 1500 max_features
+bag_of_words: 1500 max_features
+Oversampling with Smote
+
+-----
+
+'hidden_layer_sizes': [(10), (20), (20,20), (30, 30)],
+'activation': ['tanh'],
+'alpha': [0.05],
+'learning_rate': ['adaptive'],
+'max_iter': [100, 200, 500],
+Best parameters found:
+ {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': 10, 'learning_rate': 'adaptive', 'max_iter': 500, 'solver': 'sgd'}
+0.573 (+/-0.026) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': 10, 'learning_rate': 'adaptive', 'max_iter': 100, 'solver': 'sgd'}
+0.602 (+/-0.025) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': 10, 'learning_rate': 'adaptive', 'max_iter': 200, 'solver': 'sgd'}
+0.620 (+/-0.044) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': 10, 'learning_rate': 'adaptive', 'max_iter': 500, 'solver': 'sgd'}
+0.582 (+/-0.040) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': 20, 'learning_rate': 'adaptive', 'max_iter': 100, 'solver': 'sgd'}
+0.602 (+/-0.027) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': 20, 'learning_rate': 'adaptive', 'max_iter': 200, 'solver': 'sgd'}
+0.620 (+/-0.026) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': 20, 'learning_rate': 'adaptive', 'max_iter': 500, 'solver': 'sgd'}
+0.574 (+/-0.018) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (20, 20), 'learning_rate': 'adaptive', 'max_iter': 100, 'solver': 'sgd'}
+0.610 (+/-0.024) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (20, 20), 'learning_rate': 'adaptive', 'max_iter': 200, 'solver': 'sgd'}
+0.604 (+/-0.023) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (20, 20), 'learning_rate': 'adaptive', 'max_iter': 500, 'solver': 'sgd'}
+0.584 (+/-0.018) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (30, 30), 'learning_rate': 'adaptive', 'max_iter': 100, 'solver': 'sgd'}
+0.604 (+/-0.016) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (30, 30), 'learning_rate': 'adaptive', 'max_iter': 200, 'solver': 'sgd'}
+0.607 (+/-0.029) for {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (30, 30), 'learning_rate': 'adaptive', 'max_iter': 500, 'solver': 'sgd'}
+Results on the test set:
+              precision    recall  f1-score   support
+
+           0       0.58      0.62      0.60       473
+           1       0.34      0.30      0.32       311
+
+    accuracy                           0.49       784
+   macro avg       0.46      0.46      0.46       784
+weighted avg       0.48      0.49      0.49       784
+

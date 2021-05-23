@@ -1,0 +1,4 @@
+lower case lemmat
+lower case lemmat
+bag_of_words: 250 max_features
+bag_of_words: 250 max_features

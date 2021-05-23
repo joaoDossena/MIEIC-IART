@@ -41,17 +41,67 @@ def processing(df):
         tweet = tweet.lower().split()
 
         # Stemming and stop word removal
-        stemmed_tweet = ' '.join([stemmer.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
+        # stemmed_tweet = ' '.join([stemmer.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
 
         # Lemmatizing
         lemma_tweet = ' '.join([lemmatizer.lemmatize(w) for w in tweet if not w in set(stopwords.words('english'))])
 
-        corpus.append(stemmed_tweet)
-        # corpus.append(lemma_tweet)
+        # corpus.append(stemmed_tweet)
+        corpus.append(lemma_tweet)
     
-    print("lower case stemming", file=f)
+    print("lower case lemmat", file=f)
     print("Tokenizing done!")
     return corpus
+
+# --------------------------------------------------------------
+
+import pandas as pd
+import numpy as np
+from nltk.tokenize import word_tokenize
+from nltk import pos_tag
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from sklearn.preprocessing import LabelEncoder
+from collections import defaultdict
+from nltk.corpus import wordnet as wn
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn import model_selection, naive_bayes, svm
+from sklearn.metrics import accuracy_score
+
+def processing2(df):
+    Corpus = df
+
+    # Step - a : Remove blank rows if any.
+    Corpus['Tweet text'].dropna(inplace=True)
+    # Step - b : Change all the text to lower case. This is required as python interprets 'dog' and 'DOG' differently
+    Corpus['Tweet text'] = [entry.lower() for entry in Corpus['Tweet text']]
+    # Step - c : Tokenization : In this each entry in the corpus will be broken into set of words
+    Corpus['Tweet text'] = [re.sub('@[a-zA-Z0-9_]+|https?://t.co/[a-zA-Z0-9_]+|[^a-zA-Z]', ' ', entry) for entry in Corpus['Tweet text']]
+    # Step - c2 : Remove usernames 
+    Corpus['Tweet text']= [word_tokenize(entry) for entry in Corpus['Tweet text']]
+    # Step - d : Remove Stop words, Non-Numeric and perfom Word Stemming/Lemmenting.# WordNetLemmatizer requires Pos tags to understand if the word is noun or verb or adjective etc. By default it is set to Noun
+    tag_map = defaultdict(lambda : wn.NOUN)
+    tag_map['J'] = wn.ADJ
+    tag_map['V'] = wn.VERB
+    tag_map['R'] = wn.ADV
+    for index,entry in enumerate(Corpus['Tweet text']):
+        # Declaring Empty List to store the words that follow the rules for this step
+        Final_words = []
+        # Initializing WordNetLemmatizer()
+        word_Lemmatized = WordNetLemmatizer()
+        # pos_tag function below will provide the 'tag' i.e if the word is Noun(N) or Verb(V) or something else.
+        for word, tag in pos_tag(entry):
+            # Below condition is to check for Stop words and consider only alphabets
+            if word not in stopwords.words('english') and word.isalpha():
+                word_Final = word_Lemmatized.lemmatize(word,tag_map[tag[0]])
+                Final_words.append(word_Final)
+        # The final processed set of words for each iteration will be stored in 'text_final'
+        Corpus.loc[index,'text_final'] = str(Final_words)
+    
+    # print(Corpus['text_final'])
+    return Corpus
+
+
 
 # --------------------------------------------------------------
 
@@ -59,13 +109,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 # Create bag-of-words model
 def bagOfWords(df, corpus):
-    vectorizer = CountVectorizer(max_features = 1500) # original = 1500
+    vectorizer = CountVectorizer(max_features = 250) # original = 1500
     X = vectorizer.fit_transform(corpus).toarray()
     y = df.iloc[:,1].values
 
     print("Bag of words done!")
 
-    print("bag_of_words: 1500 max_features", file=f)
+    print("bag_of_words: 250 max_features", file=f)
     return (X, y)
 
 # --------------------------------------------------------------
@@ -222,7 +272,7 @@ def randomForest(X_train, X_test, y_train, y_test):
 
 from sklearn.neural_network import MLPClassifier
 
-classifier = MLPClassifier()
+classifier = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(5), learning_rate= 'adaptive', max_iter=500, solver='sgd')
 
 # Multi Layered Perceptron
 def mlp(X_train, X_test, y_train, y_test):
@@ -231,7 +281,7 @@ def mlp(X_train, X_test, y_train, y_test):
     classifier.fit(X_train, y_train)
     y_pred = classifier.predict(X_test)
 
-    print("MLP activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50), learning_rate='adaptive', solver='sgd'", file=f)
+    print("MLP activation='tanh', alpha=0.05, hidden_layer_sizes=(5), learning_rate= 'adaptive', max_iter=500, solver='sgd'", file=f)
     print(confusion_matrix(y_test, y_pred), file=f)
     print('Accuracy: ', accuracy_score(y_test, y_pred), file=f)
     print('Precision: ', precision_score(y_test, y_pred), file=f)
@@ -245,19 +295,19 @@ from sklearn.metrics import classification_report
 
 # Finding the best parameters for MLP
 def findMlp(X_train, X_test, y_train, y_test):
-    print("'hidden_layer_sizes': [(20,20), (20, 20, 20), (10, 10, 10)],", file=f)
+    print("'hidden_layer_sizes': [(20,20), (50,50), (50,50,50), (10,10)],", file=f)
     print("'activation': ['tanh'],", file=f)
-    print("'alpha': [0.05],", file=f)
+    print("'alpha': [0.05, 0.0001],", file=f)
     print("'learning_rate': ['adaptive'],", file=f)
-    print("'max_iter': [500, 1000, 1500],", file=f)
+    print("'max_iter': [200, 500],", file=f)
     
     parameter_space = {
-        'hidden_layer_sizes': [(20,20), (20, 20, 20), (10, 10, 10)],
+        'hidden_layer_sizes': [(20,20), (50,50), (50,50,50), (10,10)],
         'activation': ['tanh'],
         'solver': ['sgd'],
-        'alpha': [0.05],
+        'alpha': [0.05, 0.0001],
         'learning_rate': ['adaptive'],
-        'max_iter': [500, 1000, 1500],
+        'max_iter': [200, 500],
     }
 
     clf = GridSearchCV(classifier, parameter_space, n_jobs=-1, cv=3)
@@ -299,24 +349,38 @@ def findMlp(X_train, X_test, y_train, y_test):
 
 def main():
     
-    
 
     (df, test_df) = readData("./datasets/train/train-taskA.txt", "./datasets/test/gold_test_taskA.txt")
-    corpus = processing(df)
-    test_corpus = processing(test_df)
+    Corpus = processing2(df)
+    test_corpus = processing2(test_df)
 
-    (X_train, y_train) = bagOfWords(df, corpus)
-    (X_test, y_test) = bagOfWords(test_df, test_corpus)
+    Train_X = Corpus['text_final']
+    Train_Y = Corpus.iloc[:,1].values
 
-    # (X_train, X_test, y_train, y_test) = splitData(X, y)
+    Test_X = test_corpus['text_final']
+    Test_Y = test_corpus.iloc[:,1].values
 
-    (X_train, y_train) = smote(X_train, y_train)
+    # (X_train, y_train) = bagOfWords(df, corpus)
+    # (X_test, y_test) = bagOfWords(test_df, test_corpus)
+
+    # Train_X, Test_X, Train_Y, Test_Y = model_selection.train_test_split(Corpus['text_final'],Corpus['Label'],test_size=0.2)
+
+    Encoder = LabelEncoder()
+    Train_Y  = Encoder.fit_transform(Train_Y )
+    Test_Y  = Encoder.fit_transform(Test_Y )
+
+    Tfidf_vect = TfidfVectorizer(max_features=5000)
+    Tfidf_vect.fit(Corpus['text_final'])
+    Train_X_Tfidf = Tfidf_vect.transform(Train_X)
+    Test_X_Tfidf = Tfidf_vect.transform(Test_X)
+
+    # (X_train, y_train) = smote(X_train, y_train)
 
     # naiveBayes()
 
     # print("\n-----\n", file=f)
 
-    # svm(X_train, X_test, y_train, y_test)
+    # svm(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
 
     # print("\n-----\n", file=f)
 
@@ -340,11 +404,11 @@ def main():
 
     print("\n-----\n", file=f)
 
-    findMlp(X_train, X_test, y_train, y_test)
+    findMlp(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
 
     print("Finished")
 
 # Change Filename everytime xd
-f = open("./logs/dataset_A_train_test/log4.txt", "w")
+f = open("./logs/good_log2_findMLP.txt", "w")
 main()
 f.close()
