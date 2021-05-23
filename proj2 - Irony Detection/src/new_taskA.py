@@ -10,10 +10,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Get data from file
-def readData(path):
+def readData(path, path_test):
     df = pd.read_csv(path, sep="	")
+    test_df = pd.read_csv(path_test, sep="	")
     print("Data Read")
-    return df
+    return (df, test_df)
 
 # --------------------------------------------------------------
 
@@ -24,13 +25,14 @@ from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
-corpus = []
+
 lemmatizer = WordNetLemmatizer()
 stemmer = LancasterStemmer()
 # stemmer = PorterStemmer()
 
 # Cleaning and tokenization of tweets
 def processing(df):
+    corpus = []
     for i in range(len(df)):
         # get tweet and remove usernames (@username) and links to pictures (https://t.co/link)
         tweet = re.sub('@[a-zA-Z0-9_]+|https?://t.co/[a-zA-Z0-9_]+|[^a-zA-Z]', ' ', df['Tweet text'][i])
@@ -49,13 +51,14 @@ def processing(df):
     
     print("lower case stemming", file=f)
     print("Tokenizing done!")
+    return corpus
 
 # --------------------------------------------------------------
 
 from sklearn.feature_extraction.text import CountVectorizer
 
 # Create bag-of-words model
-def bagOfWords(df):
+def bagOfWords(df, corpus):
     vectorizer = CountVectorizer(max_features = 1500) # original = 1500
     X = vectorizer.fit_transform(corpus).toarray()
     y = df.iloc[:,1].values
@@ -137,12 +140,12 @@ def svm(X_train, X_test, y_train, y_test):
 
     y_pred = classifier.predict(X_test)
 
-    print("SVM average=macro", file=f)
+    print("SVM", file=f)
     print(confusion_matrix(y_test, y_pred), file=f)
     print('Accuracy: ', accuracy_score(y_test, y_pred), file=f)
-    print('Precision: ', precision_score(y_test, y_pred, average='macro'), file=f)
-    print('Recall: ', recall_score(y_test, y_pred, average='macro'), file=f)
-    print('F1: ', f1_score(y_test, y_pred, average='macro'), file=f)
+    print('Precision: ', precision_score(y_test, y_pred), file=f)
+    print('Recall: ', recall_score(y_test, y_pred), file=f)
+    print('F1: ', f1_score(y_test, y_pred), file=f)
 
 # --------------------------------------------------------------
 
@@ -219,7 +222,7 @@ def randomForest(X_train, X_test, y_train, y_test):
 
 from sklearn.neural_network import MLPClassifier
 
-classifier = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50, 50), learning_rate='adaptive', solver='sgd', max_iter=1000)
+classifier = MLPClassifier()
 
 # Multi Layered Perceptron
 def mlp(X_train, X_test, y_train, y_test):
@@ -228,7 +231,7 @@ def mlp(X_train, X_test, y_train, y_test):
     classifier.fit(X_train, y_train)
     y_pred = classifier.predict(X_test)
 
-    print("MLP activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50, 50), learning_rate='adaptive', solver='sgd', max_iter=1000", file=f)
+    print("MLP activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50), learning_rate='adaptive', solver='sgd'", file=f)
     print(confusion_matrix(y_test, y_pred), file=f)
     print('Accuracy: ', accuracy_score(y_test, y_pred), file=f)
     print('Precision: ', precision_score(y_test, y_pred), file=f)
@@ -242,12 +245,19 @@ from sklearn.metrics import classification_report
 
 # Finding the best parameters for MLP
 def findMlp(X_train, X_test, y_train, y_test):
+    print("'hidden_layer_sizes': [(20,20), (20, 20, 20), (10, 10, 10)],", file=f)
+    print("'activation': ['tanh'],", file=f)
+    print("'alpha': [0.05],", file=f)
+    print("'learning_rate': ['adaptive'],", file=f)
+    print("'max_iter': [500, 1000, 1500],", file=f)
+    
     parameter_space = {
-        'hidden_layer_sizes': [(50,50,50), (20,20,20,20), (50,50,50,50), (50,100,50), (100,)],
-        'activation': ['identity', 'logistic', 'tanh', 'relu'],
-        'solver': ['sgd', 'adam', 'lbfgs'],
-        'alpha': [0.0001, 0.05, 0.01],
-        'learning_rate': ['constant','adaptive', 'invscaling'],
+        'hidden_layer_sizes': [(20,20), (20, 20, 20), (10, 10, 10)],
+        'activation': ['tanh'],
+        'solver': ['sgd'],
+        'alpha': [0.05],
+        'learning_rate': ['adaptive'],
+        'max_iter': [500, 1000, 1500],
     }
 
     clf = GridSearchCV(classifier, parameter_space, n_jobs=-1, cv=3)
@@ -291,20 +301,22 @@ def main():
     
     
 
-    df = readData("./datasets/train/train-taskB.txt")
-    processing(df)
+    (df, test_df) = readData("./datasets/train/train-taskA.txt", "./datasets/test/gold_test_taskA.txt")
+    corpus = processing(df)
+    test_corpus = processing(test_df)
 
-    (X, y) = bagOfWords(df)
+    (X_train, y_train) = bagOfWords(df, corpus)
+    (X_test, y_test) = bagOfWords(test_df, test_corpus)
 
-    (X_train, X_test, y_train, y_test) = splitData(X, y)
+    # (X_train, X_test, y_train, y_test) = splitData(X, y)
 
     (X_train, y_train) = smote(X_train, y_train)
 
     # naiveBayes()
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    svm(X_train, X_test, y_train, y_test)
+    # svm(X_train, X_test, y_train, y_test)
 
     # print("\n-----\n", file=f)
 
@@ -326,13 +338,13 @@ def main():
 
     # mlp(X_train, X_test, y_train, y_test)
 
-    # print("\n-----\n", file=f)
+    print("\n-----\n", file=f)
 
-    # findMlp(X_train, X_test, y_train, y_test)
+    findMlp(X_train, X_test, y_train, y_test)
 
     print("Finished")
 
 # Change Filename everytime xd
-f = open("./logs/svm_macro.txt", "w")
+f = open("./logs/dataset_A_train_test/log4.txt", "w")
 main()
 f.close()
