@@ -1,0 +1,30 @@
+lower case lemmat
+lower case lemmat
+TfidfVectorizer max_features=5000
+
+-----
+
+Best parameters found:
+ {'C': 1, 'kernel': 'linear'}
+0.502 (+/-0.001) for {'C': 1, 'gamma': 0.001, 'kernel': 'rbf'}
+0.502 (+/-0.001) for {'C': 1, 'gamma': 0.0001, 'kernel': 'rbf'}
+0.502 (+/-0.001) for {'C': 10, 'gamma': 0.001, 'kernel': 'rbf'}
+0.502 (+/-0.001) for {'C': 10, 'gamma': 0.0001, 'kernel': 'rbf'}
+0.599 (+/-0.029) for {'C': 100, 'gamma': 0.001, 'kernel': 'rbf'}
+0.502 (+/-0.001) for {'C': 100, 'gamma': 0.0001, 'kernel': 'rbf'}
+0.602 (+/-0.036) for {'C': 1000, 'gamma': 0.001, 'kernel': 'rbf'}
+0.599 (+/-0.029) for {'C': 1000, 'gamma': 0.0001, 'kernel': 'rbf'}
+0.610 (+/-0.042) for {'C': 1, 'kernel': 'linear'}
+0.601 (+/-0.027) for {'C': 10, 'kernel': 'linear'}
+0.597 (+/-0.029) for {'C': 100, 'kernel': 'linear'}
+0.586 (+/-0.048) for {'C': 1000, 'kernel': 'linear'}
+Results on the test set:
+              precision    recall  f1-score   support
+
+           0       0.72      0.64      0.68       473
+           1       0.53      0.62      0.57       311
+
+    accuracy                           0.63       784
+   macro avg       0.63      0.63      0.63       784
+weighted avg       0.65      0.63      0.64       784
+

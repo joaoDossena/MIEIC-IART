@@ -1,0 +1,13 @@
+lower case lemmat
+lower case lemmat
+TfidfVectorizer max_features=5000
+
+-----
+
+SVM 'C': 1, 'kernel': 'linear'
+[[302 171]
+ [117 194]]
+Accuracy:  0.6326530612244898
+Precision:  0.5315068493150685
+Recall:  0.6237942122186495
+F1:  0.5739644970414202

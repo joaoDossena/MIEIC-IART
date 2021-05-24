@@ -1,0 +1,13 @@
+lower case lemmat
+lower case lemmat
+TfidfVectorizer max_features=5000
+
+-----
+
+MLP activation='tanh', alpha=0.0001, hidden_layer_sizes=(50, 50, 50), learning_rate= 'adaptive', max_iter=200, solver='sgd'
+[[353 120]
+ [230  81]]
+Accuracy:  0.5535714285714286
+Precision:  0.40298507462686567
+Recall:  0.2604501607717042
+F1:  0.31640625

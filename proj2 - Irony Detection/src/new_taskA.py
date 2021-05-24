@@ -99,6 +99,7 @@ def processing2(df):
         Corpus.loc[index,'text_final'] = str(Final_words)
     
     # print(Corpus['text_final'])
+    print("lower case lemmat", file=f)
     return Corpus
 
 
@@ -185,12 +186,14 @@ from sklearn.svm import SVC
 
 # SVM
 def svm(X_train, X_test, y_train, y_test):
-    classifier = SVC()
+
+    # 'C': 1, 'kernel': 'linear'
+    classifier = SVC(C=1, kernel='linear')
     classifier.fit(X_train, y_train)
 
     y_pred = classifier.predict(X_test)
 
-    print("SVM", file=f)
+    print("SVM 'C': 1, 'kernel': 'linear'", file=f)
     print(confusion_matrix(y_test, y_pred), file=f)
     print('Accuracy: ', accuracy_score(y_test, y_pred), file=f)
     print('Precision: ', precision_score(y_test, y_pred), file=f)
@@ -272,7 +275,7 @@ def randomForest(X_train, X_test, y_train, y_test):
 
 from sklearn.neural_network import MLPClassifier
 
-classifier = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(5), learning_rate= 'adaptive', max_iter=500, solver='sgd')
+classifier = MLPClassifier(activation='tanh', alpha=0.0001, hidden_layer_sizes=(50, 50, 50), learning_rate= 'adaptive', max_iter=200, solver='sgd')
 
 # Multi Layered Perceptron
 def mlp(X_train, X_test, y_train, y_test):
@@ -281,7 +284,7 @@ def mlp(X_train, X_test, y_train, y_test):
     classifier.fit(X_train, y_train)
     y_pred = classifier.predict(X_test)
 
-    print("MLP activation='tanh', alpha=0.05, hidden_layer_sizes=(5), learning_rate= 'adaptive', max_iter=500, solver='sgd'", file=f)
+    print("MLP activation='tanh', alpha=0.0001, hidden_layer_sizes=(50, 50, 50), learning_rate= 'adaptive', max_iter=200, solver='sgd'", file=f)
     print(confusion_matrix(y_test, y_pred), file=f)
     print('Accuracy: ', accuracy_score(y_test, y_pred), file=f)
     print('Precision: ', precision_score(y_test, y_pred), file=f)
@@ -329,6 +332,29 @@ def findMlp(X_train, X_test, y_train, y_test):
 
 # --------------------------------------------------------------
 
+def findSVC(X_train, X_test, y_train, y_test):
+
+    tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],'C': [1, 10, 100, 1000]},
+                        {'kernel': ['linear'], 'C': [1, 10, 100, 1000]}]
+
+    clf = GridSearchCV(SVC(), tuned_parameters, n_jobs=-1, cv=3)
+    clf.fit(X_train, y_train)
+
+    print('Best parameters found:\n', clf.best_params_, file=f)
+
+    means = clf.cv_results_['mean_test_score']
+    stds = clf.cv_results_['std_test_score']
+    for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+        print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params), file=f)
+
+    y_true, y_pred = y_test , clf.predict(X_test)
+
+    print('Results on the test set:', file=f)
+    print(classification_report(y_true, y_pred), file=f)
+    
+
+# --------------------------------------------------------------
+
 # # Simple test
 
 # rev = input("Enter tweet: ")
@@ -369,18 +395,19 @@ def main():
     Train_Y  = Encoder.fit_transform(Train_Y )
     Test_Y  = Encoder.fit_transform(Test_Y )
 
+    print("TfidfVectorizer max_features=5000", file=f)
     Tfidf_vect = TfidfVectorizer(max_features=5000)
     Tfidf_vect.fit(Corpus['text_final'])
     Train_X_Tfidf = Tfidf_vect.transform(Train_X)
     Test_X_Tfidf = Tfidf_vect.transform(Test_X)
 
-    # (X_train, y_train) = smote(X_train, y_train)
+    (Train_X_Tfidf, Train_Y) = smote(Train_X_Tfidf, Train_Y)
 
     # naiveBayes()
 
-    # print("\n-----\n", file=f)
+    print("\n-----\n", file=f)
 
-    # svm(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
+    svm(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
 
     # print("\n-----\n", file=f)
 
@@ -400,15 +427,19 @@ def main():
 
     # print("\n-----\n", file=f)
 
-    # mlp(X_train, X_test, y_train, y_test)
+    # mlp(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    findMlp(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
+    # findMlp(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
+
+    # print("\n-----\n", file=f)
+
+    # findSVC(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
 
     print("Finished")
 
 # Change Filename everytime xd
-f = open("./logs/good_log2_findMLP.txt", "w")
+f = open("./logs/good_log4_SVC_Smote.txt", "w")
 main()
 f.close()

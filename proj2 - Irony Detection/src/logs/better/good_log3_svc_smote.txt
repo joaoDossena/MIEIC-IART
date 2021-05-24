@@ -1,0 +1,14 @@
+lower case lemmat
+lower case lemmat
+TfidfVectorizer max_features=5000
+Oversampling with Smote
+
+-----
+
+SVM
+[[323 150]
+ [129 182]]
+Accuracy:  0.6441326530612245
+Precision:  0.5481927710843374
+Recall:  0.5852090032154341
+F1:  0.5660964230171074
