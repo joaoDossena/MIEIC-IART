@@ -405,17 +405,17 @@ def main():
 
     # naiveBayes()
 
-    print("\n-----\n", file=f)
+    # print("\n-----\n", file=f)
 
-    svm(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
+    # svm(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
 
     # print("\n-----\n", file=f)
 
     # logisticRegression(X_train, X_test, y_train, y_test)
 
-    # print("\n-----\n", file=f)
+    print("\n-----\n", file=f)
 
-    # perceptron(X_train, X_test, y_train, y_test)
+    perceptron(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
 
     # print("\n-----\n", file=f)
 
@@ -440,6 +440,6 @@ def main():
     print("Finished")
 
 # Change Filename everytime xd
-f = open("./logs/good_log4_SVC_Smote.txt", "w")
+f = open("./logs/good_log5_perceptron_default.txt", "w")
 main()
 f.close()
