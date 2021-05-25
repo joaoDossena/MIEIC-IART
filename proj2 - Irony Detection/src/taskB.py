@@ -266,4 +266,57 @@ def findMlp(X_train, X_test, y_train, y_test):
 # (svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf_SMOTE, Test_X_Tfidf, Train_Y_SMOTE, Test_Y)
 
 
-findMlp(Train_X_Tfidf_RandOS, Test_X_Tfidf, Train_Y_RandOS, Test_Y)
+# findMlp(Train_X_Tfidf_RandOS, Test_X_Tfidf, Train_Y_RandOS, Test_Y)
+
+
+
+def plotComparisons(data, title):
+    X = np.arange(6)
+#     fig = plt.figure()
+#     ax = fig.add_axes([0,0,1.5,1.5])
+    fig, axs = plt.subplots(1, 3, figsize=(15, 7.5))
+    axs[0].bar(X + 0.2, data[0], color = '#3275a8', width = 0.2)
+    axs[0].bar(X + 0.4, data[1], color = '#258f3c', width = 0.2)
+    axs[0].bar(X + 0.6, data[2], color = '#d1682c', width = 0.2)
+    axs[0].set_title("Default")
+    
+    X = np.arange(6)
+    axs[1].bar(X + 0.2, data[3], color = '#3275a8', width = 0.2)
+    axs[1].bar(X + 0.4, data[4], color = '#258f3c', width = 0.2)
+    axs[1].bar(X + 0.6, data[5], color = '#d1682c', width = 0.2)
+    axs[1].set_title("Oversampling")
+
+    X = np.arange(6)
+    axs[2].bar(X + 0.2, data[6], color = '#3275a8', width = 0.2)
+    axs[2].bar(X + 0.4, data[7], color = '#258f3c', width = 0.2)
+    axs[2].bar(X + 0.6, data[8], color = '#d1682c', width = 0.2)
+    axs[2].set_title("Undersampling")
+
+    plt.xticks([0.25,1.25,2.25], ['SVM', 'Perceptron', 'Tunned MLP'])
+
+    default_patch = mpatches.Patch(color='#3275a8', label='Train time Default')
+    tunned_patch = mpatches.Patch(color='#258f3c', label='Precision')
+    tunned_patch_2 = mpatches.Patch(color='#d1682c', label='Recall')
+    tunned_patch_3 = mpatches.Patch(color='#9fd12c', label='F1')
+    plt.legend(handles=[default_patch, tunned_patch, tunned_patch_2], bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+    # plt.ylim(0.3, 0.7) # y limits
+
+    plt.xlabel("Algorithm")
+    plt.ylabel("Time")
+    # plt.title(title)
+
+    print()
+
+data = [
+            [float(svc_train_time_default), float(svc_predict_time_default)],
+            [float(perceptron_train_time_default), float(perceptron_predict_time_default)],
+            [float(mlp_train_time_default), float(mlp_predict_time_default)],
+            [float(svc_train_time_os), float(svc_predict_time_os)],
+            [float(perceptron_train_time_os), float(perceptron_predict_time_os)],
+            [float(mlp_train_time_os), float(mlp_predict_time_os)],
+            [float(svc_train_time_us), float(svc_predict_time_us)],
+            [float(perceptron_train_time_us), float(perceptron_predict_time_us)],
+            [float(mlp_train_time_us), float(mlp_predict_time_us)]
+       ]
+title = "Scores obtained using Undersampling"
+plotComparisons(data, title)
