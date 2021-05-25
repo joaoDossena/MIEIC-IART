@@ -15,15 +15,15 @@ def readData(path_train, path_test):
 
 (train_df, test_df) = readData("./datasets/train/train-taskB.txt", "./datasets/test/gold_test_taskB.txt")
 
-train_df.shape
-test_df.shape
-train_df.head()
-# checking if there are any null values present in the dataset
-train_df.isnull().sum()
+# train_df.shape
+# test_df.shape
+# train_df.head()
+# # checking if there are any null values present in the dataset
+# train_df.isnull().sum()
 
-train_df.groupby('Label')['Tweet text'].count()
-train_df.groupby('Label')['Tweet text'].count().plot.bar(ylim=0)
-plt.show()
+# train_df.groupby('Label')['Tweet text'].count()
+# train_df.groupby('Label')['Tweet text'].count().plot.bar(ylim=0)
+# plt.show()
 
 
 
@@ -143,36 +143,36 @@ oversample = RandomOverSampler(sampling_strategy='all')
 (Train_X_Tfidf_RandOS, Train_Y_RandOS) = oversample.fit_resample(Train_X_Tfidf, Train_Y)
 
 # Oversampling - SMOTE
-(Train_X_Tfidf_SMOTE, Train_Y_SMOTE) = smote(Train_X_Tfidf, Train_Y)
+# (Train_X_Tfidf_SMOTE, Train_Y_SMOTE) = smote(Train_X_Tfidf, Train_Y)
 
-# Undersampling - Random Under Sampler
-from imblearn.under_sampling import RandomUnderSampler
-undersample = RandomUnderSampler()
-(Train_X_Tfidf_RandUS, Train_Y_RandUS) = undersample.fit_resample(Train_X_Tfidf, Train_Y)
+# # Undersampling - Random Under Sampler
+# from imblearn.under_sampling import RandomUnderSampler
+# undersample = RandomUnderSampler()
+# (Train_X_Tfidf_RandUS, Train_Y_RandUS) = undersample.fit_resample(Train_X_Tfidf, Train_Y)
 
-counter = Counter(Train_Y_RandOS)
-for k,v in counter.items():
-	per = v / len(Train_Y) * 100
-	print('Class=%d, n=%d (%.3f%%)' % (k, v, per))
-pyplot.title("Random Over Sampler")
-pyplot.bar(counter.keys(), counter.values())
-pyplot.show()
+# counter = Counter(Train_Y_RandOS)
+# for k,v in counter.items():
+# 	per = v / len(Train_Y) * 100
+# 	print('Class=%d, n=%d (%.3f%%)' % (k, v, per))
+# pyplot.title("Random Over Sampler")
+# pyplot.bar(counter.keys(), counter.values())
+# pyplot.show()
 
-counter = Counter(Train_Y_RandUS)
-for k,v in counter.items():
-	per = v / len(Train_Y) * 100
-	print('Class=%d, n=%d (%.3f%%)' % (k, v, per))
-pyplot.title("Random Under Sampler")
-pyplot.bar(counter.keys(), counter.values())
-pyplot.show()
+# counter = Counter(Train_Y_RandUS)
+# for k,v in counter.items():
+# 	per = v / len(Train_Y) * 100
+# 	print('Class=%d, n=%d (%.3f%%)' % (k, v, per))
+# pyplot.title("Random Under Sampler")
+# pyplot.bar(counter.keys(), counter.values())
+# pyplot.show()
 
-counter = Counter(Train_Y_SMOTE)
-for k,v in counter.items():
-	per = v / len(Train_Y) * 100
-	print('Class=%d, n=%d (%.3f%%)' % (k, v, per))
-pyplot.title("SMOTE")
-pyplot.bar(counter.keys(), counter.values())
-pyplot.show()
+# counter = Counter(Train_Y_SMOTE)
+# for k,v in counter.items():
+# 	per = v / len(Train_Y) * 100
+# 	print('Class=%d, n=%d (%.3f%%)' % (k, v, per))
+# pyplot.title("SMOTE")
+# pyplot.bar(counter.keys(), counter.values())
+# pyplot.show()
 
 
 from sklearn.metrics import confusion_matrix
@@ -216,19 +216,54 @@ def svm(X_train, X_test, y_train, y_test):
     plt.title('Confusion Matrix', fontsize=18)
     plt.show()
 
-
-
     return (classification_report(y_test, y_pred, output_dict=True), training_time, predict_time, y_test, y_pred)
 
-# normal (mau)
-(svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
+from sklearn.neural_network import MLPClassifier
+# Finding the best parameters for MLP
+def findMlp(X_train, X_test, y_train, y_test):
+    # print("'hidden_layer_sizes': [(20,20), (50,50), (50,50,50), (10,10)],", file=f)
+    # print("'activation': ['tanh'],", file=f)
+    # print("'alpha': [0.05, 0.0001],", file=f)
+    # print("'learning_rate': ['adaptive'],", file=f)
+    # print("'max_iter': [200, 500],")
+    
+    parameter_space = {
+        'hidden_layer_sizes': [(15,), (10,), (7,), (20,)],
+        'activation': ['tanh'],
+        'solver': ['sgd'],
+        'alpha': [0.05],
+        'learning_rate': ['adaptive'],
+    }
 
-# Random Oversampling
-(svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf_RandOS, Test_X_Tfidf, Train_Y_RandOS, Test_Y)
+    clf = GridSearchCV(MLPClassifier(), parameter_space, n_jobs=-1, cv=3)
+    clf.fit(X_train, y_train)
 
-# Random Undersampling
-(svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf_RandUS, Test_X_Tfidf, Train_Y_RandUS, Test_Y)
+    # Best paramete set
+    print('Best parameters found:\n', clf.best_params_)
 
-# Smote (idk)
-(svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf_SMOTE, Test_X_Tfidf, Train_Y_SMOTE, Test_Y)
+    # All results
+    means = clf.cv_results_['mean_test_score']
+    stds = clf.cv_results_['std_test_score']
+    for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+        print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
 
+    y_true, y_pred = y_test , clf.predict(X_test)
+
+    print('Results on the test set:')
+    print(classification_report(y_true, y_pred))
+
+
+# # normal (mau)
+# (svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y)
+
+# # Random Oversampling
+# (svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf_RandOS, Test_X_Tfidf, Train_Y_RandOS, Test_Y)
+
+# # Random Undersampling
+# (svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf_RandUS, Test_X_Tfidf, Train_Y_RandUS, Test_Y)
+
+# # Smote (idk)
+# (svc_for_graph, svc_train_time, svc_predict_time, svc_y_test, svc_y_pred) = svm(Train_X_Tfidf_SMOTE, Test_X_Tfidf, Train_Y_SMOTE, Test_Y)
+
+
+findMlp(Train_X_Tfidf_RandOS, Test_X_Tfidf, Train_Y_RandOS, Test_Y)
