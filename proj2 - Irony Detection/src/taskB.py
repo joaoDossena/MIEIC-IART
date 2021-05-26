@@ -280,13 +280,13 @@ def plotComparisons(data, title):
     axs[0].bar(X + 0.6, data[2], color = '#d1682c', width = 0.2)
     axs[0].set_title("Default")
     
-    X = np.arange(6)
+    X = np.arange(2)
     axs[1].bar(X + 0.2, data[3], color = '#3275a8', width = 0.2)
     axs[1].bar(X + 0.4, data[4], color = '#258f3c', width = 0.2)
     axs[1].bar(X + 0.6, data[5], color = '#d1682c', width = 0.2)
     axs[1].set_title("Oversampling")
 
-    X = np.arange(6)
+    X = np.arange(3)
     axs[2].bar(X + 0.2, data[6], color = '#3275a8', width = 0.2)
     axs[2].bar(X + 0.4, data[7], color = '#258f3c', width = 0.2)
     axs[2].bar(X + 0.6, data[8], color = '#d1682c', width = 0.2)

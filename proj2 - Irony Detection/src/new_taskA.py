@@ -41,16 +41,10 @@ def processing(df):
         tweet = tweet.lower().split()
 
         # Stemming and stop word removal
-        # stemmed_tweet = ' '.join([stemmer.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
+        stemmed_tweet = ' '.join([stemmer.stem(w) for w in tweet if not w in set(stopwords.words('english'))])
+        corpus.append(stemmed_tweet)
 
-        # Lemmatizing
-        lemma_tweet = ' '.join([lemmatizer.lemmatize(w) for w in tweet if not w in set(stopwords.words('english'))])
 
-        # corpus.append(stemmed_tweet)
-        corpus.append(lemma_tweet)
-    
-    print("lower case lemmat", file=f)
-    print("Tokenizing done!")
     return corpus
 
 # --------------------------------------------------------------
@@ -110,13 +104,13 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 # Create bag-of-words model
 def bagOfWords(df, corpus):
-    vectorizer = CountVectorizer(max_features = 250) # original = 1500
+    vectorizer = CountVectorizer(max_features = 5000) # original = 1500
     X = vectorizer.fit_transform(corpus).toarray()
     y = df.iloc[:,1].values
 
     print("Bag of words done!")
 
-    print("bag_of_words: 250 max_features", file=f)
+    print("bag_of_words: 5000 max_features", file=f)
     return (X, y)
 
 # --------------------------------------------------------------
@@ -377,23 +371,17 @@ def main():
     
 
     (df, test_df) = readData("./datasets/train/train-taskA.txt", "./datasets/test/gold_test_taskA.txt")
-    Corpus = processing2(df)
-    test_corpus = processing2(test_df)
+    # Corpus = processing2(df)
+    # test_corpus = processing2(test_df)
 
-    Train_X = Corpus['text_final']
-    Train_Y = Corpus.iloc[:,1].values
+    corpus = processing(df)
+    test_corpus = processing(test_df)
 
-    Test_X = test_corpus['text_final']
-    Test_Y = test_corpus.iloc[:,1].values
 
-    # (X_train, y_train) = bagOfWords(df, corpus)
-    # (X_test, y_test) = bagOfWords(test_df, test_corpus)
 
-    # Train_X, Test_X, Train_Y, Test_Y = model_selection.train_test_split(Corpus['text_final'],Corpus['Label'],test_size=0.2)
+    (X_train_2, y_train_2) = bagOfWords(df, corpus)
+    (X_test_2, y_test_2) = bagOfWords(test_df, test_corpus)
 
-    Encoder = LabelEncoder()
-    Train_Y  = Encoder.fit_transform(Train_Y )
-    Test_Y  = Encoder.fit_transform(Test_Y )
 
     print("TfidfVectorizer max_features=5000", file=f)
     Tfidf_vect = TfidfVectorizer(max_features=5000)
